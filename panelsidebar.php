@@ -23,7 +23,7 @@
                         <a href="home.php"> <i class="menu-icon fa fa-home"></i>Home </a>
                     </li>
                     <h3 class="menu-title">Menu</h3><!-- /.menu-title -->
-                    
+                    <!-- Tree Menu sample
                     <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-table"></i>Tally</a>
                         <ul class="sub-menu children dropdown-menu">
@@ -31,16 +31,16 @@
                             <li><i class="fa fa-table"></i><a href="input-invent.php">Input Tally</a></li>          
                         </ul>
                     </li>
-
+                    -->
                     <li>
                         <a href="stock.php"> <i class="menu-icon fa fa-cutlery"></i>Stock</a>
                     </li>
 
                      <li>
-                        <a href="#"> <i class="menu-icon fa fa-money"></i>Payment</a>
+                        <a href="yearlytotals.php"> <i class="menu-icon fa fa-money"></i>Yearly Totals</a>
                     </li>
 
-
+                    <!--
                     <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-th"></i>Forms</a>
                         <ul class="sub-menu children dropdown-menu">
@@ -48,7 +48,7 @@
                             <li><i class="menu-icon fa fa-th"></i><a href="forms-advanced.html">Advanced Form</a></li>
                         </ul>
                     </li>
-
+                    -->
                     
                 </ul>
             </div><!-- /.navbar-collapse -->
