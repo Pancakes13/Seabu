@@ -36,9 +36,14 @@
                         <a href="stock.php"> <i class="menu-icon fa fa-cutlery"></i>Stock</a>
                     </li>
 
-                     <li>
+                    <li>
                         <a href="yearlytotals.php"> <i class="menu-icon fa fa-money"></i>Yearly Totals</a>
                     </li>
+
+                    <li>
+                        <a href="stock_logs.php"> <i class="menu-icon fa fa-money"></i>Stock Logs</a>
+                    </li>
+                    
 
                     <!--
                     <li class="menu-item-has-children dropdown">

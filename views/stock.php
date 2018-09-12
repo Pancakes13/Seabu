@@ -36,6 +36,7 @@ require ("../panelheader.php");
                         <td style="width:10%;">
                           <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#mediumModal"><i class="fa fa-edit"></i></button>
                           <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                          <a href="employee_logs.php"><button type="button" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></button></a>
                         </td>
                       </tr>
                       <tr>
@@ -45,6 +46,7 @@ require ("../panelheader.php");
                         <td style="width:10%;">
                           <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i></button>
                           <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal"><i class="fa fa-trash"></i></button>
+                          <a href="employee_logs.php"><button type="button" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></button></a>
                         </td>
                       </tr>
                     </tbody>
