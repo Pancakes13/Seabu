@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 11, 2018 at 03:50 PM
+-- Generation Time: Sep 12, 2018 at 03:40 PM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.5.38
 
@@ -49,6 +49,7 @@ CREATE TABLE `employee_log` (
   `employee_log_id` int(11) NOT NULL,
   `log_timestamp` datetime NOT NULL,
   `log_action` enum('Create','Update','Delete') NOT NULL,
+  `log_description` text NOT NULL,
   `employee_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
