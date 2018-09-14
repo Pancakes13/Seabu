@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 12, 2018 at 03:40 PM
+-- Generation Time: Sep 14, 2018 at 03:21 PM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.5.38
 
@@ -28,6 +28,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `employee` (
   `employee_id` int(11) NOT NULL,
+  `username` varchar(50) NOT NULL,
   `first_name` varchar(50) NOT NULL,
   `last_name` varchar(50) NOT NULL,
   `middle_name` varchar(50) DEFAULT NULL,
@@ -48,9 +49,8 @@ CREATE TABLE `employee` (
 CREATE TABLE `employee_log` (
   `employee_log_id` int(11) NOT NULL,
   `log_timestamp` datetime NOT NULL,
-  `log_action` enum('Create','Update','Delete') NOT NULL,
-  `log_description` text NOT NULL,
-  `employee_id` int(11) DEFAULT NULL
+  `employee_id` int(11) DEFAULT NULL,
+  `performed_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -98,6 +98,20 @@ CREATE TABLE `item_line` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `item_log`
+--
+
+CREATE TABLE `item_log` (
+  `item_log_id` int(11) NOT NULL,
+  `log_timestamp` datetime NOT NULL,
+  `log_action` enum('Create','Update','Delete') NOT NULL,
+  `employee_id` int(11) DEFAULT NULL,
+  `item_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `stock_transaction`
 --
 
@@ -116,14 +130,16 @@ CREATE TABLE `stock_transaction` (
 -- Indexes for table `employee`
 --
 ALTER TABLE `employee`
-  ADD PRIMARY KEY (`employee_id`);
+  ADD PRIMARY KEY (`employee_id`),
+  ADD UNIQUE KEY `username` (`username`);
 
 --
 -- Indexes for table `employee_log`
 --
 ALTER TABLE `employee_log`
   ADD PRIMARY KEY (`employee_log_id`),
-  ADD KEY `employee_log_fk` (`employee_id`);
+  ADD KEY `employee_log_fk1` (`employee_id`),
+  ADD KEY `employee_log_fk2` (`performed_by`);
 
 --
 -- Indexes for table `expense`
@@ -145,6 +161,14 @@ ALTER TABLE `item_line`
   ADD PRIMARY KEY (`item_line_id`),
   ADD KEY `item_line_fk1` (`stock_transaction_id`),
   ADD KEY `item_line_fk2` (`item_id`);
+
+--
+-- Indexes for table `item_log`
+--
+ALTER TABLE `item_log`
+  ADD PRIMARY KEY (`item_log_id`),
+  ADD KEY `item_log_fk1` (`employee_id`),
+  ADD KEY `item_log_fk2` (`item_id`);
 
 --
 -- Indexes for table `stock_transaction`
@@ -183,6 +207,11 @@ ALTER TABLE `item`
 ALTER TABLE `item_line`
   MODIFY `item_line_id` int(11) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT for table `item_log`
+--
+ALTER TABLE `item_log`
+  MODIFY `item_log_id` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `stock_transaction`
 --
 ALTER TABLE `stock_transaction`
@@ -195,7 +224,8 @@ ALTER TABLE `stock_transaction`
 -- Constraints for table `employee_log`
 --
 ALTER TABLE `employee_log`
-  ADD CONSTRAINT `employee_log_fk` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`employee_id`);
+  ADD CONSTRAINT `employee_log_fk1` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`employee_id`),
+  ADD CONSTRAINT `employee_log_fk2` FOREIGN KEY (`performed_by`) REFERENCES `employee` (`employee_id`);
 
 --
 -- Constraints for table `expense`
@@ -209,6 +239,13 @@ ALTER TABLE `expense`
 ALTER TABLE `item_line`
   ADD CONSTRAINT `item_line_fk1` FOREIGN KEY (`stock_transaction_id`) REFERENCES `stock_transaction` (`stock_transaction_id`),
   ADD CONSTRAINT `item_line_fk2` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`);
+
+--
+-- Constraints for table `item_log`
+--
+ALTER TABLE `item_log`
+  ADD CONSTRAINT `item_log_fk1` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`employee_id`),
+  ADD CONSTRAINT `item_log_fk2` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`);
 
 --
 -- Constraints for table `stock_transaction`
