@@ -18,39 +18,9 @@ require ("../panelheader.php");
                               Add Item <i class="fa fa-plus"></i>
                             </button>
                         </div>
-                        <div class="card-body">
-                  <table id="bootstrap-data-table" class="table table-striped table-bordered">
-                    <thead>
-                      <tr>
-                        <th>Item Name</th>
-                        <th>Price (Php)</th>
-                        <th>Current Stock (Pcs/Kg)</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td style="width:30%;">Cheezy Scallop</td>
-                        <td style="width:30%;">120</td>
-                        <td style="width:30%;">120</td>
-                        <td style="width:10%;">
-                          <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#mediumModal"><i class="fa fa-edit"></i></button>
-                          <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
-                          <a href="employee_logs.php"><button type="button" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></button></a>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="width:30%;">dfsafasdfasdfp</td>
-                        <td style="width:30%;">1123</td>
-                        <td style="width:30%;">1223</td>
-                        <td style="width:10%;">
-                          <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i></button>
-                          <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal"><i class="fa fa-trash"></i></button>
-                          <a href="employee_logs.php"><button type="button" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></button></a>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                        <div id="itemTable" class="card-body">
+                  
+                    
                         </div>
                     </div>
                 </div>
@@ -158,12 +128,42 @@ require ("../panelheader.php");
 
     <!-- Right Panel -->
 <script>
-$('#bootstrap-data-table').DataTable( {
-"columnDefs": [
-    { "orderable": false, "targets": 3 }
-  ]
+$(document).ready(function(){
+  $.ajax({
+      method: "GET", url: "../queries/get/getItems.php", 
+    }).done(function( data ) {
+    var result = $.parseJSON(data);
+    var tbl = '<table id="bootstrap-data-table" class="table table-striped table-bordered"><thead>'
+                  +'<tr>' 
+                  +'<th>Item Name</th>'
+                  +'<th>Price (Php)</th>'
+                  +'<th>Current Stock (Pcs/Kg)</th>'
+                  +'<th>Action</th>'
+                  +'</tr>'
+              +'</thead>'
+              +'<tbody>';
+    
+    //from result create a string of data and append to the div
+    $.each( result, function( key, value ) {
+      tbl += '<tr>'
+                +'<td>'+value["item_id"]+'</td>'
+                +'<td>'+value["name"]+'</td>'
+                +'<td>'+value["price"]+'</td>'
+                +'<td>'+value["qty"]+'</td>'
+              +'</tr>';
+      });
+      tbl += '</tbody></table>';
+
+      $("#itemTable").html(tbl);
+      $('#bootstrap-data-table').DataTable( {
+      "columnDefs": [
+          { "orderable": false, "targets": 3 }
+        ]
+    });
   });
+});
 </script>
+
 <?php
 require ("../footer.php");
 ?>
