@@ -19,7 +19,15 @@ require ("../panelheader.php");
                             </button>
                         </div>
                         <div id="itemTable" class="card-body">
-                  
+                        <table id="bootstrap-data-table" class="table table-striped table-bordered"><thead>
+                            <tr>
+                            <th>Item Name</th>
+                            <th>Price (Php)</th>
+                            <th>Current Stock (Pcs/Kg)</th>
+                            <th style="width:10%;">Action</th>
+                            </tr>
+                        
+                        </table>
                     
                         </div>
                     </div>
@@ -44,16 +52,16 @@ require ("../panelheader.php");
                 <div class="modal-body">
                   <div class="form-group">
                     <label>Item Name</label>
-                    <input type="text" class="form-control">
+                    <input type="text" class="form-control" name="name" id="name">
                   </div>
                   <div class="form-group">
                     <label>Price</label>
-                    <input type="number" class="form-control">
+                    <input type="number" class="form-control" name="price" id="price">
                   </div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                  <button type="button" class="btn btn-success" type="submit">Add Item</button>
+                  <button type="button" class="btn btn-success" type="submit" id="addBtn" data-dismiss="modal">Add Item</button>
                 </div>
               </div>
             </div>
@@ -128,40 +136,63 @@ require ("../panelheader.php");
 
     <!-- Right Panel -->
 <script>
+var myTable = "";
 $(document).ready(function(){
+  myTable = $('#bootstrap-data-table').DataTable();
+  PopulateItemsTable();
+});
+function PopulateItemsTable() {
   $.ajax({
       method: "GET", url: "../queries/get/getItems.php", 
     }).done(function( data ) {
-    var result = $.parseJSON(data);
-    var tbl = '<table id="bootstrap-data-table" class="table table-striped table-bordered"><thead>'
-                  +'<tr>' 
-                  +'<th>Item Name</th>'
-                  +'<th>Price (Php)</th>'
-                  +'<th>Current Stock (Pcs/Kg)</th>'
-                  +'<th>Action</th>'
-                  +'</tr>'
-              +'</thead>'
-              +'<tbody>';
-    
-    //from result create a string of data and append to the div
-    $.each( result, function( key, value ) {
-      tbl += '<tr>'
-                +'<td>'+value["item_id"]+'</td>'
-                +'<td>'+value["name"]+'</td>'
-                +'<td>'+value["price"]+'</td>'
-                +'<td>'+value["qty"]+'</td>'
-              +'</tr>';
-      });
-      tbl += '</tbody></table>';
+      var jsonObject = JSON.parse(data);
+                var result = jsonObject.map(function (item) {
+                    var result = [];
+                    result.push(item.name);
+                    result.push(item.price);
+                    result.push(item.qty);
+                    result.push('<button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i></button>'
+                          +'<button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal"><i class="fa fa-trash"></i></button>'
+                          +'<a href="employee_logs.php?id='+item.item_id+'"><button type="button" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></button></a>');
+                    return result;
+                });
+                myTable.rows.add(result);
+                myTable.draw();
+        });
+}
+$("#addBtn").on('click', function(){ 
+            var name  = $("#name").val();
+  
+            var price  = $("#price").val();
 
-      $("#itemTable").html(tbl);
-      $('#bootstrap-data-table').DataTable( {
-      "columnDefs": [
-          { "orderable": false, "targets": 3 }
-        ]
-    });
-  });
-});
+            
+            $.ajax({ 
+
+              method: "POST",
+              url: "../queries/insert/addItem.php",
+
+              data: {"name": name, "price": price},
+
+             }).done(function( data ) { 
+                var result = $.parseJSON(data); 
+    
+                var str = '';
+
+                if(result == 1) {
+
+                  str = 'User record saved successfully.';
+                
+                }else{
+                  str == 'All fields are required.';
+                }
+
+              $("#message").css('color', 'red').html(str);
+              myTable.clear();
+              PopulateItemsTable();
+              });
+              
+       }); 
+
 </script>
 
 <?php
