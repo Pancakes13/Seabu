@@ -12,11 +12,17 @@ require ("../panelheader.php");
                     <div class="card">
                         <div class="card-header">
                             <strong class="card-title">Items in Stock</strong>
-                            <button type="button" class="btn btn-success btn-sm" 
+                            <button type="button" class="btn btn-success" 
                               style="float:right;" data-toggle="modal" data-target="#addModal"
                               >
                               Add Item <i class="fa fa-plus"></i>
                             </button>
+                            <!--
+                            <button type="button" class="btn btn-primary" 
+                              style="float:right; margin-right:1%;" data-toggle="modal" data-target="#stockModal"
+                              >
+                              Stock <i class="fa fa-archive"></i>
+                            </button>-->
                         </div>
                         <div id="itemTable" class="card-body">
                         <table id="bootstrap-data-table" class="table table-striped table-bordered"><thead>
@@ -37,6 +43,38 @@ require ("../panelheader.php");
                 </div>
             </div><!-- .animated -->
         </div><!-- .content -->
+
+        <!--Stock Modal-->
+        <!--
+        <div class="modal fade" id="stockModal" aria-hidden="true">
+          <form>
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="mediumModalLabel">Add Item</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="form-group">
+                    <label>Stock Management Type</label>
+                    <input type="text" class="form-control" name="name" id="name">
+                  </div>
+                  <div class="form-group">
+                    <label>Qty</label>
+                    <input type="number" class="form-control" name="price" id="price">
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-primary" type="submit" id="stockBtn" data-dismiss="modal">Stock</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>-->
+        <!--END OF Stock Modal-->
 
         <!--Add Modal-->
         <div class="modal fade" id="addModal" aria-hidden="true">
@@ -120,7 +158,9 @@ require ("../panelheader.php");
                   </button>
                 </div>
                 <div class="modal-body">
-                  Are you sure you want to delete item?
+                  Are you sure you want to delete 
+                    <span id="delItemName"></span>
+                  ?
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -152,8 +192,8 @@ function PopulateItemsTable() {
                     result.push(item.price);
                     result.push(item.qty);
                     result.push('<button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i></button>'
-                          +'<button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal"><i class="fa fa-trash"></i></button>'
-                          +'<a href="employee_logs.php?id='+item.item_id+'"><button type="button" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></button></a>');
+                          +'<button type="button" class="btn btn-danger btn-sm delBtn" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" ><i class="fa fa-trash"></i></button>'
+                          +'<a href="item_logs.php?item_id='+item.item_id+'&item_name='+item.name+'"><button type="button" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></button></a>');
                     return result;
                 });
                 myTable.rows.add(result);
@@ -164,7 +204,6 @@ $("#addBtn").on('click', function(){
             var name  = $("#name").val();
   
             var price  = $("#price").val();
-
             
             $.ajax({ 
 
@@ -192,6 +231,53 @@ $("#addBtn").on('click', function(){
               });
               
        }); 
+        $(document).on('click', '#itemTable .delBtn', function(){ 
+          const swalWithBootstrapButtons = swal.mixin({
+            confirmButtonClass: 'btn btn-danger',
+            cancelButtonClass: 'btn',
+            buttonsStyling: false,
+          })
+
+          swalWithBootstrapButtons({
+            title: 'Are you sure?',
+            text: $(this).data("itemname"),
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+          }).then((result) => {
+            if (result.value) {
+            var id  = $(this).data("itemid");
+            $.ajax({ 
+
+              method: "POST",
+              url: "../queries/delete/deleteItem.php",
+
+              data: {"item_id": id},
+
+             }).done(function( data ) { 
+                var result = $.parseJSON(data); 
+    
+                var str = '';
+                myTable.clear();
+                PopulateItemsTable();
+                swalWithBootstrapButtons(
+                  'Deleted!',
+                  'Item has been deleted.',
+                  'success'
+                )
+              });
+              
+            } else if (result.dismiss === swal.DismissReason.cancel) {
+              swalWithBootstrapButtons(
+                'Cancelled',
+                'Item was not deleted',
+                'error'
+              )
+            }
+          })
+        });
 
 </script>
 
