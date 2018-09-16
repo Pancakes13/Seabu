@@ -9,7 +9,7 @@ require ("../panelheader.php");
           <label class=" form-control-label">Search Tally By Date <i class="fa fa-calendar"></i></label>
           <div class="input-group">
            
-            <input class="form-control" type="date" value="<?php echo date('d/m/y');?>">
+            <input class="form-control" type="date" value="<?php echo date('Y-m-d');?>">
             <button class="input-group-addon"><i class="fa fa-search"></i></button>
           </div>
         </div>

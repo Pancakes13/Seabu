@@ -11,21 +11,27 @@ if(!$name || !$price){
 
   $result = 2;
 
-}else {
+}else{
+    //Insert Item
+    $sql    = "INSERT into `item` (`name`, `price`) values (?, ?)  ";
 
-   //SQL query to get results from database
-   $sql    = "INSERT into `item` (`name`, `price`) values (?, ?)  ";
+    $stmt   = $conn->prepare($sql);
+    $stmt->bind_param('ss', $name, $price);
+    
+    if($stmt->execute()){
+      //Insert Item Log
+      $sql2    = "INSERT into `item_log` (`log_action`, `item_id`, `employee_id`) values (?, ?, ?)  ";
 
-   $stmt   = $conn->prepare($sql);
+      $stmt2   = $conn->prepare($sql2);
 
-   $stmt->bind_param('ss', $name, $price);
-
-   if($stmt->execute()){
-     
-        $result = 1;
-     
-   }
-
+      $action = 'Create';
+      $item_id = 1; //Latest inserted item id//
+      $employee_id = 1; //Session value//
+      $stmt2->bind_param('sss', $action, $item_id, $employee_id);
+      if($stmt2->execute()){
+          $result = 1;
+      }
+    }
 }
 
 echo $result;
