@@ -228,6 +228,11 @@ $("#addBtn").on('click', function(){
               $("#message").css('color', 'red').html(str);
               myTable.clear();
               PopulateItemsTable();
+              swal(
+                  'Success!',
+                  'You have created an item!',
+                  'success'
+                )
               });
               
        }); 
@@ -239,7 +244,7 @@ $("#addBtn").on('click', function(){
           })
 
           swalWithBootstrapButtons({
-            title: 'Are you sure?',
+            title: 'Are you sure you want to delete this item?',
             text: $(this).data("itemname"),
             type: 'warning',
             showCancelButton: true,
