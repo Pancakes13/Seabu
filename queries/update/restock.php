@@ -1,7 +1,5 @@
 <?php
 require("../../connection.php");
-$name  = $_POST['name'];
-$price  = $_POST['price'];
 $qty  = $_POST['qty'];
 
 if(!$id){
@@ -9,14 +7,12 @@ if(!$id){
 }else{
     //Insert Item
     $sql    = "UPDATE `item` 
-    SET `name` = $name,
-    `price` = $price,
-    `qty` = $qty
+    SET `qty` = $qty
     WHERE `item_id` = ?";
 
     $stmt   = $conn->prepare($sql);
     $stmt->bind_param('s', $id);
-
+    
     if($stmt->execute()){
         //Insert Item Log
         $sql2    = "INSERT into `item_log` (`log_action`, `log_description`, `item_id`, `employee_id`) values (?, ?, ?)  ";
@@ -26,7 +22,7 @@ if(!$id){
         $action = 'Update';
         $item_id = 1; //Latest inserted item id//
         $employee_id = 1; //Session value//
-        $desc = 'Item was manually updated';
+        $desc = 'Item was restocked';
         $stmt2->bind_param('ssss', $action, $desc, $item_id, $employee_id);
         if($stmt2->execute()){
             $result = 1;
