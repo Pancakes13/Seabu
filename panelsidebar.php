@@ -37,11 +37,15 @@
                     </li>
 
                     <li>
-                        <a href="yearlytotals.php"> <i class="menu-icon fa fa-money"></i>Yearly Totals</a>
+                        <a href="yearlytotals.php"> <i class="menu-icon fa fa-area-chart"></i>Yearly Totals</a>
                     </li>
 
                     <li>
-                        <a href="stock_logs.php"> <i class="menu-icon fa fa-money"></i>Stock Logs</a>
+                        <a href="stock_logs.php"> <i class="menu-icon fa fa-book"></i>Stock Logs</a>
+                    </li>
+
+                    <li>
+                        <a href="expenses.php"> <i class="menu-icon fa fa-money"></i>Expenses</a>
                     </li>
                     
 
