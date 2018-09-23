@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 17, 2018 at 04:53 PM
+-- Generation Time: Sep 23, 2018 at 12:25 PM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.5.38
 
@@ -73,6 +73,7 @@ CREATE TABLE `expense` (
   `name` varchar(100) NOT NULL,
   `description` text,
   `price` float NOT NULL,
+  `expense_timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `employee_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -101,31 +102,33 @@ INSERT INTO `item` (`item_id`, `name`, `price`, `qty`, `isDeleted`) VALUES
 (4, 'Shrimp', 150, 0, 0),
 (5, 'Calamares', 230, 0, 0),
 (6, 'Foods', 112, 0, 0),
-(7, 'fsdjfsldkf', 111, 0, 0),
-(8, 'sadfsad', 111, 0, 0),
-(9, 'sadfds', 111, 0, 0),
-(10, 'faa', 12, 0, 0),
+(7, 'fsdjfsldkf', 111, 0, 1),
+(8, 'sadfsad', 111, 0, 1),
+(9, 'sadfds', 111, 0, 1),
+(10, 'faa', 12, 0, 1),
 (11, 'bn', 222, 0, 1),
 (12, 'lumpia', 300, 0, 0),
-(13, 'cho', 109, 0, 0),
+(13, 'Lechon', 250, 0, 0),
 (14, 'aaa', 111, 0, 1),
-(15, 'bb', 111, 0, 0),
+(15, 'bb', 111, 0, 1),
 (16, 'ccc', 222, 0, 1),
 (17, 'abc', 123, 0, 1),
 (18, 'aaaa', 123, 0, 1),
-(19, 'aa', 22, 0, 0),
+(19, 'aa', 22, 0, 1),
 (20, 'a', 1, 0, 1),
 (21, 'a', 1, 0, 1),
 (22, 'aaaa', 11111, 0, 1),
-(23, '11111', 55555, 0, 0),
+(23, '11111', 55555, 0, 1),
 (24, 'a', 123, 0, 1),
 (25, 'a', 123, 0, 1),
-(26, 'a', 54321, 0, 0),
-(27, 'zoo', 200, 0, 0),
-(28, 'zoo', 200, 0, 0),
+(26, 'a', 54321, 0, 1),
+(27, 'zoo', 200, 0, 1),
+(28, 'zoo', 200, 0, 1),
 (29, 'zoo', 199, 0, 1),
-(30, 'zoo', 199, 0, 0),
-(31, '123', 123, 0, 1);
+(30, 'zoo', 199, 0, 1),
+(31, '123', 123, 0, 1),
+(32, 'Yummy food', 120, 0, 1),
+(33, 'Fried Chicken (4 pc)', 280, 5, 0);
 
 -- --------------------------------------------------------
 
@@ -162,9 +165,25 @@ CREATE TABLE `item_log` (
 --
 
 INSERT INTO `item_log` (`item_log_id`, `log_timestamp`, `log_action`, `log_description`, `employee_id`, `item_id`) VALUES
-(1, '2018-09-16 13:10:47', 'Create', '', 1, 1),
 (3, '2018-09-16 21:22:13', 'Delete', '', 1, 17),
-(5, '2018-09-16 21:27:17', 'Delete', '', 1, 31);
+(5, '2018-09-16 21:27:17', 'Delete', '', 1, 31),
+(6, '2018-09-22 16:37:40', 'Delete', NULL, 1, 23),
+(7, '2018-09-22 16:37:44', 'Delete', NULL, 1, 26),
+(8, '2018-09-22 16:37:50', 'Delete', NULL, 1, 7),
+(9, '2018-09-22 16:37:57', 'Delete', NULL, 1, 9),
+(10, '2018-09-22 16:38:02', 'Delete', NULL, 1, 27),
+(11, '2018-09-22 16:38:07', 'Delete', NULL, 1, 28),
+(12, '2018-09-22 16:38:10', 'Delete', NULL, 1, 8),
+(13, '2018-09-22 16:38:17', 'Delete', NULL, 1, 10),
+(14, '2018-09-22 16:38:24', 'Delete', NULL, 1, 15),
+(15, '2018-09-22 16:38:27', 'Delete', NULL, 1, 19),
+(16, '2018-09-23 14:53:03', 'Update', 'Item was manually updated', 1, 1),
+(17, '2018-09-23 14:54:08', 'Create', 'Item was Created', 1, 1),
+(18, '2018-09-23 14:58:54', 'Update', 'Item was manually updated', 1, 13),
+(19, '2018-09-23 14:59:44', 'Update', 'Item was manually updated', 1, 32),
+(20, '2018-09-23 15:00:13', 'Update', 'Item was manually updated', 1, 32),
+(21, '2018-09-23 15:11:11', 'Delete', NULL, 1, 32),
+(24, '2018-09-23 15:13:53', 'Delete', 'Item was deleted', 1, 30);
 
 -- --------------------------------------------------------
 
@@ -257,7 +276,7 @@ ALTER TABLE `expense`
 -- AUTO_INCREMENT for table `item`
 --
 ALTER TABLE `item`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 --
 -- AUTO_INCREMENT for table `item_line`
 --
@@ -267,7 +286,7 @@ ALTER TABLE `item_line`
 -- AUTO_INCREMENT for table `item_log`
 --
 ALTER TABLE `item_log`
-  MODIFY `item_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `item_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 --
 -- AUTO_INCREMENT for table `stock_transaction`
 --
