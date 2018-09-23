@@ -20,17 +20,19 @@ if(!$name || !$price){
     
     if($stmt->execute()){
       //Insert Item Log
-      $sql2    = "INSERT into `item_log` (`log_action`, `item_id`, `employee_id`) values (?, ?, ?)  ";
+      $sql2    = "INSERT into `item_log` (`log_action`, `log_description`, `item_id`, `employee_id`) values (?, ?, ?, ?)  ";
+  
+        $stmt2   = $conn->prepare($sql2);
+  
+        $action = 'Create';
+        $item_id = 1; //Latest inserted item id//
+        $employee_id = 1; //Session value//
+        $desc = 'Item was Created';
 
-      $stmt2   = $conn->prepare($sql2);
-
-      $action = 'Create';
-      $item_id = 1; //Latest inserted item id//
-      $employee_id = 1; //Session value//
-      $stmt2->bind_param('sss', $action, $item_id, $employee_id);
-      if($stmt2->execute()){
-          $result = 1;
-      }
+        $stmt2->bind_param('ssss', $action, $desc, $item_id, $employee_id);
+        if($stmt2->execute()){
+            $result = 1;
+        }
     }
 }
 

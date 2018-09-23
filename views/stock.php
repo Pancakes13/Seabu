@@ -5,44 +5,39 @@ require ("../panelheader.php");
     
 
         <div class="content mt-3">
-            <div class="animated fadeIn">
-                <div class="row">
-                
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <strong class="card-title">Items in Stock</strong>
-                            <button type="button" class="btn btn-success" 
-                              style="float:right;" data-toggle="modal" data-target="#addModal"
-                              >
-                              Add Item <i class="fa fa-plus"></i>
-                            </button>
-                            <!--
-                            <button type="button" class="btn btn-primary" 
-                              style="float:right; margin-right:1%;" data-toggle="modal" data-target="#stockModal"
-                              >
-                              Stock <i class="fa fa-archive"></i>
-                            </button>-->
-                        </div>
-                        <div id="itemTable" class="card-body">
-                        <table id="bootstrap-data-table" class="table table-striped table-bordered"><thead>
-                            <tr>
-                            <th>Item Name</th>
-                            <th>Price (Php)</th>
-                            <th>Current Stock (Pcs/Kg)</th>
-                            <th style="width:10%;">Action</th>
-                            </tr>
-                        
-                        </table>
-                    
-                        </div>
-                    </div>
+          <div class="animated fadeIn">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-header">
+                    <strong class="card-title">Items in Stock</strong>
+                    <button type="button" class="btn btn-success" 
+                    style="float:right;" data-toggle="modal" data-target="#addModal"
+                    >
+                      Add Item <i class="fa fa-plus"></i>
+                    </button>
+                    <!--
+                      <button type="button" class="btn btn-primary" 
+                      style="float:right; margin-right:1%;" data-toggle="modal" data-target="#stockModal"
+                      >
+                        Stock <i class="fa fa-archive"></i>
+                      </button>-->
+                  </div>
+                  <div id="itemTable" class="card-body">
+                    <table id="bootstrap-data-table" class="table table-striped table-bordered"><thead>
+                      <tr>
+                        <th>Item Name</th>
+                        <th>Price (Php)</th>
+                        <th>Current Stock (Pcs/Kg)</th>
+                        <th style="width:10%;">Action</th>
+                      </tr>
+                    </table>
+                  </div>
                 </div>
-
-
-                </div>
-            </div><!-- .animated -->
-        </div><!-- .content -->
+              </div>
+            </div>
+          </div>
+        </div>
 
         <!--Stock Modal-->
         <!--
@@ -108,7 +103,7 @@ require ("../panelheader.php");
         <!--END OF Add Modal-->
 
         <!--Edit Modal-->
-        <div class="modal fade" id="editModal" aria-hidden="true">
+        <div id="editModal" class="modal fade" aria-hidden="true">
           <form>
             <div class="modal-dialog modal-lg" role="document">
               <div class="modal-content">
@@ -119,26 +114,29 @@ require ("../panelheader.php");
                   </button>
                 </div>
                 <div class="modal-body">
+                <input id="modelId" type="text" class="form-control" hidden>
                   <div class="form-group">
                     <label>Item Name</label>
-                    <input type="text" class="form-control">
+                    <input id="modelName" type="text" class="form-control">
                   </div>
                   <div class="row">
                     <div class="col-6">
                       <div class="form-group">
                         <label for="price" class="control-label mb-1">Price</label>
-                        <input class="form-control price" >
+                        <input id="modelPrice" class="form-control price" type="number">
                       </div>
                     </div>
                     <div class="col-6">
-                      <label for="stock" class="control-label mb-1">Current Stock</label>
-                      <input class="form-control stock">
+                      <div class="form-group">
+                        <label for="stock" class="control-label mb-1">Current Stock</label>
+                        <input id="modelQty" class="form-control stock" type="number">
+                      </div>
                     </div>
                   </div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                  <button type="button" class="btn btn-warning" type="submit">Edit Item</button>
+                  <button id="submitEdit" type="button" class="btn btn-warning" type="submit" data-dismiss="modal">Edit Item</button>
                 </div>
               </div>
             </div>
@@ -172,8 +170,6 @@ require ("../panelheader.php");
         </div>
         <!--END OF Delete Modal-->
 
-    </div><!-- /#right-panel -->
-
     <!-- Right Panel -->
 <script>
 var myTable = "";
@@ -182,23 +178,23 @@ $(document).ready(function(){
   PopulateItemsTable();
 });
 function PopulateItemsTable() {
-  $.ajax({
+    $.ajax({
       method: "GET", url: "../queries/get/getItems.php", 
     }).done(function( data ) {
       var jsonObject = JSON.parse(data);
-                var result = jsonObject.map(function (item) {
-                    var result = [];
-                    result.push(item.name);
-                    result.push(item.price);
-                    result.push(item.qty);
-                    result.push('<button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i></button>'
-                          +'<button type="button" class="btn btn-danger btn-sm delBtn" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" ><i class="fa fa-trash"></i></button>'
-                          +'<a href="item_logs.php?item_id='+item.item_id+'&item_name='+item.name+'"><button type="button" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></button></a>');
-                    return result;
-                });
-                myTable.rows.add(result);
-                myTable.draw();
-        });
+      var result = jsonObject.map(function (item) {
+        var result = [];
+        result.push(item.name);
+        result.push(item.price);
+        result.push(item.qty);
+        result.push('<button type="button" class="btn btn-warning btn-sm editBtn" data-toggle="modal" data-target="#editModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-price="'+item.price+'" data-qty="'+item.qty+'"><i class="fa fa-edit"></i></button>'
+          +'<button type="button" class="btn btn-danger btn-sm delBtn" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" ><i class="fa fa-trash"></i></button>'
+          +'<a href="item_logs.php?item_id='+item.item_id+'&item_name='+item.name+'"><button type="button" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></button></a>');
+        return result;
+      });
+      myTable.rows.add(result);
+      myTable.draw();
+    });
 }
 $("#addBtn").on('click', function(){ 
             var name  = $("#name").val();
@@ -284,6 +280,44 @@ $("#addBtn").on('click', function(){
           })
         });
 
+        $(document).on('click', '#itemTable .editBtn', function(){ 
+          var id  = $(this).data("itemid");
+          var name  = $(this).data("itemname");
+          var price  = $(this).data("price");
+          var qty  = $(this).data("qty");
+          
+          $("#modelId").val(id);
+          $("#modelName").val(name);
+          $("#modelPrice.price").val(price);
+          $("#modelQty.stock").val(qty);
+        });
+
+        $(document).on('click', '#submitEdit', function(){
+          var id = $("#modelId").val();
+          var name  = $("#modelName").val();
+          var price  = $("#modelPrice.price").val();
+          var qty = $("#modelQty.stock").val();
+
+            $.ajax({ 
+
+              method: "POST",
+              url: "../queries/update/updateItem.php",
+
+              data: {"id": id, "name": name, "price": price, "qty": qty},
+
+             }).done(function( data ) { 
+                var result = $.parseJSON(data); 
+    
+              myTable.clear();
+              PopulateItemsTable();
+              swal(
+                  'Success!',
+                  'You have updated an item!',
+                  'success'
+                )
+              });
+              
+        });
 </script>
 
 <?php
