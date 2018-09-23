@@ -19,6 +19,7 @@ require ("../panelheader.php");
                                 <table id="bootstrap-data-table" class="table table-striped table-bordered"><thead>
                                     <tr>
                                         <th>Action</th>
+                                        <th>Description</th>
                                         <th>Timestamp</th>
                                         <th>Performed By</th>
                                     </tr>
@@ -48,6 +49,7 @@ function PopulateItemLogTable() {
         var result = jsonObject.map(function (item) {
             var result = [];
             result.push(item.log_action);
+            result.push(item.log_description);
             result.push(item.log_timestamp);  
             result.push(item.first_name+" "+item.last_name);
             return result;
