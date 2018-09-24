@@ -47,6 +47,10 @@
                     <li>
                         <a href="expenses.php"> <i class="menu-icon fa fa-money"></i>Expenses</a>
                     </li>
+
+                    <li>
+                        <a href="employee.php"> <i class="menu-icon fa fa-group"></i>Employee</a>
+                    </li>
                     
 
                     <!--
