@@ -99,26 +99,32 @@ require ("../panelheader.php");
                   </button>
                 </div>
                 <div class="modal-body">
-                <input id="modelId" type="text" class="form-control" hidden>
-                  <div class="form-group">
-                    <label>Item Name</label>
-                    <input id="modelName" type="text" class="form-control">
-                  </div>
-                  <div class="row">
-                    <div class="col-6">
-                      <div class="form-group">
-                        <label for="price" class="control-label mb-1">Price</label>
-                        <input id="modelPrice" class="form-control price" type="number">
-                      </div>
+                    <input id="modelId" type="text" class="form-control" hidden>
+                    <div class="form-group">
+                      <label>First Name</label>
+                      <input type="text" class="form-control" id="model_fn">
                     </div>
-                    <div class="col-6">
-                      <div class="form-group">
-                        <label for="stock" class="control-label mb-1">Current Stock</label>
-                        <input id="modelQty" class="form-control stock" type="number">
-                      </div>
+                    <div class="form-group">
+                      <label>Middle Name</label>
+                      <input type="text" class="form-control" id="model_mn">
+                    </div>
+                    <div class="form-group">
+                      <label>Last Name</label>
+                      <input type="text" class="form-control" id="model_ln">
+                    </div>
+                    <div class="form-group">
+                      <label>Email</label>
+                      <input type="email" class="form-control" id="model_email">
+                    </div>
+                    <div class="form-group">
+                      <label>Contact Number</label>
+                      <input type="text" class="form-control" id="model_contact_no">
+                    </div>
+                    <div class="form-group">
+                      <label>Birthdate</label>
+                      <input type="date" class="form-control" id="model_birthdate">
                     </div>
                   </div>
-                </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                   <button id="submitEdit" type="button" class="btn btn-warning" type="submit" data-dismiss="modal">Edit Employee</button>
@@ -175,7 +181,11 @@ function PopulateItemsTable() {
         result.push(item.email);
         result.push(item.contact_no);
         result.push(item.birthdate);
-        result.push('<button type="button" class="btn btn-warning btn-sm editBtn" data-toggle="modal" data-target="#editModal" data-employee_id="'+item.employee_id+'" data-employee_username="'+item.username+'" data-last_name="'+item.last_name+'" data-first_name="'+item.first_name+' data-middle_name="'+item.middle_name+' data-email="'+item.email+' data-contact_no="'+item.contact_no+' data-birthdate="'+item.birthdate+'"><i class="fa fa-edit"></i></button>'
+        result.push('<button type="button" class="btn btn-warning btn-sm editBtn" data-toggle="modal" data-target="#editModal"'
+        +'data-employee_id="'+item.employee_id+'" data-last_name="'+item.last_name+'"'
+        +'data-first_name="'+item.first_name+'" data-middle_name="'+item.middle_name+'"'
+        +'data-email="'+item.email+'" data-contact_no="'+item.contact_no+'" data-birthdate="'+item.birthdate+'">'
+        +'<i class="fa fa-edit"></i></button>'
           +'<button type="button" class="btn btn-danger btn-sm delBtn" data-employee_id="'+item.employee_id+'" data-employee_username="'+item.username+'" ><i class="fa fa-trash"></i></button>'
           +'<a href="employee_logs.php?employee_id='+item.employee_id+'&employee_username='+item.username+'"><button type="button" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></button></a>');
         return result;
@@ -264,30 +274,40 @@ $("#addBtn").on('click', function(){
           })
         });
 
-        $(document).on('click', '#itemTable .editBtn', function(){ 
-          var id  = $(this).data("itemid");
-          var name  = $(this).data("itemname");
-          var price  = $(this).data("price");
-          var qty  = $(this).data("qty");
+        $(document).on('click', '#itemTable .editBtn', function(){
+          var id  = $(this).data("employee_id");
+          var ln  = $(this).data("last_name");
+          var mn  = $(this).data("middle_name");
+          var fn  = $(this).data("first_name");
+          var email  = $(this).data("email");
+          var num  = $(this).data("contact_no");
+          var birthdate  = $(this).data("birthdate");
+          
           
           $("#modelId").val(id);
-          $("#modelName").val(name);
-          $("#modelPrice.price").val(price);
-          $("#modelQty.stock").val(qty);
+          $("#model_ln").val(ln);
+          $("#model_mn").val(mn);
+          $("#model_fn").val(fn);
+          $("#model_email").val(email);
+          $("#model_contact_no").val(num);
+          $("#model_birthdate").val(birthdate);
         });
 
         $(document).on('click', '#submitEdit', function(){
-          var id = $("#modelId").val();
-          var name  = $("#modelName").val();
-          var price  = $("#modelPrice.price").val();
-          var qty = $("#modelQty.stock").val();
+          var id  = $("#modelId").val();
+          var ln  = $("#model_ln").val();
+          var mn  = $("#model_mn").val();
+          var fn  = $("#model_fn").val();
+          var email  = $("#model_email").val();
+          var num  = $("#model_contact_no").val();
+          var birthdate  = $("#model_birthdate").val();
 
             $.ajax({ 
 
               method: "POST",
-              url: "../queries/update/updateItem.php",
+              url: "../queries/update/updateEmployee.php",
 
-              data: {"id": id, "name": name, "price": price, "qty": qty},
+              data: {"id": id, "first_name": fn, "middle_name": mn, "last_name": ln, "email": email, "num": num, "birthdate": birthdate},
 
              }).done(function( data ) { 
                 var result = $.parseJSON(data); 

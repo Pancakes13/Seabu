@@ -26,13 +26,13 @@ if(!$id){
 
     if($stmt->execute()){
         //Insert Item Log
-        $sql2    = "INSERT into `employee_log` (`action`, `log_description`, `employee_id`, `employee_id`) values (?, ?, ?, ?)  ";
+        $sql2    = "INSERT into `employee_log` (`action`, `log_description`, `employee_id`, `performed_by`) values (?, ?, ?, ?)  ";
   
         $stmt2   = $conn->prepare($sql2);
   
         $action = 'Update';
         $employee_id = 1; //Session value//
-        $desc = 'Item was manually updated';
+        $desc = 'Employee was manually updated';
 
         $stmt2->bind_param('ssss', $action, $desc, $id, $employee_id);
         if($stmt2->execute()){
