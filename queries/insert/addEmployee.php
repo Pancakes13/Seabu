@@ -24,7 +24,7 @@ if(!$username || !$fn || !$mn || !$ln || !$email || !$num || !$bday){
     
     if($stmt->execute()){
       //Insert Item Log
-      $empId = 1; //Last inserted emp
+      $empId = $conn->insert_id;
       $pId = 1; //SESSION
       $sql2    = "INSERT into `employee_log` (`action`, `log_description`, `employee_id`, `performed_by`) values (?, ?, ?, ?)  ";
   
