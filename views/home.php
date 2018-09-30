@@ -29,61 +29,17 @@ require ("../panelheader.php");
                             </button>
                           </div>
                           <div class="card-body">
-                              <table class="table">
-                                <thead>
-                                  <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Item Name</th>
-                                    <th scope="col">Price (Php)</th>
-                                    <th scope="col">Served</th>
-                                    <th scope="col">Gross Profit (Php)</th>
+                            <form id="dailyTally">
+                              <table id="tallyTable" class="table">
+                                <tr>
+                                  <th>Item Name</th>
+                                  <th>Price (Php)</th>
+                                  <th>Qty</th>
+                                  <th>Type</th>
+                                  <th style="text-align:right;">Subtotal</th>
                                 </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <th scope="row">1</th>
-                                <td>Cheezy Scallops</td>
-                                <td>140</td>
-                                <td>4</td>
-                                <td>560</td>
-                              </tr>
-                              <tr>
-                                <th scope="row">2</th>
-                                <td>Seafood Sisig</td>
-                                <td>120</td>
-                                <td>3</td>
-                                <td>360</td>
-                              </tr>
-                              <tr>
-                                <th scope="row">3</th>
-                                <td>Crablets</td>
-                                <td>80</td>
-                                <td>5</td>
-                                <td>400</td>
-                              </tr>
-                              <tr>
-                                <th scope="row">4</th>
-                                <td>Cheezy Scallops</td>
-                                <td>150</td>
-                                <td>1</td>
-                                <td>150</td>
-                              </tr>
-                              <tr>
-                                <th scope="row">5</th>
-                                <td>Squid Small</td>
-                                <td>110</td>
-                                <td>0</td>
-                                <td>0</td>
-                              </tr>
-                              <tr>
-                                <th scope="row">TOTAL</th>
-                                <td></td>
-                                <td></td>
-                                <td>13</td>
-                                <td>1470</td>
-                              </tr>
-                        </tbody>
-                    </table>
+                              </table>
+                            </form>
                           </div>
                       </div>
                   
@@ -97,7 +53,87 @@ require ("../panelheader.php");
     </div><!-- /#right-panel -->
 
     <!-- Right Panel -->
+    <script>
+var myTable = "";
+$(document).ready(function(){
+  myTable = $('#tallyTable');
+  PopulateTallyTable();
+  $('#dailyTally').submit(function(e) {
+    e.preventDefault(); 
+    $.ajax({
+      type: "POST",
+      url: "../queries/insert/addDailyTally.php",
+      data: $(this).serialize(),
+    }).done(function( data ) {
+      swal(
+                  'Success!',
+                  'You have submitted the daily tally!',
+                  'success'
+                )
+      PopulateTallyTable();
+    })
+  }); 
+});
 
+function getDailyTally() {
+    $.ajax({
+      method: "GET", url: "../queries/get/getItems.php", 
+    }).done(function( data ) {
+      var jsonObject = JSON.parse(data);
+                var result = jsonObject.map(function (item) {
+                    var result = [];
+                    myTable.append('<tr><td style="width:40%;">'+item.name+' <input name="item[]" value="'+item.item_id+'" hidden></td>'
+                    +'<td style="width:20%;"><input id="price" name="price[]" class="form-control" type="number" value="'+item.price+'" readonly="true"></td>'
+                    +'<td style="width:10%;"><input id="qty" name="qty[]" class="form-control" type="number" value="'+item.qty+'"></td>'
+                    +'<td> <select name="type[]" class="form-control">'
+                    +'<option value="local">Local</option>'
+                    +'<option value="honestbee">Honestbee</option>'
+                    +'</select></td>'
+                    +'<td id="subTotal" style="width:10%; text-align:right;">'+item.price*item.qty+'</td></tr>');
+                    
+                });
+                myTable.append('<tr><td></td><td></td><td></td><td><strong>TOTAL</strong><td id="totalValue"></td></tr>');
+                myTable.append('<tr><td></td><td></td><td></td><td><td><button class="btn btn-success" type="submit">Submit Daily Tally</button></td></tr>');
+        });
+        $(document).on('change', "#qty",function () {
+          
+          var toValidate = parseInt($("#qty").val());
+          var price = parseInt($("#price").val());
+          $("#subTotal").html(toValidate*price);
+      });
+}
+
+function PopulateTallyTable() {
+    $.ajax({
+      method: "GET", url: "../queries/get/getItems.php", 
+    }).done(function( data ) {
+      var jsonObject = JSON.parse(data);
+                var result = jsonObject.map(function (item) {
+                    var result = [];
+                    myTable.append('<tr><td style="width:40%;">'+item.name+' <input name="item[]" value="'+item.item_id+'" hidden></td>'
+                    +'<td style="width:20%;"><input name="price[]" class="price form-control" type="number" value="'+item.price+'" readonly="true"></td>'
+                    +'<td style="width:10%;"><input name="qty[]" class="qty form-control" type="number" value="0"></td>'
+                    +'<td> <select name="type[]" class="form-control">'
+                    +'<option value="local">Local</option>'
+                    +'<option value="honestbee">Honestbee</option>'
+                    +'</select></td>'
+                    +'<td style="width:10%;"><input class="subTotal form-control" type="number" value="0" readonly="true"></td></tr>');
+                    
+                });
+                myTable.append('<tr><td></td><td></td><td></td><td id="total"><strong>TOTAL</strong><td id="totalValue"></td></tr>');
+                myTable.append('<tr><td></td><td></td><td></td><td><td><button class="btn btn-success" type="submit">Submit Daily Tally</button></td></tr>');
+        });
+        /*
+        $(document).on('change', ".qty",function () {
+          var test1 = $(this).closest(".qty").val();
+alert(test1);
+          var toValidate = parseInt($("input.qty.form-control").val());
+          var price = parseInt($("input.price.form-control").val());
+          $("td").closest("input.subTotal.form-control").val(toValidate*price);
+      });*/
+}
+
+</script>
 <?php
 require ("../footer.php");
 ?>
