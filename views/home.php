@@ -53,7 +53,7 @@ require ("../panelheader.php");
     </div><!-- /#right-panel -->
 
     <!-- Right Panel -->
-    <script>
+<script>
 var myTable = "";
 $(document).ready(function(){
   myTable = $('#tallyTable');
@@ -65,13 +65,13 @@ $(document).ready(function(){
       url: "../queries/insert/addDailyTally.php",
       data: $(this).serialize(),
     }).done(function( data ) {
-      swal(
-                  'Success!',
-                  'You have submitted the daily tally!',
-                  'success'
-                )
-      myTable.clear();
+      $('#tallyTable tr').remove();
       PopulateTallyTable();
+      swal(
+        'Success!',
+        'You have submitted the daily tally!',
+        'success'
+      )
     })
   }); 
 });
@@ -90,12 +90,16 @@ function PopulateTallyTable() {
         +'<td style="width:20%;"><input name="price[]" class="price form-control" type="number" value="'+item.price+'" readonly="true"></td>'
         +'<td style="width:10%;"><input class="qty form-control" type="number" value="'+item.qty+'" readonly></td>'
         +'<td><input class="qty form-control" type="text" value="'+item.item_line_type+'" readonly></td>'
-        +'<td class="subTotal" style="width:10%;">0</td></tr>');
+        +'<td class="subTotal" style="width:10%;">'+item.price*item.qty+'</td></tr>');
     });
     myTable.append('<tr><td></td><td></td><td></td><td id="total"><strong>TOTAL</strong><td id="totalValue">0</td></tr>');
-    myTable.append('<tr><td></td><td></td><td></td><td><td><button class="btn btn-success" type="submit">Submit Daily Tally</button></td></tr>');
     //CHANGE SUBTOTAL AND TOTAL//
-    
+    var total = 0;
+    $("tr.item").each(function() {
+      $this = $(this);
+      total += parseInt($this.find(".subTotal").html());
+    });
+    $("#totalValue").html(total);
     }else{
       $.ajax({
       method: "GET", url: "../queries/get/getItems.php", 
