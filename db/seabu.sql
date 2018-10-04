@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 23, 2018 at 12:25 PM
+-- Generation Time: Oct 04, 2018 at 11:40 PM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.5.38
 
@@ -35,8 +35,7 @@ CREATE TABLE `employee` (
   `pass` text NOT NULL,
   `email` varchar(50) DEFAULT NULL,
   `contact_no` varchar(11) DEFAULT NULL,
-  `birthdate` datetime NOT NULL,
-  `picture` blob,
+  `birthdate` date NOT NULL,
   `isDeleted` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -44,8 +43,10 @@ CREATE TABLE `employee` (
 -- Dumping data for table `employee`
 --
 
-INSERT INTO `employee` (`employee_id`, `username`, `first_name`, `last_name`, `middle_name`, `pass`, `email`, `contact_no`, `birthdate`, `picture`, `isDeleted`) VALUES
-(1, 'neily', 'neil', 'llenes', 'diaz', '123', 'nllenes@gmail.com', NULL, '1997-11-13 00:00:00', NULL, 0);
+INSERT INTO `employee` (`employee_id`, `username`, `first_name`, `last_name`, `middle_name`, `pass`, `email`, `contact_no`, `birthdate`, `isDeleted`) VALUES
+(1, 'neily', 'neil', 'llenes', 'diaz', '123', 'nllenes@gmail.com', '09111111111', '1997-11-13', 0),
+(2, 'sammyj', 'Samuel', 'Jones', 'James', '123', 'samjones@gmail.com', '09991234567', '1990-09-13', 0),
+(3, 'sadfsad', 'sadfsadf', 'sdafsad', 'sadfasdf', '123', 'sdafsf@gmail.com', 'kejfwlf', '1111-11-11', 1);
 
 -- --------------------------------------------------------
 
@@ -55,12 +56,23 @@ INSERT INTO `employee` (`employee_id`, `username`, `first_name`, `last_name`, `m
 
 CREATE TABLE `employee_log` (
   `employee_log_id` int(11) NOT NULL,
-  `action` enum('"create"','"update"','"delete"','') NOT NULL,
+  `action` enum('Create','Update','Delete','') NOT NULL,
   `log_description` varchar(254) NOT NULL,
   `log_timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `employee_id` int(11) DEFAULT NULL,
   `performed_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `employee_log`
+--
+
+INSERT INTO `employee_log` (`employee_log_id`, `action`, `log_description`, `log_timestamp`, `employee_id`, `performed_by`) VALUES
+(1, 'Create', 'Employee was Created', '2018-09-24 22:32:01', 1, 1),
+(2, 'Create', 'Employee was Created', '2018-09-24 22:37:53', 1, 1),
+(3, 'Delete', 'Employee was deleted', '2018-09-24 22:40:12', 3, 1),
+(4, 'Update', 'Employee was manually updated', '2018-09-25 22:59:29', 2, 1),
+(5, 'Update', 'Employee was manually updated', '2018-09-25 23:01:43', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -76,6 +88,14 @@ CREATE TABLE `expense` (
   `expense_timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `employee_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `expense`
+--
+
+INSERT INTO `expense` (`expense_id`, `name`, `description`, `price`, `expense_timestamp`, `employee_id`) VALUES
+(3, 'Electricity Bill', 'Paid Electricity Bill for September 2018', 8750, '2018-09-23 18:46:21', 1),
+(4, 'Water Bill', 'Paid water bill for the month', 3420, '2018-09-23 19:04:20', 1);
 
 -- --------------------------------------------------------
 
@@ -97,7 +117,7 @@ CREATE TABLE `item` (
 
 INSERT INTO `item` (`item_id`, `name`, `price`, `qty`, `isDeleted`) VALUES
 (1, 'Cheezy Scallop', 175, 0, 0),
-(2, 'Crab', 120, 0, 0),
+(2, '', 0, 0, 1),
 (3, 'Lobster', 175, 0, 0),
 (4, 'Shrimp', 150, 0, 0),
 (5, 'Calamares', 230, 0, 0),
@@ -128,7 +148,8 @@ INSERT INTO `item` (`item_id`, `name`, `price`, `qty`, `isDeleted`) VALUES
 (30, 'zoo', 199, 0, 1),
 (31, '123', 123, 0, 1),
 (32, 'Yummy food', 120, 0, 1),
-(33, 'Fried Chicken (4 pc)', 280, 5, 0);
+(33, 'Fried Chicken (4 pc)', 280, 5, 0),
+(34, 'Nachos', 234, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -140,10 +161,34 @@ CREATE TABLE `item_line` (
   `item_line_id` int(11) NOT NULL,
   `price` float NOT NULL,
   `qty` int(11) NOT NULL,
-  `item_line_type` enum('"local"','"honestbee"','','') NOT NULL,
+  `item_line_type` enum('local','honestbee') NOT NULL,
   `stock_transaction_id` int(11) DEFAULT NULL,
   `item_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `item_line`
+--
+
+INSERT INTO `item_line` (`item_line_id`, `price`, `qty`, `item_line_type`, `stock_transaction_id`, `item_id`) VALUES
+(13, 175, 4, 'local', 13, 1),
+(14, 280, 5, 'local', 13, 33),
+(15, 175, 5, 'local', 14, 1),
+(16, 175, 3, 'local', 14, 3),
+(17, 112, 2, 'local', 14, 6),
+(18, 175, 2, 'local', 15, 1),
+(19, 175, 2, 'honestbee', 16, 1),
+(20, 150, 1, 'local', 16, 4),
+(21, 230, 1, 'local', 16, 5),
+(22, 112, 1, 'local', 16, 6),
+(23, 234, 1, 'local', 16, 34),
+(26, 150, 1, 'local', 18, 4),
+(27, 112, 2, 'honestbee', 18, 6),
+(35, 175, 2, 'honestbee', 22, 1),
+(36, 150, 1, 'local', 22, 4),
+(37, 300, 1, 'honestbee', 22, 12),
+(38, 280, 1, 'honestbee', 22, 33),
+(39, 234, 1, 'local', 22, 34);
 
 -- --------------------------------------------------------
 
@@ -183,7 +228,10 @@ INSERT INTO `item_log` (`item_log_id`, `log_timestamp`, `log_action`, `log_descr
 (19, '2018-09-23 14:59:44', 'Update', 'Item was manually updated', 1, 32),
 (20, '2018-09-23 15:00:13', 'Update', 'Item was manually updated', 1, 32),
 (21, '2018-09-23 15:11:11', 'Delete', NULL, 1, 32),
-(24, '2018-09-23 15:13:53', 'Delete', 'Item was deleted', 1, 30);
+(24, '2018-09-23 15:13:53', 'Delete', 'Item was deleted', 1, 30),
+(25, '2018-09-24 22:35:40', 'Delete', 'Item was deleted', 1, 2),
+(26, '2018-09-25 22:57:05', 'Update', 'Item was manually updated', 1, 2),
+(27, '2018-09-25 23:05:17', 'Create', 'Item was Created', 1, 34);
 
 -- --------------------------------------------------------
 
@@ -193,10 +241,22 @@ INSERT INTO `item_log` (`item_log_id`, `log_timestamp`, `log_action`, `log_descr
 
 CREATE TABLE `stock_transaction` (
   `stock_transaction_id` int(11) NOT NULL,
-  `transaction_timestamp` datetime DEFAULT NULL,
+  `transaction_timestamp` datetime DEFAULT CURRENT_TIMESTAMP,
   `type` enum('Restock','Sold','Damaged') NOT NULL,
   `employee_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `stock_transaction`
+--
+
+INSERT INTO `stock_transaction` (`stock_transaction_id`, `transaction_timestamp`, `type`, `employee_id`) VALUES
+(13, '2018-09-30 20:05:42', 'Sold', 1),
+(14, '2018-09-30 21:11:23', 'Sold', 1),
+(15, '2018-09-30 21:12:59', 'Sold', 1),
+(16, '2018-10-02 22:28:02', 'Sold', 1),
+(18, '2018-10-03 21:58:55', 'Sold', 1),
+(22, '2018-10-04 21:49:46', 'Sold', 1);
 
 --
 -- Indexes for dumped tables
@@ -261,37 +321,37 @@ ALTER TABLE `stock_transaction`
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `employee_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `employee_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `employee_log`
 --
 ALTER TABLE `employee_log`
-  MODIFY `employee_log_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `employee_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `expense`
 --
 ALTER TABLE `expense`
-  MODIFY `expense_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `expense_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `item`
 --
 ALTER TABLE `item`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 --
 -- AUTO_INCREMENT for table `item_line`
 --
 ALTER TABLE `item_line`
-  MODIFY `item_line_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `item_line_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 --
 -- AUTO_INCREMENT for table `item_log`
 --
 ALTER TABLE `item_log`
-  MODIFY `item_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `item_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 --
 -- AUTO_INCREMENT for table `stock_transaction`
 --
 ALTER TABLE `stock_transaction`
-  MODIFY `stock_transaction_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `stock_transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
 -- Constraints for dumped tables
 --
