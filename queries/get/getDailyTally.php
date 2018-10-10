@@ -1,6 +1,6 @@
 <?php
 require("../../connection.php");
-$result = $conn->query("SELECT `i`.`item_id`, `i`.`name`, `il`.`price`, `il`.`qty`, `il`.`item_line_type`,
+$result = $conn->query("SELECT `i`.`item_id`, `i`.`name`, `i`.`qty` AS 'item_qty', `il`.`price`, `il`.`qty`, `il`.`item_line_type`,
                     `s`.`transaction_timestamp`, `s`.`type`
                     FROM `stock_transaction` `s` 
                     INNER JOIN `item_line` `il`

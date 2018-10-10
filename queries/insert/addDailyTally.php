@@ -32,7 +32,17 @@ if(!$stock_type || !$emp_id){
         
             $stmt2->bind_param('sssss', $price[$x], $qty[$x], $type[$x], $id, $item[$x]);
             if($stmt2->execute()){
+              
+              $sql3 = "UPDATE `item` 
+              SET `qty` = (`qty` - ?)
+              WHERE `item_id` = ?";
+              
+              $stmt3 = $conn->prepare($sql3);
+              $stmt3->bind_param('ss', $qty[$x], $item[$x]);
+              
+              if($stmt3->execute()){
                 $result = 1;
+              }
             }
           }
         }

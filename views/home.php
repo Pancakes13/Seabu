@@ -25,6 +25,7 @@ require ("../panelheader.php");
                 <tr>
                   <th>Item Name</th>
                   <th>Price (Php)</th>
+                  <th>Current Stock (Pcs/Kg)</th>
                   <th>Qty</th>
                   <th>Type</th>
                   <th style="text-align:right;">Subtotal</th>
@@ -75,6 +76,7 @@ function PopulateTallyTable() {
       var result = [];
       myTable.append('<tr class="item"><td style="width:40%;">'+item.name+' <input name="item[]" value="'+item.item_id+'" hidden></td>'
         +'<td style="width:20%;"><input name="price[]" class="price form-control" type="number" value="'+item.price+'" readonly="true"></td>'
+        +'<td><input class="qty form-control" value="'+item.item_qty+'" readonly></td>'
         +'<td style="width:10%;"><input class="qty form-control" type="number" value="'+item.qty+'" readonly></td>'
         +'<td><input class="qty form-control" type="text" value="'+item.item_line_type+'" readonly></td>'
         +'<td class="subTotal" style="width:10%; text-align:right;">'+item.price*item.qty+'</td></tr>');
@@ -99,7 +101,8 @@ function PopulateTallyTable() {
         var result = [];
         myTable.append('<tr class="item"><td style="width:40%;">'+item.name+' <input name="item[]" value="'+item.item_id+'" hidden></td>'
           +'<td style="width:20%;"><input name="price[]" class="price form-control" type="number" value="'+item.price+'" readonly="true"></td>'
-          +'<td style="width:10%;"><input name="qty[]" class="qty form-control" type="number" value="0" min="0"></td>'
+          +'<td><input class="qty form-control" value="'+item.qty+'" readonly></td>'
+          +'<td style="width:10%;"><input name="qty[]" class="qty form-control" type="number" value="0" min="0" max="'+item.qty+'"></td>'
           +'<td> <select name="type[]" class="form-control">'
           +'<option value="local">Local</option>'
           +'<option value="honestbee">Honestbee</option>'
@@ -117,8 +120,8 @@ $(document).on('change', ".qty",function () {
   var numRows = $('#tallyTable tr').length;
   var test1 = $(this).closest(".qty").val();
   var qty = parseInt($(this).closest("td").parent()[0].cells[1].children[0].value);
-  var price = parseInt($(this).closest("td").parent()[0].cells[2].children[0].value);
-  $(this).closest("td").parent()[0].cells[4].innerHTML = qty*price;
+  var price = parseInt($(this).closest("td").parent()[0].cells[3].children[0].value);
+  $(this).closest("td").parent()[0].cells[5].innerHTML = qty*price;
           
   var total = 0;
   $("tr.item").each(function() {

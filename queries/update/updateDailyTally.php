@@ -1,6 +1,7 @@
 <?php
 require("../../connection.php");
 
+$item = $_POST['item'];
 $id = $_POST['stock_transaction_id'];
 $item_line  = $_POST['item_line_id'];
 $qty = $_POST['qty'];
@@ -20,7 +21,15 @@ if(!$id){
             $stmt   = $conn->prepare($sql);
             $stmt->bind_param('sss', $qty[$x], $type[$x], $item_line[$x]);
             if($stmt->execute()){
+              $sql2 = "UPDATE `item` 
+              SET `qty` = (`qty` - ?)
+              WHERE `item_id` = ?";
+              
+              $stmt2 = $conn->prepare($sql2);
+              $stmt2->bind_param('ss', $qty[$x], $item[$x]);
+              if($stmt2->execute()){
                 $result = 1;
+              }
             }
         }
     }
