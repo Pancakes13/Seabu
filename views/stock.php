@@ -16,12 +16,6 @@ require ("../panelheader.php");
                     >
                       Add Item <i class="fa fa-plus"></i>
                     </button>
-                    <!--
-                      <button type="button" class="btn btn-primary" 
-                      style="float:right; margin-right:1%;" data-toggle="modal" data-target="#stockModal"
-                      >
-                        Stock <i class="fa fa-archive"></i>
-                      </button>-->
                   </div>
                   <div id="itemTable" class="card-body">
                     <table id="bootstrap-data-table" class="table table-striped table-bordered"><thead>
@@ -29,7 +23,7 @@ require ("../panelheader.php");
                         <th>Item Name</th>
                         <th>Price (Php)</th>
                         <th>Current Stock (Pcs/Kg)</th>
-                        <th style="width:10%;">Action</th>
+                        <th style="width:12%;">Action</th>
                       </tr>
                     </table>
                   </div>
@@ -40,35 +34,46 @@ require ("../panelheader.php");
         </div>
 
         <!--Stock Modal-->
-        <!--
         <div class="modal fade" id="stockModal" aria-hidden="true">
           <form>
             <div class="modal-dialog modal-lg" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="mediumModalLabel">Add Item</h5>
+                  <h5 class="modal-title" id="mediumModalLabel">Stock Management</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
                 <div class="modal-body">
+                  <input id="modelId" type="text" class="form-control" hidden>
                   <div class="form-group">
-                    <label>Stock Management Type</label>
-                    <input type="text" class="form-control" name="name" id="name">
+                    <label>Item Name</label>
+                    <input id="modelName" type="text" class="form-control" readonly>
                   </div>
                   <div class="form-group">
-                    <label>Qty</label>
-                    <input type="number" class="form-control" name="price" id="price">
+                    <label>Current Stock</label>
+                    <input id="modelStock" type="number" class="form-control" readonly>
+                  </div>
+                  <div class="form-group">
+                    <label>Stock Management Type</label>
+                    <select name="type[]" class="form-control">
+                      <option>Restock</option>
+                      <option>Item Damaged</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Quantity</label>
+                    <input type="text" class="form-control" id="qty">
                   </div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                  <button type="button" class="btn btn-primary" type="submit" id="stockBtn" data-dismiss="modal">Stock</button>
+                  <button type="button" class="btn btn-primary" type="submit" id="submitStock data-dismiss="modal">Manage Stock</button>
                 </div>
               </div>
             </div>
           </form>
-        </div>-->
+        </div>
         <!--END OF Stock Modal-->
 
         <!--Add Modal-->
@@ -189,7 +194,8 @@ function PopulateItemsTable() {
         result.push(item.qty);
         result.push('<button type="button" class="btn btn-warning btn-sm editBtn" data-toggle="modal" data-target="#editModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-price="'+item.price+'" data-qty="'+item.qty+'"><i class="fa fa-edit"></i></button>'
           +'<button type="button" class="btn btn-danger btn-sm delBtn" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" ><i class="fa fa-trash"></i></button>'
-          +'<a href="item_logs.php?item_id='+item.item_id+'&item_name='+item.name+'"><button type="button" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></button></a>');
+          +'<button type="button" class="btn btn-primary btn-sm stockBtn" data-toggle="modal" data-target="#stockModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-qty="'+item.qty+'"><i class="fa fa-archive"></i></button>'
+          +'<a href="item_logs.php?item_id='+item.item_id+'&item_name='+item.name+'"><button type="button" class="btn btn-secondary btn-sm"><i class="fa fa-eye"></i></button></a>');
         return result;
       });
       myTable.rows.add(result);
@@ -278,6 +284,20 @@ $("#addBtn").on('click', function(){
               )
             }
           })
+        });
+
+        $(document).on('click', '#itemTable .stockBtn', function(){ 
+          var id  = $(this).data("itemid");
+          var name  = $(this).data("itemname");
+          var qty  = $(this).data("qty");
+          
+          $("#modelId").val(id);
+          $("#modelName").val(name);
+          $("#modelStock").val(qty);
+        });
+
+        $(document).on('click', '#submitStock', function(){
+          //INSERT CODE//
         });
 
         $(document).on('click', '#itemTable .editBtn', function(){ 
