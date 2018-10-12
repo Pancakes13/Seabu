@@ -56,19 +56,19 @@ require ("../panelheader.php");
                   </div>
                   <div class="form-group">
                     <label>Stock Management Type</label>
-                    <select name="type[]" class="form-control">
-                      <option>Restock</option>
-                      <option>Item Damaged</option>
+                    <select id="modelType" name="type" class="form-control">
+                      <option value="Restock">Restock</option>
+                      <option value="Damaged">Item Damaged</option>
                     </select>
                   </div>
                   <div class="form-group">
                     <label>Quantity</label>
-                    <input type="text" class="form-control" id="qty">
+                    <input id="modelQty" type="text" class="form-control">
                   </div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                  <button type="button" class="btn btn-primary" type="submit" id="submitStock data-dismiss="modal">Manage Stock</button>
+                  <button type="button" class="btn btn-primary" type="submit" id="submitStock" data-dismiss="modal">Manage Stock</button>
                 </div>
               </div>
             </div>
@@ -297,7 +297,27 @@ $("#addBtn").on('click', function(){
         });
 
         $(document).on('click', '#submitStock', function(){
-          //INSERT CODE//
+          var id = $("#modelId").val();
+          var name  = $("#modelName").val();
+          var type  = $("#modelType").val();
+          var qty = $("#modelQty").val();
+          if(type=='Restock'){
+            $.ajax({ 
+              method: "POST",
+              url: "../queries/update/restock.php",
+              data: {"item_id": id, "type": type, "qty": qty},
+            }).done(function( data ) { 
+              var result = $.parseJSON(data); 
+
+              myTable.clear();
+              PopulateItemsTable();
+              swal(
+                  'Success!',
+                  'You have restocked an item!',
+                  'success'
+                )
+            });
+          }
         });
 
         $(document).on('click', '#itemTable .editBtn', function(){ 

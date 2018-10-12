@@ -1,33 +1,45 @@
 <?php
 require("../../connection.php");
+$item_id = $_POST['item_id'];
 $qty  = $_POST['qty'];
+$type = $_POST['type'];
 
-if(!$id){
+echo $item_id;
+if(!$item_id){
   $result = 2;
 }else{
     //Insert Item
     $sql    = "UPDATE `item` 
-    SET `qty` = $qty
+    SET `qty` = `qty`+ ?
     WHERE `item_id` = ?";
 
-    $stmt   = $conn->prepare($sql);
-    $stmt->bind_param('s', $id);
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('ss', $qty, $item_id);
     
     if($stmt->execute()){
-        //Insert Item Log
-        $sql2    = "INSERT into `item_log` (`log_action`, `log_description`, `item_id`, `employee_id`) values (?, ?, ?)  ";
+        
+        $sql2    = "INSERT into `stock_transaction` (`type`, `employee_id`) values (?, ?)";
   
         $stmt2   = $conn->prepare($sql2);
   
-        $action = 'Update';
-        $item_id = 1; //Latest inserted item id//
         $employee_id = 1; //Session value//
         $desc = 'Item was restocked';
-        $stmt2->bind_param('ssss', $action, $desc, $item_id, $employee_id);
+        $stmt2->bind_param('ss', $type, $employee_id);
         if($stmt2->execute()){
-            $result = 1;
+            $id = $conn->insert_id;
+            $price = 0;
+            $sql3    = "INSERT into `item_line` (`price`, `qty`, `item_line_type`, `stock_transaction_id`, `item_id`) values (?, ?, ?, ?, ?)  ";
+  
+            $stmt3   = $conn->prepare($sql3);
+    
+            $employee_id = 1; //Session value//
+            $desc = 'Item was restocked';
+            $stmt3->bind_param('sssss', $price, $qty, $type, $id, $item_id);
+            if($stmt3->execute()){
+                $result = 1;
+            }
         }
-      }
+    }
 }
 
 echo $result;
