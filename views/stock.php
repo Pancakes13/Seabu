@@ -301,23 +301,22 @@ $("#addBtn").on('click', function(){
           var name  = $("#modelName").val();
           var type  = $("#modelType").val();
           var qty = $("#modelQty").val();
-          if(type=='Restock'){
-            $.ajax({ 
-              method: "POST",
-              url: "../queries/update/restock.php",
-              data: {"item_id": id, "type": type, "qty": qty},
-            }).done(function( data ) { 
-              var result = $.parseJSON(data); 
+          
+          $.ajax({ 
+            method: "POST",
+            url: "../queries/update/restock.php",
+            data: {"item_id": id, "type": type, "qty": qty},
+          }).done(function( data ) { 
+            var result = $.parseJSON(data); 
 
-              myTable.clear();
-              PopulateItemsTable();
-              swal(
-                  'Success!',
-                  'You have restocked an item!',
-                  'success'
-                )
-            });
-          }
+            myTable.clear();
+            PopulateItemsTable();
+            swal(
+                'Success!',
+                'You have restocked an item!',
+                'success'
+              )
+          });
         });
 
         $(document).on('click', '#itemTable .editBtn', function(){ 

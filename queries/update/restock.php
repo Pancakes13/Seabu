@@ -8,6 +8,9 @@ echo $item_id;
 if(!$item_id){
   $result = 2;
 }else{
+    if($type=='Damaged'){
+        $qty = $qty * -1;
+    }
     //Insert Item
     $sql    = "UPDATE `item` 
     SET `qty` = `qty`+ ?
@@ -23,7 +26,6 @@ if(!$item_id){
         $stmt2   = $conn->prepare($sql2);
   
         $employee_id = 1; //Session value//
-        $desc = 'Item was restocked';
         $stmt2->bind_param('ss', $type, $employee_id);
         if($stmt2->execute()){
             $id = $conn->insert_id;
