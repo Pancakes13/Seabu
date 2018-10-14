@@ -3,51 +3,32 @@ require ("../panelsidebar.php");
 require ("../panelheader.php");
 ?>
     
+    <a href="stock.php"><button type="button" class="btn" style="margin-left:1.5%;">
+        Back <i class="fa fa-toggle-left"></i>
+    </button></a>
 
         <div class="content mt-3">
             <div class="animated fadeIn">
                 <div class="row">
-                
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <strong class="card-title">Cheezy Scallops Log</strong>
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong class="card-title" id="title">Stock Transaction Log</strong>
+                            </div>
+                            <div class="card-body">
+                                <table id="bootstrap-data-table" class="table table-striped table-bordered"><thead>
+                                    <tr>
+                                        <th>Timestamp</th>
+                                        <th>Item</th>
+                                        <th>Action</th>
+                                        <th>Quantity</th>
+                                        <th>Performed By</th>
+                                    </tr>
                             
-                        </div>
-                        <div class="card-body">
-                  <table id="bootstrap-data-table" class="table table-striped table-bordered">
-                    <thead>
-                      <tr>
-                        <th>Item Name</th>
-                        <th>Action</th>
-                        <th>Timestamp</th>
-                        <th>Qty</th>
-                        <th>Performed By</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Cheezy Scallops</td>
-                            <td>Restock</td>
-                            <td>12/09/2018 09:40:00</td>
-                            <td>30</td>
-                            <td>John Doe</td>
-                        </tr>
-                        <tr>
-                            <td>Cheezy Scallops</td>
-                            <td>Served</td>
-                            <td>12/09/2018 09:50:00</td>
-                            <td>14</td>
-                            <td>John Doe</td>
-                        </tr>
-                      
-                    </tbody>
-                  </table>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-
                 </div>
             </div><!-- .animated -->
         </div><!-- .content -->
@@ -56,11 +37,30 @@ require ("../panelheader.php");
 
     <!-- Right Panel -->
 <script>
-$('#bootstrap-data-table').DataTable( {
-"columnDefs": [
-    { "orderable": false, "targets": 3 }
-  ]
-  });
+var myTable = "";
+$(document).ready(function(){
+  myTable = $('#bootstrap-data-table').DataTable();
+  PopulateItemLogTable();
+});
+function PopulateItemLogTable() {
+    $.ajax({
+        method: "GET", url: "../queries/get/getStockTransactionLog.php", 
+    }).done(function( data ) {
+        var jsonObject = JSON.parse(data);
+        var result = jsonObject.map(function (item) {
+            var result = [];
+            result.push(item.transaction_timestamp);
+            result.push(item.name);
+            result.push(item.type);
+            result.push(item.qty); 
+            result.push(item.first_name+" "+item.last_name);
+            return result;
+        });
+        myTable.rows.add(result);
+        myTable.draw();
+    });
+}
+
 </script>
 <?php
 require ("../footer.php");

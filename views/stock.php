@@ -326,7 +326,7 @@ $("#addBtn").on('click', function(){
           var qty  = $(this).data("qty");
           
           $("#modelId").val(id);
-          $("#modelName").val(name);
+          $("#modelName.form-control").val(name);
           $("#modelPrice.price").val(price);
           $("#modelQty.stock").val(qty);
         });

@@ -7,7 +7,8 @@ $result = $conn->query("SELECT `i`.`item_id`, `i`.`name`, `i`.`qty` AS 'item_qty
                     ON  `s`.`stock_transaction_id` = `il`.`stock_transaction_id`
                     INNER JOIN `item` `i`
                     ON `il`.`item_id` = `i`.`item_id`
-                    AND DATE(`s`.`transaction_timestamp`) = CURDATE()"); //convert timestamp to date
+                    AND DATE(`s`.`transaction_timestamp`) = CURDATE()
+                    AND `s`.`type` = 'Sold'"); //convert timestamp to date
 $outp = "";
 $result_array = array();
 while($rs = $result->fetch_assoc()) {
