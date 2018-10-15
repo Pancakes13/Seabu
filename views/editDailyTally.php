@@ -6,7 +6,7 @@ require ("../panelheader.php");
     <div class="animated fadeIn">
         <div class="row">
             <div class="col-md-12">
-                <a href="home.php"><button class="btn btn-primary"><i class="fa fa-toggle-left"></i> Go Back</button></a>
+                <a href="dailytally.php"><button class="btn btn-primary"><i class="fa fa-toggle-left"></i> Go Back</button></a>
                 <div class="card">
                     <div class="card-header">
                         <strong class="card-title"><?php echo date("F d, Y (l)", strtotime($_GET['date']));?></strong>

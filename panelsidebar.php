@@ -33,6 +33,9 @@
                     </li>
                     -->
                     <li>
+                        <a href="dailytally.php"> <i class="menu-icon fa fa-calendar-plus-o"></i>Daily Tally</a>
+                    </li>
+                    <li>
                         <a href="stock.php"> <i class="menu-icon fa fa-cutlery"></i>Stock</a>
                     </li>
 
