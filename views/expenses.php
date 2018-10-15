@@ -84,27 +84,21 @@ require ("../panelheader.php");
                 <div class="modal-body">
                 <input id="modelId" type="text" class="form-control" hidden>
                   <div class="form-group">
-                    <label>Item Name</label>
+                    <label>Expense Name</label>
                     <input id="modelName" type="text" class="form-control">
                   </div>
-                  <div class="row">
-                    <div class="col-6">
-                      <div class="form-group">
-                        <label for="price" class="control-label mb-1">Price</label>
-                        <input id="modelPrice" class="form-control price" type="number">
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="form-group">
-                        <label for="stock" class="control-label mb-1">Current Stock</label>
-                        <input id="modelQty" class="form-control stock" type="number">
-                      </div>
-                    </div>
+                  <div class="form-group">
+                    <label>Price</label>
+                    <input id="modelPrice" type="number" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="modelDesc" rows="4" cols="50" class="form-control" id="description"></textarea>
                   </div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                  <button id="submitEdit" type="button" class="btn btn-warning" type="submit" data-dismiss="modal">Edit Item</button>
+                  <button id="submitEdit" type="button" class="btn btn-warning" type="button" data-dismiss="modal">Edit Item</button>
                 </div>
               </div>
             </div>
@@ -263,12 +257,37 @@ $("#addBtn").on('click', function(){
         });
 
         $(document).on('click', '#itemTable .editBtn', function(){ 
+          var id  = $(this).data("expense_id");
+          var name  = $(this).data("expense_name");
+          var price  = $(this).data("price");
+          var desc  = $(this).data("desc");
           
+          $("#modelId").val(id);
+          $("#modelName.form-control").val(name);
+          $("#modelPrice").val(price);
+          $("#modelDesc").val(desc);
         });
 
         $(document).on('click', '#submitEdit', function(){
+          var id = $("#modelId").val();
+          var name = $("#modelName.form-control").val();
+          var price = $("#modelPrice").val();
+          var desc = $("#modelDesc").val();
           
-              
+          $.ajax({ 
+            method: "POST",
+            url: "../queries/update/updateExpense.php",
+            data: {"id": id, "name": name, "price": price, "desc": desc},
+          }).done(function( data ) { 
+            var result = $.parseJSON(data); 
+            myTable.clear();
+            PopulateExpenseTable();
+            swal(
+                'Success!',
+                'You have updated an item!',
+                'success'
+              )
+          });     
         });
 </script>
 
