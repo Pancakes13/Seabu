@@ -18,6 +18,7 @@ require ("../panelheader.php");
                                 <tr>
                                     <th>Item Name</th>
                                     <th>Price (Php)</th>
+                                    <th>Current Stock (Pcs/Kg)</th>
                                     <th>Qty</th>
                                     <th>Type</th>
                                     <th style="text-align:right;">Subtotal</th>
@@ -34,6 +35,7 @@ require ("../panelheader.php");
                     </div>
                     <div class="card-body">
                         <form id="newDailyTally">
+                            <input id="stockTransactionId" name="stock_transaction_id" hidden>
                             <table id="newTallyTable" class="table">
                                 <tr>
                                     <th>Item Name</th>
@@ -75,7 +77,25 @@ $(document).ready(function(){
         'success'
       )
     })
-  }); 
+  });
+  $('#newDailyTally').submit(function(e) {
+    e.preventDefault(); 
+    $.ajax({
+      type: "POST",
+      url: "../queries/insert/addToTallyTransaction.php",
+      data: $(this).serialize(),
+    }).done(function( data ) {
+      $('#tallyTable tr').remove();
+      PopulateTallyTable();
+      $('#newTallyTable tr').remove();
+      PopulateNewTallyTable();
+      swal(
+        'Success!',
+        'You have added to the daily tally!',
+        'success'
+      )
+    })
+  });
 });
 
 function PopulateTallyTable() {
@@ -86,24 +106,26 @@ function PopulateTallyTable() {
     data: {"date": date},
   }).done(function( data ) {
     var jsonObject = JSON.parse(data);
+    $("#stockTransactionId").val(jsonObject[0].stock_transaction_id);
     var result = jsonObject.map(function (item) {
     var result = [];
     myTable.append('<tr class="item"><td style="width:40%;">'+item.name+' <input name="item[]" value="'+item.item_id+'" hidden> <input name="item_line_id[]" value="'+item.item_line_id+'" hidden> <input name="stock_transaction_id" value="'+item.stock_transaction_id+'" hidden></td>'
-        +'<td style="width:20%;"><input name="price[]" class="price form-control" type="number" value="'+item.price+'" readonly="true"></td>'
-        +'<td style="width:10%;"><input name="qty[]" class="qty form-control" type="number" value="'+item.qty+'" min="1"></td>'
+        +'<td style="width:15%;"><input name="price[]" class="editPrice form-control" type="number" value="'+item.price+'" readonly="true"></td>'
+        +'<td style="width:10%;"><input class="qty form-control" value="'+item.stock_qty+'" readonly></td>'
+        +'<td style="width:10%;"><input name="qty[]" class="editQty form-control" type="number" value="'+item.qty+'" min="1" max="'+item.stock_qty+'"></td>'
         +'<td><input name="type[]" class="qty form-control" type="text" value="'+item.item_line_type+'"></td>'
-        +'<td class="subTotal" style="text-align:right;">'+item.price*item.qty+'</td>'
+        +'<td class="editSubTotal" style="text-align:right;">'+item.price*item.qty+'</td>'
         +'<td class="action" style="width:5%; text-align:right;"><button type="button" class="btn btn-danger btn-sm delBtn" data-itemlineid="'+item.item_line_id+'" data-itemname="'+item.name+'" ><i class="fa fa-trash"></i></button></td></tr>');
     });
-    myTable.append('<tr><td></td><td></td><td></td><td></td><td id="total" style="text-align:right;"><strong>TOTAL</strong><td id="totalValue" style="text-align:right;">0</td></tr>');
+    myTable.append('<tr><td></td><td></td><td></td><td></td><td id="total" style="text-align:right;"><strong>TOTAL</strong><td id="editTotalValue" style="text-align:right;">0</td></tr>');
     myTable.append('<tr><td></td><td></td><td></td><td><td><td><button type="submit" class="btn btn-warning btn-sm">Edit Tally <i class="fa fa-edit"></i></button></td></tr>');
 
     var total = 0;
     $("tr.item").each(function() {
       $this = $(this);
-      total += parseInt($this.find(".subTotal").html());
+      total += parseInt($this.find(".editSubTotal").html());
     });
-    $("#totalValue").html(total);
+    $("#editTotalValue").html(total);
   });
 }
 
@@ -117,9 +139,9 @@ function PopulateNewTallyTable() {
     var jsonObject = JSON.parse(data);
       var result = jsonObject.map(function (item) {
         var result = [];
-        newTable.append('<tr class="item"><td style="width:40%;">'+item.name+' <input name="item[]" value="'+item.item_id+'" hidden></td>'
-          +'<td style="width:20%;"><input name="price[]" class="price form-control" type="number" value="'+item.price+'" readonly="true"></td>'
-          +'<td><input class="qty form-control" value="'+item.qty+'" readonly></td>'
+        newTable.append('<tr class="newitem"><td style="width:40%;">'+item.name+' <input name="item[]" value="'+item.item_id+'" hidden></td>'
+          +'<td style="width:15%;"><input name="price[]" class="price form-control" type="number" value="'+item.price+'" readonly="true"></td>'
+          +'<td style="width:10%;"><input class="qty form-control" value="'+item.qty+'" readonly></td>'
           +'<td style="width:10%;"><input name="qty[]" class="qty form-control" type="number" value="0" min="0" max="'+item.qty+'"></td>'
           +'<td> <select name="type[]" class="form-control">'
           +'<option value="local">Local</option>'
@@ -127,10 +149,10 @@ function PopulateNewTallyTable() {
           +'</select></td>'
           +'<td class="subTotal" style="width:10%; text-align:right;">0</td></tr>');
       });
-      newTable.append('<tr><td></td><td></td><td></td><td id="total"><strong>TOTAL</strong><td id="totalValue" style="text-align:right;">0</td></tr>');
-      newTable.append('<tr><td></td><td></td><td></td><td><td><button class="btn btn-success" type="submit">Submit Daily Tally</button></td></tr>');
+      newTable.append('<tr><td></td><td></td><td></td><td></td><td id="total"><strong>TOTAL</strong><td id="totalValue" style="text-align:right;">0</td></tr>');
+      newTable.append('<tr><td></td><td></td><td></td><td></td><td><td><button class="btn btn-success" type="submit">Submit Daily Tally</button></td></tr>');
     var total = 0;
-    $("tr.item").each(function() {
+    $("tr.newitem").each(function() {
       $this = $(this);
       total += parseInt($this.find(".subTotal").html());
     });
@@ -138,19 +160,34 @@ function PopulateNewTallyTable() {
   });
 }
 
-$(document).on('change', ".qty",function () {
+$(document).on('change', ".editQty",function () {
     var numRows = $('#tallyTable tr').length;
-    var test1 = $(this).closest(".qty").val();
+    var test1 = $(this).closest(".editQty").val();
     var qty = parseInt($(this).closest("td").parent()[0].cells[1].children[0].value);
-    var price = parseInt($(this).closest("td").parent()[0].cells[2].children[0].value);
-    $(this).closest("td").parent()[0].cells[4].innerHTML = qty*price;
+    var price = parseInt($(this).closest("td").parent()[0].cells[3].children[0].value);
+    $(this).closest("td").parent()[0].cells[5].innerHTML = qty*price;
     
     var total = 0;
     $("tr.item").each(function() {
         $this = $(this);
-        total += parseInt($this.find(".subTotal").html());
+        total += parseInt($this.find(".editSubTotal").html());
     });
-    $("#totalValue").html(total);
+    $("#editTotalValue").html(total);
+});
+
+$(document).on('change', ".qty",function () {
+  var numRows = $('#tallyTable tr').length;
+  var test1 = $(this).closest(".qty").val();
+  var qty = parseInt($(this).closest("td").parent()[0].cells[1].children[0].value);
+  var price = parseInt($(this).closest("td").parent()[0].cells[3].children[0].value);
+  $(this).closest("td").parent()[0].cells[5].innerHTML = qty*price;
+          
+  var total = 0;
+  $("tr.newitem").each(function() {
+    $this = $(this);
+    total += parseInt($this.find(".subTotal").html());
+  });
+  $("#totalValue").html(total);
 });
 
 $(document).on('click', '#tallyTable .delBtn', function(){ 

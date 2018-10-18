@@ -2,7 +2,7 @@
 require("../../connection.php");
 $date  = $_POST['date'];
 $result = $conn->query("SELECT `i`.`item_id`, `i`.`name`, `il`.`item_line_id`, `il`.`price`, `il`.`qty`, `il`.`item_line_type`,
-                `s`.`stock_transaction_id`, `s`.`transaction_timestamp`, `s`.`type`
+                `s`.`stock_transaction_id`, `s`.`transaction_timestamp`, `s`.`type`, `i`.`qty` AS 'stock_qty'
                 FROM `stock_transaction` `s` 
                 INNER JOIN `item_line` `il`
                 ON  `s`.`stock_transaction_id` = `il`.`stock_transaction_id`

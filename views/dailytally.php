@@ -99,7 +99,7 @@ function PopulateTallyTable() {
       var jsonObject = JSON.parse(data);
       var result = jsonObject.map(function (item) {
         var result = [];
-        myTable.append('<tr class="item"><td style="width:40%;">'+item.name+' <input name="item[]" value="'+item.item_id+'" hidden></td>'
+        myTable.append('<tr class="item"><td style="width:40%;">'+item.name+' <input name="item[]" value="'+item.item_id+'" hidden> <input name="stock_transaction_id" value="'+item.stock_transaction_id+'"></td>'
           +'<td style="width:20%;"><input name="price[]" class="price form-control" type="number" value="'+item.price+'" readonly="true"></td>'
           +'<td><input class="qty form-control" value="'+item.qty+'" readonly></td>'
           +'<td style="width:10%;"><input name="qty[]" class="qty form-control" type="number" value="0" min="0" max="'+item.qty+'"></td>'
