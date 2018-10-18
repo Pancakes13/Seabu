@@ -38,11 +38,11 @@
                     <li>
                         <a href="stock.php"> <i class="menu-icon fa fa-cutlery"></i>Stock</a>
                     </li>
-
+                    <!--
                     <li>
                         <a href="yearlytotals.php"> <i class="menu-icon fa fa-area-chart"></i>Yearly Totals</a>
                     </li>
-
+                    -->
                     <li>
                         <a href="stock_logs.php"> <i class="menu-icon fa fa-book"></i>Stock Logs</a>
                     </li>

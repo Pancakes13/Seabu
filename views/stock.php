@@ -311,6 +311,7 @@ $("#addBtn").on('click', function(){
 
             myTable.clear();
             PopulateItemsTable();
+            $("#modelQty").val(0);
             swal(
                 'Success!',
                 'You have restocked an item!',
