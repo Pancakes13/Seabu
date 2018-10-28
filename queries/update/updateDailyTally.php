@@ -7,7 +7,7 @@ $item_line  = $_POST['item_line_id'];
 $qty = $_POST['qty'];
 $type = $_POST['type'];
 
-if(!$id){
+if(!$item || !$id || !$item_line || !$qty || !$type){
   $result = 2;
 }else{
     //Update items to tally//

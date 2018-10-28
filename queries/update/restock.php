@@ -4,8 +4,7 @@ $item_id = $_POST['item_id'];
 $qty  = $_POST['qty'];
 $type = $_POST['type'];
 
-echo $item_id;
-if(!$item_id){
+if(!$item_id || !$qty || !$type){
   $result = 2;
 }else{
     if($type=='Damaged'){

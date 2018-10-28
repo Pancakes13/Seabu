@@ -2,7 +2,7 @@
 require("../../connection.php");
 $qty  = $_POST['qty'];
 
-if(!$id){
+if(!$qty){
   $result = 2;
 }else{
     //Insert Item

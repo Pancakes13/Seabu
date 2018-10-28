@@ -9,6 +9,19 @@ if(!$stock_type || !$emp_id){
     $result = 2;
   
   }else{
+    $tallyExists = $conn->query("SELECT `i`.`item_id`, `i`.`name`, `i`.`qty` AS 'item_qty', `il`.`price`, `il`.`qty`, `il`.`item_line_type`,
+    `s`.`transaction_timestamp`, `s`.`type`
+    FROM `stock_transaction` `s` 
+    INNER JOIN `item_line` `il`
+    ON  `s`.`stock_transaction_id` = `il`.`stock_transaction_id`
+    INNER JOIN `item` `i`
+    ON `il`.`item_id` = `i`.`item_id`
+    AND DATE(`s`.`transaction_timestamp`) = CURDATE()
+    AND `s`.`type` = 'Sold'");
+    
+    $result = 2;
+
+    if($tallyExists->num_rows == 0){
       //Insert Stock Transaction
       $sql    = "INSERT into `stock_transaction` (`type`, `employee_id`) values (?, ?)";
   
@@ -46,8 +59,8 @@ if(!$stock_type || !$emp_id){
             }
           }
         }
-        
       }
+    }
   }
 
 echo $result;

@@ -5,7 +5,7 @@ $name  = $_POST['name'];
 $price  = $_POST['price'];
 $desc  = $_POST['desc'];
 
-if(!$id){
+if(!$id || !$name || !$price || !$desc){
   $result = 2;
 }else{
     //Insert Item
