@@ -44,6 +44,10 @@
                     </li>
                     -->
                     <li>
+                        <a href="stockUsage.php"> <i class="menu-icon fa fa-cart-arrow-down"></i>Stock Usage</a>
+                    </li>
+
+                    <li>
                         <a href="stock_logs.php"> <i class="menu-icon fa fa-book"></i>Stock Logs</a>
                     </li>
 

@@ -16,7 +16,7 @@ require ("../panelheader.php");
                                 <strong class="card-title" id="title">Stock Transaction Log</strong>
                             </div>
                             <div class="card-body">
-                                <table id="bootstrap-data-table" class="table table-striped table-bordered"><thead>
+                                <table id="stock-table" class="table table-striped table-bordered"><thead>
                                     <tr>
                                         <th>Timestamp</th>
                                         <th>Item</th>
@@ -39,7 +39,9 @@ require ("../panelheader.php");
 <script>
 var myTable = "";
 $(document).ready(function(){
-  myTable = $('#bootstrap-data-table').DataTable();
+  myTable = $('#stock-table').DataTable({
+    "order": [[ 0, "desc" ]]
+  });
   PopulateItemLogTable();
 });
 function PopulateItemLogTable() {

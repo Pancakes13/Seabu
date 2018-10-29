@@ -18,7 +18,7 @@ require ("../panelheader.php");
                     </button>
                   </div>
                   <div id="itemTable" class="card-body">
-                    <table id="bootstrap-data-table" class="table table-striped table-bordered"><thead>
+                    <table id="expense-table" class="table table-striped table-bordered"><thead>
                       <tr>
                         <th>Timestamp</th>
                         <th>Expense Name</th>
@@ -136,7 +136,9 @@ require ("../panelheader.php");
 <script>
 var myTable = "";
 $(document).ready(function(){
-  myTable = $('#bootstrap-data-table').DataTable();
+  myTable = $('#expense-table').DataTable({
+    "order": [[ 0, "desc" ]]
+  });
   PopulateExpenseTable();
 });
 function PopulateExpenseTable() {
