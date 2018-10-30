@@ -7,7 +7,7 @@ require ("../panelheader.php");
         Back <i class="fa fa-toggle-left"></i>
     </button></a>
     <form id="searchStockUsage">
-        <div class="form-group" style="width:30%; margin-left:1%; margin-top:3%;">
+        <div class="form-group" style="width:40%; margin-left:1%; margin-top:3%;">
             <label class=" form-control-label">Start Date/End Date <i class="fa fa-calendar"></i></label>
             <div class="input-group">
                 <input id="startDate" class="form-control" type="date" value="<?php echo date('1960-01-01');?>">
@@ -27,14 +27,6 @@ require ("../panelheader.php");
                             </div>
                             <div class="card-body">
                                 <table id="stockUsage-table" class="table table-bordered"><thead>
-                                    <tr>
-                                        <th>Timestamp</th>
-                                        <th>Item</th>
-                                        <th>Action</th>
-                                        <th>Quantity</th>
-                                        <th>Performed By</th>
-                                    </tr>
-                            
                                 </table>
                             </div>
                         </div>
@@ -89,11 +81,14 @@ function PopulateStockUsageTable() {
                 month[11] = "December";
                 
                 myTable.append('<tr style="background-color:#f2f2f2"><td><strong>'+month[f.getMonth()]+" "+f.getDate()+", "+f.getFullYear()+'</strong></td>'
-                +'<td></td><td></td><td></td><td></td></tr>');
+                +'<td></td><td></td><td></td><td></td><td></td><td></td></tr>'
+                +'<tr style="font-weight:bold"><td>Timestamp</td><td>Item</td><td>Action</td><td>Current Stock</td><td>Old Stock</td><td>Quantity</td><td>Performed By</td></tr>');
             }
             myTable.append('<tr class="item"><td>'+item.transaction_timestamp+'</td>'
             +'<td>'+item.name+'</td>'
             +'<td>'+item.type+'</td>'
+            +'<td>'+item.item_qty+'</td>'
+            +'<td>'+item.old_stock+'</td>'
             +'<td>'+item.qty+'</td>'
             +'<td>'+item.first_name+" "+item.last_name+'</td></tr>');
         });

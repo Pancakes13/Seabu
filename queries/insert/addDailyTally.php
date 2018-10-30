@@ -34,16 +34,17 @@ if(!$stock_type || !$emp_id){
         $id = $conn->insert_id;
         $item  = $_POST['item'];
         $price = $_POST['price'];
+        $stock = $_POST['current_stock'];
         $qty = $_POST['qty'];
         $type = $_POST['type'];
         for($x=0; $x<count($item); $x++){
           if($qty[$x]>0){
               echo $type[$x];
-            $sql2    = "INSERT into `item_line` (`price`, `qty`, `item_line_type`, `stock_transaction_id`, `item_id`) values (?, ?, ?, ?, ?)  ";
+            $sql2    = "INSERT into `item_line` (`price`, `old_stock`, `qty`, `item_line_type`, `stock_transaction_id`, `item_id`) values (?, ?, ?, ?, ?, ?)  ";
         
             $stmt2   = $conn->prepare($sql2);
         
-            $stmt2->bind_param('sssss', $price[$x], $qty[$x], $type[$x], $id, $item[$x]);
+            $stmt2->bind_param('ssssss', $price[$x], $stock[$x], $qty[$x], $type[$x], $id, $item[$x]);
             if($stmt2->execute()){
               
               $sql3 = "UPDATE `item` 

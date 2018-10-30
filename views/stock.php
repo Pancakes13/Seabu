@@ -300,12 +300,13 @@ $("#addBtn").on('click', function(){
           var id = $("#modelId").val();
           var name  = $("#modelName").val();
           var type  = $("#modelType").val();
+          var stock = $("#modelStock").val();
           var qty = $("#modelQty").val();
           
           $.ajax({ 
             method: "POST",
             url: "../queries/update/restock.php",
-            data: {"item_id": id, "type": type, "qty": qty},
+            data: {"item_id": id, "current_stock": stock, "type": type, "qty": qty},
           }).done(function( data ) { 
             var result = $.parseJSON(data); 
 

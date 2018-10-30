@@ -21,6 +21,8 @@ require ("../panelheader.php");
                                         <th>Timestamp</th>
                                         <th>Item</th>
                                         <th>Action</th>
+                                        <th>Current Stock</th>
+                                        <th>Old Stock</th>
                                         <th>Quantity</th>
                                         <th>Performed By</th>
                                     </tr>
@@ -54,6 +56,8 @@ function PopulateItemLogTable() {
             result.push(item.transaction_timestamp);
             result.push(item.name);
             result.push(item.type);
+            result.push(item.item_qty);
+            result.push(item.old_stock);
             result.push(item.qty); 
             result.push(item.first_name+" "+item.last_name);
             return result;
