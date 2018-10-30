@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 18, 2018 at 05:10 PM
+-- Generation Time: Oct 30, 2018 at 03:01 PM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.5.38
 
@@ -23,6 +23,24 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `branch`
+--
+
+CREATE TABLE `branch` (
+  `branch_id` int(11) NOT NULL,
+  `name` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `branch`
+--
+
+INSERT INTO `branch` (`branch_id`, `name`) VALUES
+(1, 'Sugbo Mercado');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `employee`
 --
 
@@ -36,6 +54,7 @@ CREATE TABLE `employee` (
   `email` varchar(50) DEFAULT NULL,
   `contact_no` varchar(11) DEFAULT NULL,
   `birthdate` date NOT NULL,
+  `branch_id` int(11) NOT NULL,
   `isDeleted` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -43,11 +62,11 @@ CREATE TABLE `employee` (
 -- Dumping data for table `employee`
 --
 
-INSERT INTO `employee` (`employee_id`, `username`, `first_name`, `last_name`, `middle_name`, `pass`, `email`, `contact_no`, `birthdate`, `isDeleted`) VALUES
-(1, 'neily', 'Neil', 'Llenes', 'Diaz', '123', 'neilllenes@gmail.com', '09111111111', '1997-11-13', 0),
-(2, 'sammyj', 'Samuel', 'Jones', 'James', '123', 'samjones@gmail.com', '09991234567', '1990-09-13', 0),
-(3, 'sadfsad', 'sadfsadf', 'sdafsad', 'sadfasdf', '123', 'sdafsf@gmail.com', 'kejfwlf', '1111-11-11', 1),
-(4, 'Jdoe', 'John', 'Doe', 'James', '123', 'jdoe@gmail.com', '09999876543', '1987-12-18', 0);
+INSERT INTO `employee` (`employee_id`, `username`, `first_name`, `last_name`, `middle_name`, `pass`, `email`, `contact_no`, `birthdate`, `branch_id`, `isDeleted`) VALUES
+(1, 'neily', 'Neil', 'Llenes', 'Diaz', '123', 'neilllenes@gmail.com', '09111111111', '1997-11-13', 1, 0),
+(2, 'sammyj', 'Samuel', 'Jones', 'James', '123', 'samjones@gmail.com', '09991234567', '1990-09-13', 1, 0),
+(3, 'sadfsad', 'sadfsadf', 'sdafsad', 'sadfasdf', '123', 'sdafsf@gmail.com', 'kejfwlf', '1111-11-11', 1, 1),
+(4, 'Jdoe', 'John', 'Doe', 'James', '123', 'jdoe@gmail.com', '09999876543', '1987-12-18', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -125,11 +144,11 @@ CREATE TABLE `item` (
 --
 
 INSERT INTO `item` (`item_id`, `name`, `price`, `qty`, `isDeleted`) VALUES
-(1, 'Cheezy Scallop', 179, 11, 0),
+(1, 'Cheezy Scallop', 179, 8, 0),
 (2, '', 0, 0, 1),
-(3, 'Lobster', 175, 7, 0),
-(4, 'Shrimp', 150, 17, 0),
-(5, 'Calamares', 250, 16, 0),
+(3, 'Lobster', 175, 5, 0),
+(4, 'Shrimp', 150, 14, 0),
+(5, 'Calamares', 250, 12, 0),
 (6, 'Foods', 112, 5, 0),
 (7, 'fsdjfsldkf', 111, 0, 1),
 (8, 'sadfsad', 111, 0, 1),
@@ -158,7 +177,7 @@ INSERT INTO `item` (`item_id`, `name`, `price`, `qty`, `isDeleted`) VALUES
 (31, '123', 123, 0, 1),
 (32, 'Yummy food', 120, 0, 1),
 (33, 'Fried Chicken (4 pc)', 280, 1, 0),
-(34, 'Nachos', 234, 7, 0);
+(34, 'Nachos', 234, 6, 0);
 
 -- --------------------------------------------------------
 
@@ -169,6 +188,7 @@ INSERT INTO `item` (`item_id`, `name`, `price`, `qty`, `isDeleted`) VALUES
 CREATE TABLE `item_line` (
   `item_line_id` int(11) NOT NULL,
   `price` float NOT NULL,
+  `old_stock` int(11) NOT NULL,
   `qty` int(11) NOT NULL,
   `item_line_type` enum('local','honestbee') DEFAULT NULL,
   `stock_transaction_id` int(11) DEFAULT NULL,
@@ -179,52 +199,57 @@ CREATE TABLE `item_line` (
 -- Dumping data for table `item_line`
 --
 
-INSERT INTO `item_line` (`item_line_id`, `price`, `qty`, `item_line_type`, `stock_transaction_id`, `item_id`) VALUES
-(13, 175, 4, 'local', 13, 1),
-(14, 280, 5, 'local', 13, 33),
-(15, 175, 5, 'local', 14, 1),
-(16, 175, 3, 'local', 14, 3),
-(17, 112, 2, 'local', 14, 6),
-(18, 175, 2, 'local', 15, 1),
-(19, 175, 2, 'honestbee', 16, 1),
-(20, 150, 1, 'local', 16, 4),
-(21, 230, 1, 'local', 16, 5),
-(22, 112, 1, 'local', 16, 6),
-(23, 234, 1, 'local', 16, 34),
-(26, 150, 1, 'local', 18, 4),
-(27, 112, 2, 'honestbee', 18, 6),
-(35, 175, 2, 'honestbee', 22, 1),
-(36, 150, 1, 'local', 22, 4),
-(37, 300, 1, 'honestbee', 22, 12),
-(38, 280, 1, 'honestbee', 22, 33),
-(39, 234, 1, 'local', 22, 34),
-(40, 175, 2, 'local', 23, 1),
-(41, 150, 2, 'local', 23, 4),
-(42, 112, 1, 'local', 23, 6),
-(43, 250, 3, 'local', 23, 13),
-(44, 280, 1, 'local', 23, 33),
-(51, 150, 2, 'local', 27, 4),
-(52, 300, 2, 'local', 27, 12),
-(54, 280, 1, 'local', 27, 33),
-(55, 175, 3, 'local', 28, 1),
-(56, 175, 9, 'local', 29, 1),
-(59, 0, 4, NULL, 35, 3),
-(60, 0, -2, NULL, 36, 5),
-(61, 179, 2, 'local', 37, 1),
-(62, 250, 2, 'local', 37, 5),
-(63, 280, 1, 'local', 37, 33),
-(64, 250, 2, 'local', 38, 5),
-(65, 175, 2, 'honestbee', 39, 3),
-(66, 179, 1, 'local', 39, 1),
-(67, 250, 2, 'local', 39, 5),
-(68, 250, 1, 'local', 39, 13),
-(69, 280, 2, 'local', 39, 33),
-(70, 0, 16, NULL, 40, 5),
-(71, 0, 5, NULL, 41, 6),
-(72, 0, 8, NULL, 42, 1),
-(73, 0, 7, NULL, 43, 3),
-(74, 0, 7, NULL, 44, 34),
-(75, 0, 17, NULL, 45, 4);
+INSERT INTO `item_line` (`item_line_id`, `price`, `old_stock`, `qty`, `item_line_type`, `stock_transaction_id`, `item_id`) VALUES
+(13, 175, 0, 4, 'local', 13, 1),
+(14, 280, 0, 5, 'local', 13, 33),
+(15, 175, 0, 5, 'local', 14, 1),
+(16, 175, 0, 3, 'local', 14, 3),
+(17, 112, 0, 2, 'local', 14, 6),
+(18, 175, 0, 2, 'local', 15, 1),
+(19, 175, 0, 2, 'honestbee', 16, 1),
+(20, 150, 0, 1, 'local', 16, 4),
+(21, 230, 0, 1, 'local', 16, 5),
+(22, 112, 0, 1, 'local', 16, 6),
+(23, 234, 0, 1, 'local', 16, 34),
+(26, 150, 0, 1, 'local', 18, 4),
+(27, 112, 0, 2, 'honestbee', 18, 6),
+(35, 175, 0, 2, 'honestbee', 22, 1),
+(36, 150, 0, 1, 'local', 22, 4),
+(37, 300, 0, 1, 'honestbee', 22, 12),
+(38, 280, 0, 1, 'honestbee', 22, 33),
+(39, 234, 0, 1, 'local', 22, 34),
+(40, 175, 0, 2, 'local', 23, 1),
+(41, 150, 0, 2, 'local', 23, 4),
+(42, 112, 0, 1, 'local', 23, 6),
+(43, 250, 0, 3, 'local', 23, 13),
+(44, 280, 0, 1, 'local', 23, 33),
+(51, 150, 0, 2, 'local', 27, 4),
+(52, 300, 0, 2, 'local', 27, 12),
+(54, 280, 0, 1, 'local', 27, 33),
+(55, 175, 0, 3, 'local', 28, 1),
+(56, 175, 0, 9, 'local', 29, 1),
+(59, 0, 0, 4, NULL, 35, 3),
+(60, 0, 0, -2, NULL, 36, 5),
+(61, 179, 0, 2, 'local', 37, 1),
+(62, 250, 0, 2, 'local', 37, 5),
+(63, 280, 0, 1, 'local', 37, 33),
+(64, 250, 0, 2, 'local', 38, 5),
+(65, 175, 0, 2, 'honestbee', 39, 3),
+(66, 179, 0, 1, 'local', 39, 1),
+(67, 250, 0, 2, 'local', 39, 5),
+(68, 250, 0, 1, 'local', 39, 13),
+(69, 280, 0, 2, 'local', 39, 33),
+(70, 0, 0, 16, NULL, 40, 5),
+(71, 0, 0, 5, NULL, 41, 6),
+(72, 0, 0, 8, NULL, 42, 1),
+(73, 0, 0, 7, NULL, 43, 3),
+(74, 0, 0, 7, NULL, 44, 34),
+(75, 0, 0, 17, NULL, 45, 4),
+(76, 179, 0, 3, 'local', 46, 1),
+(77, 175, 0, 2, 'local', 46, 3),
+(78, 150, 0, 3, 'local', 46, 4),
+(79, 250, 0, 4, 'local', 46, 5),
+(80, 234, 0, 1, 'local', 46, 34);
 
 -- --------------------------------------------------------
 
@@ -276,6 +301,48 @@ INSERT INTO `item_log` (`item_log_id`, `log_timestamp`, `log_action`, `log_descr
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `money_bill`
+--
+
+CREATE TABLE `money_bill` (
+  `money_bill_id` int(11) NOT NULL,
+  `money_value` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `money_bill`
+--
+
+INSERT INTO `money_bill` (`money_bill_id`, `money_value`) VALUES
+(1, 1),
+(2, 5),
+(3, 10),
+(4, 20),
+(5, 50),
+(6, 100),
+(7, 200),
+(8, 500),
+(9, 2000),
+(10, 0.05),
+(11, 0.1),
+(12, 0.25);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `money_denomination`
+--
+
+CREATE TABLE `money_denomination` (
+  `money_denomination_id` int(11) NOT NULL,
+  `money_bill_id` int(11) DEFAULT NULL,
+  `stock_transaction_id` int(11) DEFAULT NULL,
+  `money_denomination_qty` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `stock_transaction`
 --
 
@@ -311,18 +378,26 @@ INSERT INTO `stock_transaction` (`stock_transaction_id`, `transaction_timestamp`
 (42, '2018-10-18 23:01:22', 'Restock', 1),
 (43, '2018-10-18 23:01:27', 'Restock', 1),
 (44, '2018-10-18 23:01:32', 'Restock', 1),
-(45, '2018-10-18 23:01:38', 'Restock', 1);
+(45, '2018-10-18 23:01:38', 'Restock', 1),
+(46, '2018-10-28 19:47:11', 'Sold', 1);
 
 --
 -- Indexes for dumped tables
 --
 
 --
+-- Indexes for table `branch`
+--
+ALTER TABLE `branch`
+  ADD PRIMARY KEY (`branch_id`);
+
+--
 -- Indexes for table `employee`
 --
 ALTER TABLE `employee`
   ADD PRIMARY KEY (`employee_id`),
-  ADD UNIQUE KEY `username` (`username`);
+  ADD UNIQUE KEY `username` (`username`),
+  ADD KEY `employee_fk1` (`branch_id`);
 
 --
 -- Indexes for table `employee_log`
@@ -362,6 +437,20 @@ ALTER TABLE `item_log`
   ADD KEY `item_log_fk2` (`item_id`);
 
 --
+-- Indexes for table `money_bill`
+--
+ALTER TABLE `money_bill`
+  ADD PRIMARY KEY (`money_bill_id`);
+
+--
+-- Indexes for table `money_denomination`
+--
+ALTER TABLE `money_denomination`
+  ADD PRIMARY KEY (`money_denomination_id`),
+  ADD KEY `money_denomination_fk1` (`money_bill_id`),
+  ADD KEY `money_denomination_fk2` (`stock_transaction_id`);
+
+--
 -- Indexes for table `stock_transaction`
 --
 ALTER TABLE `stock_transaction`
@@ -372,6 +461,11 @@ ALTER TABLE `stock_transaction`
 -- AUTO_INCREMENT for dumped tables
 --
 
+--
+-- AUTO_INCREMENT for table `branch`
+--
+ALTER TABLE `branch`
+  MODIFY `branch_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `employee`
 --
@@ -396,20 +490,36 @@ ALTER TABLE `item`
 -- AUTO_INCREMENT for table `item_line`
 --
 ALTER TABLE `item_line`
-  MODIFY `item_line_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
+  MODIFY `item_line_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 --
 -- AUTO_INCREMENT for table `item_log`
 --
 ALTER TABLE `item_log`
   MODIFY `item_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 --
+-- AUTO_INCREMENT for table `money_bill`
+--
+ALTER TABLE `money_bill`
+  MODIFY `money_bill_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+--
+-- AUTO_INCREMENT for table `money_denomination`
+--
+ALTER TABLE `money_denomination`
+  MODIFY `money_denomination_id` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `stock_transaction`
 --
 ALTER TABLE `stock_transaction`
-  MODIFY `stock_transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `stock_transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `employee`
+--
+ALTER TABLE `employee`
+  ADD CONSTRAINT `employee_fk1` FOREIGN KEY (`branch_id`) REFERENCES `branch` (`branch_id`);
 
 --
 -- Constraints for table `employee_log`
@@ -437,6 +547,13 @@ ALTER TABLE `item_line`
 ALTER TABLE `item_log`
   ADD CONSTRAINT `item_log_fk1` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`employee_id`),
   ADD CONSTRAINT `item_log_fk2` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`);
+
+--
+-- Constraints for table `money_denomination`
+--
+ALTER TABLE `money_denomination`
+  ADD CONSTRAINT `money_denomination_fk1` FOREIGN KEY (`money_bill_id`) REFERENCES `money_bill` (`money_bill_id`),
+  ADD CONSTRAINT `money_denomination_fk2` FOREIGN KEY (`stock_transaction_id`) REFERENCES `stock_transaction` (`stock_transaction_id`);
 
 --
 -- Constraints for table `stock_transaction`
