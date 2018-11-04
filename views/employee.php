@@ -23,6 +23,8 @@ require ("../panelheader.php");
                         <th>Username</th>
                         <th>Last Name</th>
                         <th>First Name</th>
+                        <th>Middle Name</th>
+                        <th>Branch Name</th>
                         <th>Email</th>
                         <th>Contact Number</th>
                         <th>Birthdate</th>
@@ -38,7 +40,7 @@ require ("../panelheader.php");
 
         <!--Add Modal-->
         <div class="modal fade" id="addModal" aria-hidden="true">
-          <form>
+          <form id="addEmployee">
             <div class="modal-dialog modal-lg" role="document">
               <div class="modal-content">
                 <div class="modal-header">
@@ -50,36 +52,44 @@ require ("../panelheader.php");
                 <div class="modal-body">
                   <div class="form-group">
                     <label>Username</label>
-                    <input type="text" class="form-control" id="username">
+                    <input type="text" class="form-control" id="username" name="username">
                   </div>
                   <div class="form-group">
                     <label>First Name</label>
-                    <input type="text" class="form-control" id="first_name">
+                    <input type="text" class="form-control" id="first_name" name="first_name">
                   </div>
                   <div class="form-group">
                     <label>Middle Name</label>
-                    <input type="text" class="form-control" id="middle_name">
+                    <input type="text" class="form-control" id="middle_name" name="middle_name">
                   </div>
                   <div class="form-group">
                     <label>Last Name</label>
-                    <input type="text" class="form-control" id="last_name">
+                    <input type="text" class="form-control" id="last_name" name="last_name">
+                  </div>
+                  <div class="form-group">
+                    <label>Branch</label>
+                    <select class="form-control" id="branch" name="branchName">
+                      <option value="1">Sugbo Mercado</option>
+                      <option value="2">Option 2</option>
+                      <option value="3">Option 3</option>
+                    </select>
                   </div>
                   <div class="form-group">
                     <label>Email</label>
-                    <input type="email" class="form-control" id="email">
+                    <input type="email" class="form-control" id="email" name="email">
                   </div>
                   <div class="form-group">
                     <label>Contact Number</label>
-                    <input type="text" class="form-control" id="contact_no">
+                    <input type="text" class="form-control" id="contact_no" name="contact_num">
                   </div>
                   <div class="form-group">
                     <label>Birthdate</label>
-                    <input type="date" class="form-control" id="birthdate">
+                    <input type="date" class="form-control" id="birthdate" name="bday">
                   </div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                  <button type="button" class="btn btn-success" type="submit" id="addBtn" data-dismiss="modal">Add Employee</button>
+                  <button type="submit" class="btn btn-success">Add Employee</button>
                 </div>
               </div>
             </div>
@@ -111,6 +121,14 @@ require ("../panelheader.php");
                     <div class="form-group">
                       <label>Last Name</label>
                       <input type="text" class="form-control" id="model_ln">
+                    </div>
+                    <div class="form-group">
+                      <label>Branch Name</label>
+                      <select type="text" class="form-control" id="model_branch">
+                        <option value="1">Sugbo Mercado</option>
+                        <option valie="2">Option 2</option>
+                        <option value="3">Option 3</option>
+                      </select>
                     </div>
                     <div class="form-group">
                       <label>Email</label>
@@ -167,6 +185,26 @@ var myTable = "";
 $(document).ready(function(){
   myTable = $('#bootstrap-data-table').DataTable();
   PopulateItemsTable();
+
+  $('#addEmployee').submit(function(e) {
+    e.preventDefault(); 
+    $.ajax({
+      type: "POST",
+      url: "../queries/insert/addEmployee.php",
+      data: $(this).serialize(),
+    }).done(function( data ) {
+      var result = $.parseJSON(data); 
+      var str = '';
+      $("#message").css('color', 'red').html(str);
+      myTable.clear();
+      PopulateItemsTable();
+      swal(
+        'Success!',
+        'You have added an Employee!',
+        'success'
+      )
+    })
+  });
 });
 function PopulateItemsTable() {
     $.ajax({
@@ -178,12 +216,15 @@ function PopulateItemsTable() {
         result.push(item.username);
         result.push(item.last_name);
         result.push(item.first_name);
+        result.push(item.middle_name);
+        result.push(item.name);
         result.push(item.email);
         result.push(item.contact_no);
         result.push(item.birthdate);
         result.push('<button type="button" class="btn btn-warning btn-sm editBtn" data-toggle="modal" data-target="#editModal"'
         +'data-employee_id="'+item.employee_id+'" data-last_name="'+item.last_name+'"'
         +'data-first_name="'+item.first_name+'" data-middle_name="'+item.middle_name+'"'
+        +'data-name="'+item.name+'"'
         +'data-email="'+item.email+'" data-contact_no="'+item.contact_no+'" data-birthdate="'+item.birthdate+'">'
         +'<i class="fa fa-edit"></i></button>'
           +'<button type="button" class="btn btn-danger btn-sm delBtn" data-employee_id="'+item.employee_id+'" data-employee_username="'+item.username+'" ><i class="fa fa-trash"></i></button>'
@@ -194,38 +235,6 @@ function PopulateItemsTable() {
       myTable.draw();
     });
 }
-$("#addBtn").on('click', function(){ 
-            var username  = $("#username").val();
-            var fn = $("#first_name").val();
-            var mn = $("#middle_name").val();
-            var ln  = $("#last_name").val();
-            var email = $("#email").val();
-            var num  = $("#contact_no").val();
-            var bday  = $("#birthdate").val();
-            
-            $.ajax({ 
-
-              method: "POST",
-              url: "../queries/insert/addEmployee.php",
-
-              data: {"username": username, "first_name": fn, "middle_name": mn, "last_name": ln, "email": email, "contact_num":num, "bday": bday},
-
-             }).done(function( data ) { 
-                var result = $.parseJSON(data); 
-    
-                var str = '';
-
-              $("#message").css('color', 'red').html(str);
-              myTable.clear();
-              PopulateItemsTable();
-              swal(
-                  'Success!',
-                  'You have created an item!',
-                  'success'
-                )
-              });
-              
-       }); 
         $(document).on('click', '#itemTable .delBtn', function(){ 
           const swalWithBootstrapButtons = swal.mixin({
             confirmButtonClass: 'btn btn-danger',
@@ -279,15 +288,16 @@ $("#addBtn").on('click', function(){
           var ln  = $(this).data("last_name");
           var mn  = $(this).data("middle_name");
           var fn  = $(this).data("first_name");
+          var branch = $(this).data("name");
           var email  = $(this).data("email");
           var num  = $(this).data("contact_no");
           var birthdate  = $(this).data("birthdate");
-          
           
           $("#modelId").val(id);
           $("#model_ln").val(ln);
           $("#model_mn").val(mn);
           $("#model_fn").val(fn);
+          $("#model_branch").val(branch);
           $("#model_email").val(email);
           $("#model_contact_no").val(num);
           $("#model_birthdate").val(birthdate);
@@ -298,6 +308,7 @@ $("#addBtn").on('click', function(){
           var ln  = $("#model_ln").val();
           var mn  = $("#model_mn").val();
           var fn  = $("#model_fn").val();
+          var branch  = $("#model_branch").val();
           var email  = $("#model_email").val();
           var num  = $("#model_contact_no").val();
           var birthdate  = $("#model_birthdate").val();
@@ -307,7 +318,7 @@ $("#addBtn").on('click', function(){
               method: "POST",
               url: "../queries/update/updateEmployee.php",
 
-              data: {"id": id, "first_name": fn, "middle_name": mn, "last_name": ln, "email": email, "num": num, "birthdate": birthdate},
+              data: {"id": id, "first_name": fn, "middle_name": mn, "last_name": ln, "branch": branch, "email": email, "num": num, "birthdate": birthdate},
 
              }).done(function( data ) { 
                 var result = $.parseJSON(data); 

@@ -22,6 +22,7 @@ require ("../panelheader.php");
                       <tr>
                         <th>Timestamp</th>
                         <th>Expense Name</th>
+                        <th>Type</th>
                         <th>Description</th>
                         <th>Price (Php)</th>
                         <th>Noted By</th>
@@ -164,6 +165,7 @@ function PopulateExpenseTable() {
         month[11] = "December";
         result.push(month[f.getMonth()]+" "+f.getDate()+", "+f.getFullYear()+" "+f.getHours()+":"+f.getMinutes()+":"+f.getSeconds());
         result.push(item.name);
+        result.push(item.expense_type);
         result.push(item.description);
         result.push(item.price);
         result.push(item.first_name+" "+item.last_name);

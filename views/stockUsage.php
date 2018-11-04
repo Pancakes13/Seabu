@@ -81,8 +81,8 @@ function PopulateStockUsageTable() {
                 month[11] = "December";
                 
                 myTable.append('<tr style="background-color:#f2f2f2"><td><strong>'+month[f.getMonth()]+" "+f.getDate()+", "+f.getFullYear()+'</strong></td>'
-                +'<td></td><td></td><td></td><td></td><td></td><td></td></tr>'
-                +'<tr style="font-weight:bold"><td>Timestamp</td><td>Item</td><td>Action</td><td>Current Stock</td><td>Old Stock</td><td>Quantity</td><td>Performed By</td></tr>');
+                +'<td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>'
+                +'<tr style="font-weight:bold"><td>Timestamp</td><td>Item</td><td>Action</td><td>Current Stock</td><td>Old Stock</td><td>Quantity</td><td>Performed By</td><td>Branch Name</td></tr>');
             }
             myTable.append('<tr class="item"><td>'+item.transaction_timestamp+'</td>'
             +'<td>'+item.name+'</td>'
@@ -90,7 +90,8 @@ function PopulateStockUsageTable() {
             +'<td>'+item.item_qty+'</td>'
             +'<td>'+item.old_stock+'</td>'
             +'<td>'+item.qty+'</td>'
-            +'<td>'+item.first_name+" "+item.last_name+'</td></tr>');
+            +'<td>'+item.first_name+" "+item.last_name+'</td>'
+            +'<td>'+item.branch_name+'</td></tr>');
         });
     });
 }

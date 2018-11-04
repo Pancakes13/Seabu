@@ -1,7 +1,7 @@
 <?php
 require("../../connection.php");
 
-$result = $conn->query("SELECT `e`.`expense_id`, `e`.`name`, `e`.`description`, `e`.`price`, `e`.`expense_timestamp`, `em`.`first_name`, `em`.`last_name`
+$result = $conn->query("SELECT `e`.`expense_id`, `e`.`name`, `e`.`description`, `e`.`price`, `e`.`expense_type`, `e`.`expense_timestamp`, `em`.`first_name`, `em`.`last_name`
                           FROM `expense` `e`
                           INNER JOIN `employee` `em`
                           ON `e`.`employee_id` = `em`.`employee_id`

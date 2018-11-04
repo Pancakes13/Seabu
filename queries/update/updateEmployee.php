@@ -4,11 +4,12 @@ $id = $_POST['id'];
 $fn  = $_POST['first_name'];
 $mn  = $_POST['middle_name'];
 $ln  = $_POST['last_name'];
+$branch  = $_POST['branch'];
 $email  = $_POST['email'];
 $num  = $_POST['num'];
 $birthdate  = $_POST['birthdate'];
 
-if(!$id || !$fn || !$mn || !$ln || !$email || !$num || !$birthdate){
+if(!$id || !$fn || !$mn || !$ln || !$email || !$num || !$birthdate || !$branch){
   $result = 2;
 }else{
     //Insert Item
@@ -16,13 +17,14 @@ if(!$id || !$fn || !$mn || !$ln || !$email || !$num || !$birthdate){
     SET `first_name` = ?,
     `middle_name` = ?,
     `last_name` = ?,
+    `branch_id` = ?,
     `email` = ?,
     `contact_no` = ?,
     `birthdate` = ?
     WHERE `employee_id` = ?";
     
     $stmt   = $conn->prepare($sql);
-    $stmt->bind_param('sssssss', $fn, $mn, $ln, $email, $num, $birthdate, $id);
+    $stmt->bind_param('ssssssss', $fn, $mn, $ln, $branch, $email, $num, $birthdate, $id);
 
     if($stmt->execute()){
         //Insert Item Log

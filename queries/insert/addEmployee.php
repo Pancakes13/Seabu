@@ -4,6 +4,7 @@ $username  = $_POST['username'];
 $fn = $_POST['first_name'];
 $mn  = $_POST['middle_name'];
 $ln  = $_POST['last_name'];
+$branch  = $_POST['branchName'];
 $email  = $_POST['email'];
 $num  = $_POST['contact_num'];
 $bday  = $_POST['bday'];
@@ -11,16 +12,16 @@ $pass = "123";
 
 /* validate whether user has entered all values. */
 
-if(!$username || !$fn || !$mn || !$ln || !$email || !$num || !$bday){
+if(!$username || !$fn || !$mn || !$ln || !$email || !$num || !$bday || !$branch){
 
   $result = 2;
 
 }else{
     //Insert Item
-    $sql    = "INSERT into `employee` (`username`, `first_name`, `middle_name`, `last_name`, `pass`, `email`, `contact_no`, `birthdate`) values (?, ?, ?, ?, ?, ?, ?, ?)  ";
+    $sql    = "INSERT into `employee` (`username`, `first_name`, `middle_name`, `last_name`, `branch_id`, `pass`, `email`, `contact_no`, `birthdate`) values (?, ?, ?, ?, ?, ?, ?, ?, ?)  ";
 
     $stmt   = $conn->prepare($sql);
-    $stmt->bind_param('ssssssss', $username, $fn, $mn, $ln, $pass, $email, $num, $bday);
+    $stmt->bind_param('sssssssss', $username, $fn, $mn, $ln, $branch, $pass, $email, $num, $bday);
     
     if($stmt->execute()){
       //Insert Item Log
