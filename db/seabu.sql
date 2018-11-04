@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 30, 2018 at 03:01 PM
+-- Generation Time: Nov 04, 2018 at 12:26 PM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.5.38
 
@@ -36,7 +36,9 @@ CREATE TABLE `branch` (
 --
 
 INSERT INTO `branch` (`branch_id`, `name`) VALUES
-(1, 'Sugbo Mercado');
+(1, 'Sugbo Mercado'),
+(2, 'Option 2'),
+(3, 'Option 3');
 
 -- --------------------------------------------------------
 
@@ -64,9 +66,10 @@ CREATE TABLE `employee` (
 
 INSERT INTO `employee` (`employee_id`, `username`, `first_name`, `last_name`, `middle_name`, `pass`, `email`, `contact_no`, `birthdate`, `branch_id`, `isDeleted`) VALUES
 (1, 'neily', 'Neil', 'Llenes', 'Diaz', '123', 'neilllenes@gmail.com', '09111111111', '1997-11-13', 1, 0),
-(2, 'sammyj', 'Samuel', 'Jones', 'James', '123', 'samjones@gmail.com', '09991234567', '1990-09-13', 1, 0),
+(2, 'sammyj', 'Samuel', 'Jones', 'Kevin', '123', 'samjones@gmail.com', '09991234567', '1990-09-13', 3, 0),
 (3, 'sadfsad', 'sadfsadf', 'sdafsad', 'sadfasdf', '123', 'sdafsf@gmail.com', 'kejfwlf', '1111-11-11', 1, 1),
-(4, 'Jdoe', 'John', 'Doe', 'James', '123', 'jdoe@gmail.com', '09999876543', '1987-12-18', 1, 0);
+(4, 'Jdoe', 'John', 'Doe', 'James', '123', 'jdoe@gmail.com', '09999876543', '1987-12-18', 1, 0),
+(5, 'atiu', 'Antonita', 'Tiu', 'Chu', '123', 'atiu@test.com', '09111726354', '1994-04-04', 2, 0);
 
 -- --------------------------------------------------------
 
@@ -95,7 +98,9 @@ INSERT INTO `employee_log` (`employee_log_id`, `action`, `log_description`, `log
 (5, 'Update', 'Employee was manually updated', '2018-09-25 23:01:43', 2, 1),
 (6, 'Update', 'Employee was manually updated', '2018-10-10 21:59:58', 1, 1),
 (7, 'Create', 'Employee was Created', '2018-10-15 21:38:27', 4, 1),
-(8, 'Update', 'Employee was manually updated', '2018-10-15 21:38:46', 4, 1);
+(8, 'Update', 'Employee was manually updated', '2018-10-15 21:38:46', 4, 1),
+(9, 'Update', 'Employee was manually updated', '2018-11-04 13:54:05', 2, 1),
+(10, 'Create', 'Employee was Created', '2018-11-04 14:42:18', 5, 1);
 
 -- --------------------------------------------------------
 
@@ -108,6 +113,7 @@ CREATE TABLE `expense` (
   `name` varchar(100) NOT NULL,
   `description` text,
   `price` float NOT NULL,
+  `expense_type` enum('Appliance','Ingredient','Salary') NOT NULL,
   `expense_timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `employee_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -116,14 +122,14 @@ CREATE TABLE `expense` (
 -- Dumping data for table `expense`
 --
 
-INSERT INTO `expense` (`expense_id`, `name`, `description`, `price`, `expense_timestamp`, `employee_id`) VALUES
-(3, 'Electricity Bill', 'Paid Electricity Bill for September 2018', 8750, '2018-09-23 18:46:21', 1),
-(4, 'Water Bill', 'Paid water bill for the month', 3420, '2018-09-23 19:04:20', 1),
-(5, 'Expense', 'A test expense', 10100, '2018-10-07 20:23:16', 1),
-(6, 'Expense2', 'A test expense', 1500, '2018-10-07 20:23:33', 1),
-(7, 'Expense3', 'A test expense', 37500, '2018-10-07 20:23:44', 1),
-(8, 'Stove repair', 'Stove required new parts. Plus labor fee', 3500, '2018-10-15 21:39:33', 1),
-(10, 'aaa', 'bbb', 222, '2018-10-15 21:40:09', 1);
+INSERT INTO `expense` (`expense_id`, `name`, `description`, `price`, `expense_type`, `expense_timestamp`, `employee_id`) VALUES
+(3, 'Electricity Bill', 'Paid Electricity Bill for September 2018', 8750, 'Appliance', '2018-09-23 18:46:21', 1),
+(4, 'Water Bill', 'Paid water bill for the month', 3420, 'Appliance', '2018-09-23 19:04:20', 1),
+(5, 'Expense', 'A test expense', 10100, 'Appliance', '2018-10-07 20:23:16', 1),
+(6, 'Expense2', 'A test expense', 1500, 'Appliance', '2018-10-07 20:23:33', 1),
+(7, 'Expense3', 'A test expense', 37500, 'Appliance', '2018-10-07 20:23:44', 1),
+(8, 'Stove repair', 'Stove required new parts. Plus labor fee', 3500, 'Appliance', '2018-10-15 21:39:33', 1),
+(10, 'aaa', 'bbb', 222, 'Appliance', '2018-10-15 21:40:09', 1);
 
 -- --------------------------------------------------------
 
@@ -144,19 +150,19 @@ CREATE TABLE `item` (
 --
 
 INSERT INTO `item` (`item_id`, `name`, `price`, `qty`, `isDeleted`) VALUES
-(1, 'Cheezy Scallop', 179, 8, 0),
+(1, 'Cheezy Scallop', 179, 12, 0),
 (2, '', 0, 0, 1),
 (3, 'Lobster', 175, 5, 0),
-(4, 'Shrimp', 150, 14, 0),
-(5, 'Calamares', 250, 12, 0),
+(4, 'Shrimp', 150, 12, 0),
+(5, 'Calamares', 250, 16, 0),
 (6, 'Foods', 112, 5, 0),
 (7, 'fsdjfsldkf', 111, 0, 1),
 (8, 'sadfsad', 111, 0, 1),
 (9, 'sadfds', 111, 0, 1),
 (10, 'faa', 12, 0, 1),
 (11, 'bn', 222, 0, 1),
-(12, 'lumpia', 300, 0, 0),
-(13, 'Lechon', 250, 4, 0),
+(12, 'lumpia', 300, 25, 0),
+(13, 'Lechon', 250, 12, 0),
 (14, 'aaa', 111, 0, 1),
 (15, 'bb', 111, 0, 1),
 (16, 'ccc', 222, 0, 1),
@@ -176,7 +182,7 @@ INSERT INTO `item` (`item_id`, `name`, `price`, `qty`, `isDeleted`) VALUES
 (30, 'zoo', 199, 0, 1),
 (31, '123', 123, 0, 1),
 (32, 'Yummy food', 120, 0, 1),
-(33, 'Fried Chicken (4 pc)', 280, 1, 0),
+(33, 'Fried Chicken (4 pc)', 280, 15, 0),
 (34, 'Nachos', 234, 6, 0);
 
 -- --------------------------------------------------------
@@ -249,7 +255,15 @@ INSERT INTO `item_line` (`item_line_id`, `price`, `old_stock`, `qty`, `item_line
 (77, 175, 0, 2, 'local', 46, 3),
 (78, 150, 0, 3, 'local', 46, 4),
 (79, 250, 0, 4, 'local', 46, 5),
-(80, 234, 0, 1, 'local', 46, 34);
+(80, 234, 0, 1, 'local', 46, 34),
+(81, 0, 15, 3, '', 48, 5),
+(82, 0, 8, 7, '', 49, 1),
+(83, 0, 1, 14, '', 50, 33),
+(84, 0, 4, 8, '', 51, 13),
+(85, 0, 0, 25, '', 52, 12),
+(86, 179, 15, 3, 'local', 55, 1),
+(87, 150, 14, 2, 'honestbee', 55, 4),
+(88, 250, 18, 2, 'honestbee', 55, 5);
 
 -- --------------------------------------------------------
 
@@ -379,7 +393,15 @@ INSERT INTO `stock_transaction` (`stock_transaction_id`, `transaction_timestamp`
 (43, '2018-10-18 23:01:27', 'Restock', 1),
 (44, '2018-10-18 23:01:32', 'Restock', 1),
 (45, '2018-10-18 23:01:38', 'Restock', 1),
-(46, '2018-10-28 19:47:11', 'Sold', 1);
+(46, '2018-10-28 19:47:11', 'Sold', 1),
+(48, '2018-10-30 22:11:56', 'Restock', 1),
+(49, '2018-10-30 22:12:20', 'Restock', 1),
+(50, '2018-10-30 22:12:27', 'Restock', 1),
+(51, '2018-10-30 22:12:33', 'Restock', 1),
+(52, '2018-10-30 22:12:40', 'Restock', 1),
+(53, '2018-10-30 22:21:04', 'Sold', 1),
+(54, '2018-10-30 22:22:17', 'Sold', 1),
+(55, '2018-10-30 22:23:11', 'Sold', 1);
 
 --
 -- Indexes for dumped tables
@@ -465,17 +487,17 @@ ALTER TABLE `stock_transaction`
 -- AUTO_INCREMENT for table `branch`
 --
 ALTER TABLE `branch`
-  MODIFY `branch_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `branch_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `employee_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `employee_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `employee_log`
 --
 ALTER TABLE `employee_log`
-  MODIFY `employee_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `employee_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `expense`
 --
@@ -490,7 +512,7 @@ ALTER TABLE `item`
 -- AUTO_INCREMENT for table `item_line`
 --
 ALTER TABLE `item_line`
-  MODIFY `item_line_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
+  MODIFY `item_line_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 --
 -- AUTO_INCREMENT for table `item_log`
 --
@@ -510,7 +532,7 @@ ALTER TABLE `money_denomination`
 -- AUTO_INCREMENT for table `stock_transaction`
 --
 ALTER TABLE `stock_transaction`
-  MODIFY `stock_transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `stock_transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 --
 -- Constraints for dumped tables
 --
