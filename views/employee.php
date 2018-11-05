@@ -126,7 +126,7 @@ require ("../panelheader.php");
                       <label>Branch Name</label>
                       <select type="text" class="form-control" id="model_branch">
                         <option value="1">Sugbo Mercado</option>
-                        <option valie="2">Option 2</option>
+                        <option value="2">Option 2</option>
                         <option value="3">Option 3</option>
                       </select>
                     </div>
@@ -297,7 +297,7 @@ function PopulateItemsTable() {
           $("#model_ln").val(ln);
           $("#model_mn").val(mn);
           $("#model_fn").val(fn);
-          $("#model_branch").val(branch);
+          $('#model_branch option:contains("'+branch+'")').prop('selected',true);
           $("#model_email").val(email);
           $("#model_contact_no").val(num);
           $("#model_birthdate").val(birthdate);
@@ -308,11 +308,11 @@ function PopulateItemsTable() {
           var ln  = $("#model_ln").val();
           var mn  = $("#model_mn").val();
           var fn  = $("#model_fn").val();
-          var branch  = $("#model_branch").val();
+          var branch  = $("#model_branch").children("option:selected").val();
           var email  = $("#model_email").val();
           var num  = $("#model_contact_no").val();
           var birthdate  = $("#model_birthdate").val();
-
+          
             $.ajax({ 
 
               method: "POST",
