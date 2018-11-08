@@ -1,10 +1,15 @@
 <?php
 require("../../connection.php");
 
-$result = $conn->query("SELECT `e`.`expense_id`, `e`.`name`, `e`.`description`, `e`.`price`, `e`.`expense_type`, `e`.`expense_timestamp`, `em`.`first_name`, `em`.`last_name`
+$result = $conn->query("SELECT `e`.`expense_id`, `e`.`name`, `e`.`description`, `e`.`price`, 
+                          `e`.`expense_type`, `e`.`expense_timestamp`, 
+                          `em`.`first_name`, `em`.`last_name`,
+                          `b`.`branch_id`, `b`.`name` AS `branch_name`
                           FROM `expense` `e`
                           INNER JOIN `employee` `em`
                           ON `e`.`employee_id` = `em`.`employee_id`
+                          INNER JOIN `branch` `b`
+                          ON `em`.`branch_id` = `b`.`branch_id`
                           ORDER BY `expense_timestamp` DESC");
 $outp = "";
 $result_array = array();

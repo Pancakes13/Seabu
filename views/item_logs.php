@@ -22,6 +22,7 @@ require ("../panelheader.php");
                                         <th>Description</th>
                                         <th>Timestamp</th>
                                         <th>Performed By</th>
+                                        <th>Branch Name</th>
                                     </tr>
                             
                                 </table>
@@ -52,6 +53,7 @@ function PopulateItemLogTable() {
             result.push(item.log_description);
             result.push(item.log_timestamp);  
             result.push(item.first_name+" "+item.last_name);
+            result.push(item.branch_name);
             return result;
         });
         myTable.rows.add(result);

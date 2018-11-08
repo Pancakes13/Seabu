@@ -26,6 +26,7 @@ require ("../panelheader.php");
                         <th>Description</th>
                         <th>Price (Php)</th>
                         <th>Noted By</th>
+                        <th>Branch Name</th>
                         <th style="width:8%;">Action</th>
                       </tr>
                     </table>
@@ -169,6 +170,7 @@ function PopulateExpenseTable() {
         result.push(item.description);
         result.push(item.price);
         result.push(item.first_name+" "+item.last_name);
+        result.push(item.branch_name);
         result.push('<button type="button" class="btn btn-warning btn-sm editBtn" data-toggle="modal" data-target="#editModal" data-expense_id="'+item.expense_id+'" data-expense_name="'+item.name+'" data-price="'+item.price+'" data-desc="'+item.description+'"><i class="fa fa-edit"></i></button>'
           +'<button type="button" class="btn btn-danger btn-sm delBtn" data-expense_id="'+item.expense_id+'" data-expense_name="'+item.name+'" ><i class="fa fa-trash"></i></button>');
         return result;
