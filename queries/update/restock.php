@@ -8,9 +8,6 @@ $type = $_POST['type'];
 if(!$item_id || !$qty || !$type){
   $result = 2;
 }else{
-    if($type=='Damaged'){
-        $qty = $qty * -1;
-    }
     //Insert Item
     $sql    = "UPDATE `item` 
     SET `qty` = `qty`+ ?
