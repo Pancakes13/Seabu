@@ -10,6 +10,7 @@ $result = $conn->query("SELECT `e`.`expense_id`, `e`.`name`, `e`.`description`, 
                           ON `e`.`employee_id` = `em`.`employee_id`
                           INNER JOIN `branch` `b`
                           ON `em`.`branch_id` = `b`.`branch_id`
+                          AND `e`.`isDeleted` = 0
                           ORDER BY `expense_timestamp` DESC");
 $outp = "";
 $result_array = array();

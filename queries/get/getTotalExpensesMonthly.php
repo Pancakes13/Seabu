@@ -14,7 +14,8 @@ SUM(CASE WHEN MONTH(`expense_timestamp`) = '09' && YEAR(CURDATE()) THEN `price` 
 SUM(CASE WHEN MONTH(`expense_timestamp`) = '10' && YEAR(CURDATE()) THEN `price` ELSE 0 END) AS 'octCnt',
 SUM(CASE WHEN MONTH(`expense_timestamp`) = '11' && YEAR(CURDATE()) THEN `price` ELSE 0 END) AS 'novCnt',
 SUM(CASE WHEN MONTH(`expense_timestamp`) = '12' && YEAR(CURDATE()) THEN `price` ELSE 0 END) AS 'decCnt'
-FROM `expense`");
+FROM `expense`
+WHERE `isDeleted` = 0");
 $outp = "";
 $result_array = array();
 while($rs = $result->fetch_assoc()) {

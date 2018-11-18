@@ -6,8 +6,8 @@ if(!$id){
   $result = 2;
 }else{
     //Insert Item
-    $sql    = "DELETE
-    FROM `expense`
+    $sql    = "UPDATE `expense` 
+    SET `isDeleted` = 1
     WHERE `expense_id` = ?";
     
     $stmt   = $conn->prepare($sql);
