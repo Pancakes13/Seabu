@@ -51,8 +51,19 @@
                         <a href="stock_logs.php"> <i class="menu-icon fa fa-book"></i>Stock Logs</a>
                     </li>
 
-                    <li>
-                        <a href="expenses.php"> <i class="menu-icon fa fa-money"></i>Expenses</a>
+                    <li class="menu-item-has-children dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-money"></i>Expenses</a>
+                        <ul class="sub-menu children dropdown-menu" style="background-color:#076369;">
+                            <li>
+                                <a href="expenses.php"> <i class="fa fa-wrench"></i>Appliance</a>
+                            </li>
+                            <li>
+                                <a href="expenses.php"> <i class="fa fa-coffee"></i>Ingredients</a>
+                            </li>
+                            <li>
+                                <a href="expenses.php"> <i class="fa fa-users"></i>Salary</a>
+                            </li>
+                        </ul>
                     </li>
 
                     <li>
