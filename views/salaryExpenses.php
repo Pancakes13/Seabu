@@ -10,7 +10,7 @@ require ("../panelheader.php");
               <div class="col-md-12">
                 <div class="card">
                   <div class="card-header">
-                    <strong class="card-title">Expenses</strong>
+                    <strong class="card-title">Salary Expenses</strong>
                     <button type="button" class="btn btn-success" 
                     style="float:right;" data-toggle="modal" data-target="#addModal"
                     >
@@ -22,7 +22,6 @@ require ("../panelheader.php");
                       <tr>
                         <th>Timestamp</th>
                         <th>Expense Name</th>
-                        <th>Type</th>
                         <th>Description</th>
                         <th>Price (Php)</th>
                         <th>Noted By</th>
@@ -145,7 +144,9 @@ $(document).ready(function(){
 });
 function PopulateExpenseTable() {
     $.ajax({
-      method: "GET", url: "../queries/get/getExpenses.php", 
+      method: "POST",
+      url: "../queries/get/getExpenses.php",
+      data: {"type": 'Salary'},
     }).done(function( data ) {
       var jsonObject = JSON.parse(data);
       var result = jsonObject.map(function (item) {
@@ -166,7 +167,6 @@ function PopulateExpenseTable() {
         month[11] = "December";
         result.push(month[f.getMonth()]+" "+f.getDate()+", "+f.getFullYear()+" "+f.getHours()+":"+f.getMinutes()+":"+f.getSeconds());
         result.push(item.name);
-        result.push(item.expense_type);
         result.push(item.description);
         result.push(item.price);
         result.push(item.first_name+" "+item.last_name);
@@ -189,7 +189,7 @@ $("#addBtn").on('click', function(){
               method: "POST",
               url: "../queries/insert/addExpense.php",
 
-              data: {"name": name, "desc": description, "price": price},
+              data: {"name": name, "desc": description, "price": price, "type": 'Salary'},
 
              }).done(function( data ) { 
                 var result = $.parseJSON(data); 

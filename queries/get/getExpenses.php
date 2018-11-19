@@ -1,5 +1,6 @@
 <?php
 require("../../connection.php");
+$type  = $_POST['type'];
 
 $result = $conn->query("SELECT `e`.`expense_id`, `e`.`name`, `e`.`description`, `e`.`price`, 
                           `e`.`expense_type`, `e`.`expense_timestamp`, 
@@ -11,6 +12,7 @@ $result = $conn->query("SELECT `e`.`expense_id`, `e`.`name`, `e`.`description`, 
                           INNER JOIN `branch` `b`
                           ON `em`.`branch_id` = `b`.`branch_id`
                           AND `e`.`isDeleted` = 0
+                          AND `e`.`expense_type` = '$type'
                           ORDER BY `expense_timestamp` DESC");
 $outp = "";
 $result_array = array();
