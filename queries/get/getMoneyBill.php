@@ -2,7 +2,8 @@
 require("../../connection.php");
 
 $result = $conn->query("SELECT `money_bill_id`, `money_value`
-FROM `money_bill`");
+FROM `money_bill`
+ORDER BY `money_value`");
 
 $outp = "";
 $result_array = array();
