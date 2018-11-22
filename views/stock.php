@@ -23,7 +23,7 @@ require ("../panelheader.php");
                         <th>Item Name</th>
                         <th>Price (Php)</th>
                         <th>Current Stock (Pcs/Kg)</th>
-                        <th style="width:12%;">Action</th>
+                        <th style="width:20%;">Action</th>
                       </tr>
                     </table>
                   </div>
@@ -63,7 +63,7 @@ require ("../panelheader.php");
                   </div>
                   <div class="form-group">
                     <label>Quantity</label>
-                    <input id="modelQty" type="text" class="form-control">
+                    <input id="modelQty" type="number" class="form-control">
                   </div>
                 </div>
                 <div class="modal-footer">
@@ -312,7 +312,7 @@ $("#addBtn").on('click', function(){
 
             myTable.clear();
             PopulateItemsTable();
-            $("#modelQty").val(0);
+            $("#modelQty").val('');
             swal(
                 'Success!',
                 'You have restocked an item!',

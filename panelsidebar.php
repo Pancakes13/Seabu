@@ -22,7 +22,7 @@
                     <li class="active">
                         <a href="home.php"> <i class="menu-icon fa fa-home"></i>Home </a>
                     </li>
-                    <h3 class="menu-title" style="color: white;">Menu</h3><!-- /.menu-title -->
+                    <h3 class="menu-title" style="color: white;">Stock Management</h3><!-- /.menu-title -->
                     <!-- Tree Menu sample
                     <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-table"></i>Tally</a>
@@ -51,23 +51,18 @@
                         <a href="stock_logs.php"> <i class="menu-icon fa fa-book"></i>Stock Logs</a>
                     </li>
 
-                    <li class="menu-item-has-children dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="menu-icon fa fa-money"></i> Expenses
-                        </a>
-                        <ul class="sub-menu children dropdown-menu" style="background-color:#076369;">
-                            <li>
-                                <a href="utilityExpenses.php"> <i class="fa fa-wrench"></i>Utility</a>
-                            </li>
-                            <li>
-                                <a href="ingredientExpenses.php"> <i class="fa fa-coffee"></i>Ingredient</a>
-                            </li>
-                            <li>
-                                <a href="salaryExpenses.php"> <i class="fa fa-users"></i>Salary</a>
-                            </li>
-                        </ul>
+                    <h3 class="menu-title" style="color: white;">Expenses</h3><!-- /.menu-title -->
+                    <li>
+                        <a href="utilityExpenses.php"> <i class="menu-icon fa fa-wrench"></i>Utility</a>
+                    </li>
+                    <li>
+                        <a href="ingredientExpenses.php"> <i class="menu-icon fa fa-coffee"></i>Ingredient</a>
+                    </li>
+                    <li>
+                        <a href="salaryExpenses.php"> <i class="menu-icon fa fa-users"></i>Salary</a>
                     </li>
 
+                    <h3 class="menu-title" style="color: white;">Maintenance</h3><!-- /.menu-title -->
                     <li>
                         <a href="employee.php"> <i class="menu-icon fa fa-group"></i>Employee</a>
                     </li>
