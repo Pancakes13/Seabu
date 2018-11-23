@@ -3,14 +3,15 @@ require("../../connection.php");
 
 $stock_type = "Sold";
 $emp_id = 1; //Session value//
-$id = $_POST['stock_transaction_id'];
-if(!$stock_type || !$emp_id){
+$id = intval($_POST['stock_transaction_id']);
+$item  = (array_filter($_POST['item'], 'is_int')) ? $_POST['item'] : null; //todo: looks like an array, would need validations during for loop   
+$price = (is_float($_POST['price'])) ? $_POST['price'] : null;
+$qty = intval($_POST['qty']);
+$type = $_POST['type'];
+
+if(!$stock_type || !$emp_id || !$id || !$item || !$price || !$qty || !$type || $id < 0 || $qty < 0){
     $result = 2;
 }else{
-    $item  = $_POST['item'];
-    $price = $_POST['price'];
-    $qty = $_POST['qty'];
-    $type = $_POST['type'];
     for($x=0; $x<count($item); $x++){
       if($qty[$x]>0){
         $sql2    = "INSERT into `item_line` (`price`, `qty`, `item_line_type`, `stock_transaction_id`, `item_id`) values (?, ?, ?, ?, ?)  ";

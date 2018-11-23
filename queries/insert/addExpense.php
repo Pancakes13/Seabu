@@ -1,14 +1,14 @@
 <?php
 require("../../connection.php");
-$name  = $_POST['name'];
+$name  = (strlen($_POST['name']) <= 100) ? $_POST['name'] : null;
 $desc  = $_POST['desc'];
-$price  = $_POST['price'];
+$price  = (is_float($_POST['price'])) ? $_POST['price'] : null;
 $type = $_POST['type'];
 $emp_id = 1; //SESSION VALUE
 
 /* validate whether user has entered all values. */
 
-if(!$name || !$price || !$desc || !$type){
+if(!$name || !$price || !$desc || !$type || $price < 0){
 
   $result = 2;
 

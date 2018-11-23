@@ -1,13 +1,13 @@
 -<?php
 require("../../connection.php");
-$name  = $_POST['name'];
+$name  = (strlen($_POST['name']) <= 50) ? $_POST['name'] : null;
 
-$price  = $_POST['price'];
+$price  = (is_float($_POST['price'])) ? $_POST['price'] : null;
 
 
 /* validate whether user has entered all values. */
 
-if(!$name || !$price){
+if(!$name || !$price || $price < 0){
 
   $result = 2;
 

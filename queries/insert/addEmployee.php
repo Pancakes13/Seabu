@@ -1,24 +1,22 @@
 <?php
 require("../../connection.php");
-$username  = $_POST['username'];
-$fn = $_POST['first_name'];
-$mn  = $_POST['middle_name'];
-$ln  = $_POST['last_name'];
-$branch  = $_POST['branchName'];
-$email  = $_POST['email'];
-$num  = $_POST['contact_num'];
+$username  = (strlen($_POST['username']) <= 50) ? $_POST['username'] : null ;
+$fn = (strlen($_POST['first_name']) <= 50) ? $_POST['first_name'] : null;
+$mn  = (strlen($_POST['middle_name']) <= 50) ? $_POST['middle_name'] : null;
+$ln  = (strlen($_POST['last_name']) <= 50) ? $_POST['last_name'] : null;
+$branch  = intval($_POST['branchName']);
+$email  = (strlen($_POST['email']) <= 50) ? $_POST['email'] : null;
+$num  = (strlen($_POST['contact_num']) <= 11) ? $_POST['contact_num'] : null;
 $bday  = $_POST['bday'];
 $pass = "123";
 
 if(isset($_POST['password'])){
     $pass = $_POST['password'];
-}else{
-    $pass = '123';
 }
 
 /* validate whether user has entered all values. */
 
-if(!$username || !$fn || !$mn || !$ln || !$email || !$num || !$bday || !$branch || !$pass){
+if(!$username || !$fn || !$mn || !$ln || !$email || !$num || !$bday || !$branch || !$pass || $branch < 0){
 
   $result = 2;
 
