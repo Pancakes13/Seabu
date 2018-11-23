@@ -4,12 +4,12 @@ require("../../connection.php");
 $stock_type = "Sold";
 $emp_id = 1; //Session value//
 $id = intval($_POST['stock_transaction_id']);
-$item  = (array_filter($_POST['item'], 'is_int')) ? $_POST['item'] : null; //todo: looks like an array, would need validations during for loop   
-$price = (is_float($_POST['price'])) ? $_POST['price'] : null;
-$qty = intval($_POST['qty']);
+$item  = (array_filter($_POST['item'], 'is_int')) ? $_POST['item'] : null; 
+$price = $_POST['price'];
+$qty = $_POST['qty'];
 $type = $_POST['type'];
 
-if(!$stock_type || !$emp_id || !$id || !$item || !$price || !$qty || !$type || $id < 0 || $qty < 0){
+if(!$stock_type || !$emp_id || !$id || !$item || $id < 0){
     $result = 2;
 }else{
     for($x=0; $x<count($item); $x++){

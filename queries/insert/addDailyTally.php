@@ -3,8 +3,13 @@ require("../../connection.php");
 
 $stock_type = "Sold";
 $emp_id = 1; //Session value//
+$item  = (array_filter($_POST['item'], 'is_int')) ? $_POST['item'] : null; 
+$price = $_POST['price'];
+$stock = $_POST['current_stock'];
+$qty = $_POST['qty'];
+$type = $_POST['type'];
 
-if(!$stock_type || !$emp_id){
+if(!$stock_type || !$emp_id || !$item){
 
     $result = 2;
   
@@ -32,11 +37,7 @@ if(!$stock_type || !$emp_id){
       if($stmt->execute()){
         //Insert Item Line
         $id = $conn->insert_id;
-        $item  = $_POST['item'];
-        $price = $_POST['price'];
-        $stock = $_POST['current_stock'];
-        $qty = $_POST['qty'];
-        $type = $_POST['type'];
+
         for($x=0; $x<count($item); $x++){
           if($qty[$x]>0){
               echo $type[$x];
