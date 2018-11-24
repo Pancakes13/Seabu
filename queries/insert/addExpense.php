@@ -2,7 +2,7 @@
 require("../../connection.php");
 $name  = (strlen($_POST['name']) <= 100) ? $_POST['name'] : null;
 $desc  = $_POST['desc'];
-$price  = (is_float((float)$_POST['price'])) ? (float)$_POST['price'] : null;
+$price  = ((float)$_POST['price']) ? $_POST['price'] : null;
 $type = $_POST['type'];
 $emp_id = 1; //SESSION VALUE
 
@@ -14,13 +14,18 @@ if(!$name || !$price || !$desc || !$type || $price < 0){
 
 }else{
     //Insert Item
-    $sql    = "INSERT into `expense` (`name`, `description`, `price`, `expense_type`, `employee_id`) values (?, ?, ?, ?, ?)  ";
+    try{
+        $sql    = "INSERT into `expense` (`name`, `description`, `price`, `expense_type`, `employee_id`) values (?, ?, ?, ?, ?)  ";
 
-    $stmt   = $conn->prepare($sql);
-    $stmt->bind_param('sssss', $name, $desc, $price, $type, $emp_id);
-    
-    if($stmt->execute()){
-        $result = 1;
+        $stmt   = $conn->prepare($sql);
+        $stmt->bind_param('sssss', $name, $desc, $price, $type, $emp_id);
+        
+        if($stmt->execute()){
+            $result = 1;
+        }
+    }
+    catch(Exception $ex){
+        echo "Error on inserting expense: " . $ex->getMessage();
     }
 }
 
