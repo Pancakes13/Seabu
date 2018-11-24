@@ -4,7 +4,7 @@ $username  = (strlen($_POST['username']) <= 50) ? $_POST['username'] : null ;
 $fn = (strlen($_POST['first_name']) <= 50) ? $_POST['first_name'] : null;
 $mn  = (strlen($_POST['middle_name']) <= 50) ? $_POST['middle_name'] : null;
 $ln  = (strlen($_POST['last_name']) <= 50) ? $_POST['last_name'] : null;
-$branch  = intval($_POST['branchName']);
+$branch  = ((int)$_POST['branchName']) ? $_POST['branchName'] : null;
 $email  = (strlen($_POST['email']) <= 50) ? $_POST['email'] : null;
 $num  = (strlen($_POST['contact_num']) <= 11) ? $_POST['contact_num'] : null;
 $bday  = $_POST['bday'];
@@ -33,15 +33,16 @@ if(!$username || !$fn || !$mn || !$ln || !$email || !$num || !$bday || !$branch 
         if($passwordHash == false){
             echo "password hash failed";
         }
+        try{
+            $conn->autocommit(false);
+            //Insert Item
+            $sql    = "INSERT into `employee` (`username`, `first_name`, `middle_name`, `last_name`, `branch_id`, `pass`, `email`, `contact_no`, `birthdate`) values (?, ?, ?, ?, ?, ?, ?, ?, ?)  ";
 
-        //Insert Item
-        $sql    = "INSERT into `employee` (`username`, `first_name`, `middle_name`, `last_name`, `branch_id`, `pass`, `email`, `contact_no`, `birthdate`) values (?, ?, ?, ?, ?, ?, ?, ?, ?)  ";
+            $stmt   = $conn->prepare($sql);
+            $stmt->bind_param('sssssssss', $username, $fn, $mn, $ln, $branch, $passwordHash, $email, $num, $bday);
+            $stmt->execute();
 
-        $stmt   = $conn->prepare($sql);
-        $stmt->bind_param('sssssssss', $username, $fn, $mn, $ln, $branch, $passwordHash, $email, $num, $bday);
-        
-        if($stmt->execute()){
-                //Insert Item Log
+                    //Insert Item Log
             $empId = $conn->insert_id;
             $pId = 1; //SESSION
             $sql2    = "INSERT into `employee_log` (`action`, `log_description`, `employee_id`, `performed_by`) values (?, ?, ?, ?)  ";
@@ -52,9 +53,14 @@ if(!$username || !$fn || !$mn || !$ln || !$email || !$num || !$bday || !$branch 
             $desc = 'Employee was Created';
 
             $stmt2->bind_param('ssss', $action, $desc, $empId, $pId);
-            if($stmt2->execute()){
-                $result = 1;
-            }
+            $stmt2->execute();
+
+            $result = 1;
+            $conn->commit();
+            $conn->autocommit(true);
+        }
+        catch(Exception $ex){
+            echo "Error on inserting employee: " . $ex->getMessage(); 
         }
     }
 }

@@ -3,7 +3,7 @@ require("../../connection.php");
 
 $stock_type = "Sold";
 $emp_id = 1; //Session value//
-$item  = (array_filter($_POST['item'], 'is_int')) ? $_POST['item'] : null; 
+$item  = $_POST['item']; 
 $price = $_POST['price'];
 $stock = $_POST['current_stock'];
 $qty = $_POST['qty'];
@@ -27,14 +27,16 @@ if(!$stock_type || !$emp_id || !$item){
     $result = 2;
 
     if($tallyExists->num_rows == 0){
-      //Insert Stock Transaction
-      $sql    = "INSERT into `stock_transaction` (`type`, `employee_id`) values (?, ?)";
-  
-      $stmt   = $conn->prepare($sql);
-      
-      $stmt->bind_param('ss', $stock_type, $emp_id);
-      
-      if($stmt->execute()){
+      try{
+        $conn->autocommit(false);
+        //Insert Stock Transaction
+        $sql    = "INSERT into `stock_transaction` (`type`, `employee_id`) values (?, ?)";
+    
+        $stmt   = $conn->prepare($sql);
+        
+        $stmt->bind_param('ss', $stock_type, $emp_id);
+        
+        $stmt->execute();
         //Insert Item Line
         $id = $conn->insert_id;
 
@@ -46,21 +48,24 @@ if(!$stock_type || !$emp_id || !$item){
             $stmt2   = $conn->prepare($sql2);
         
             $stmt2->bind_param('ssssss', $price[$x], $stock[$x], $qty[$x], $type[$x], $id, $item[$x]);
-            if($stmt2->execute()){
-              
-              $sql3 = "UPDATE `item` 
-              SET `qty` = (`qty` - ?)
-              WHERE `item_id` = ?";
-              
-              $stmt3 = $conn->prepare($sql3);
-              $stmt3->bind_param('ss', $qty[$x], $item[$x]);
-              
-              if($stmt3->execute()){
-                $result = 1;
-              }
-            }
+            $stmt2->execute();
+            
+            $sql3 = "UPDATE `item` 
+            SET `qty` = (`qty` - ?)
+            WHERE `item_id` = ?";
+            
+            $stmt3 = $conn->prepare($sql3);
+            $stmt3->bind_param('ss', $qty[$x], $item[$x]);
+            
+            $stmt3->execute();
+            $result = 1;
           }
         }
+        $conn->commit();
+        $conn->autocommit(true);
+      }
+      catch(Exception $ex){
+        echo "Erro on inserting in daily tally process: " . $ex->getMessage();
       }
     }
   }
