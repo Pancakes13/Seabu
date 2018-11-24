@@ -3,6 +3,7 @@ require("../../connection.php");
 
 $result = $conn->query("SELECT `il`.`item_line_id`, `i`.`item_id`, `i`.`name`, `il`.`old_stock`, 
                 `i`.`qty` AS 'item_qty', `il`.`price`, `il`.`qty`, `il`.`item_line_type`,
+                `il`.`price` * `il`.`qty` AS 'gross_profit',
                 `s`.`transaction_timestamp`, `s`.`type`, `s`.`transaction_timestamp`, 
                 `e`.`first_name`, `e`.`last_name`, `b`.`branch_id`, `b`.`name` AS `branch_name`
                 FROM `stock_transaction` `s` 
@@ -13,7 +14,8 @@ $result = $conn->query("SELECT `il`.`item_line_id`, `i`.`item_id`, `i`.`name`, `
                 INNER JOIN `employee` `e`
                 ON `e`.`employee_id` = `s`.`employee_id`
                 INNER JOIN `branch` `b`
-                ON `e`.`branch_id` = `b`.`branch_id`");
+                ON `e`.`branch_id` = `b`.`branch_id`
+                AND `s`.`type` = 'Sold'");
 
 $result_array = array();
 while($rs = $result->fetch_assoc()) {

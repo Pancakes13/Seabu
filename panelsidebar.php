@@ -48,7 +48,7 @@
                     </li>
 
                     <li>
-                        <a href="stock_logs.php"> <i class="menu-icon fa fa-book"></i>Stock Logs</a>
+                        <a href="sales_logs.php"> <i class="menu-icon fa fa-book"></i>Sales Logs</a>
                     </li>
 
                     <h3 class="menu-title" style="color: white;">Expenses</h3><!-- /.menu-title -->

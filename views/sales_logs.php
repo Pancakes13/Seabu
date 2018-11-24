@@ -13,17 +13,15 @@ require ("../panelheader.php");
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <strong class="card-title" id="title">Stock Transaction Log</strong>
+                                <strong class="card-title" id="title">Sales Log</strong>
                             </div>
                             <div class="card-body">
                                 <table id="stock-table" class="table table-striped table-bordered"><thead>
                                     <tr>
                                         <th>Timestamp</th>
                                         <th>Item</th>
-                                        <th>Action</th>
-                                        <th>Current Stock</th>
-                                        <th>Old Stock</th>
-                                        <th>Quantity</th>
+                                        <th>Served</th>
+                                        <th>Gross Profit</th>
                                         <th>Performed By</th>
                                     </tr>
                             
@@ -55,10 +53,8 @@ function PopulateItemLogTable() {
             var result = [];
             result.push(item.transaction_timestamp);
             result.push(item.name);
-            result.push(item.type);
-            result.push(item.item_qty);
-            result.push(item.old_stock);
             result.push(item.qty); 
+            result.push("Php "+item.gross_profit); 
             result.push(item.first_name+" "+item.last_name);
             return result;
         });
