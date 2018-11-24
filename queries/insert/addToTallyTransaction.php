@@ -3,7 +3,7 @@ require("../../connection.php");
 
 $stock_type = "Sold";
 $emp_id = 1; //Session value//
-$id = intval($_POST['stock_transaction_id']);
+$id = intval((int)$_POST['stock_transaction_id']);
 $item  = (array_filter($_POST['item'], 'is_int')) ? $_POST['item'] : null; 
 $price = $_POST['price'];
 $qty = $_POST['qty'];

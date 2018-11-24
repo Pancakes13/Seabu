@@ -2,7 +2,7 @@
 require("../../connection.php");
 $name  = (strlen($_POST['name']) <= 50) ? $_POST['name'] : null;
 
-$price  = (is_float($_POST['price'])) ? $_POST['price'] : null;
+$price  = (is_float((float)$_POST['price'])) ? (float)$_POST['price'] : null;
 
 
 /* validate whether user has entered all values. */

@@ -4,7 +4,7 @@ $username  = (strlen($_POST['username']) <= 50) ? $_POST['username'] : null ;
 $fn = (strlen($_POST['first_name']) <= 50) ? $_POST['first_name'] : null;
 $mn  = (strlen($_POST['middle_name']) <= 50) ? $_POST['middle_name'] : null;
 $ln  = (strlen($_POST['last_name']) <= 50) ? $_POST['last_name'] : null;
-$branch  = intval($_POST['branchName']);
+$branch  = intval((int)$_POST['branchName']);
 $email  = (strlen($_POST['email']) <= 50) ? $_POST['email'] : null;
 $num  = (strlen($_POST['contact_num']) <= 11) ? $_POST['contact_num'] : null;
 $bday  = $_POST['bday'];
