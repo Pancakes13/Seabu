@@ -2,64 +2,69 @@
 require ("../panelsidebar.php");
 require ("../panelheader.php");
 ?>
-    
-    <a href="stock.php"><button type="button" class="btn" style="margin-left:1.5%;">
-        Back <i class="fa fa-toggle-left"></i>
-    </button></a>
-
-        <div class="content mt-3">
-            <div class="animated fadeIn">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <strong class="card-title" id="title">Sales Log</strong>
-                            </div>
-                            <div class="card-body">
-                                <table id="stock-table" class="table table-striped table-bordered"><thead>
-                                    <tr>
-                                        <th>Timestamp</th>
-                                        <th>Item</th>
-                                        <th>Served</th>
-                                        <th>Gross Profit</th>
-                                        <th>Performed By</th>
-                                    </tr>
-                            
-                                </table>
-                            </div>
+    <div class="content mt-3">
+        <div class="animated fadeIn">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong class="card-title" id="title">Stock Transaction Log</strong>
+                        </div>
+                        <div class="card-body">
+                            <table id="salesLogs-table" class="table table-bordered"><thead>
+                            </table>
                         </div>
                     </div>
                 </div>
-            </div><!-- .animated -->
-        </div><!-- .content -->
+            </div>
+        </div><!-- .animated -->
+    </div><!-- .content -->
 
-    </div><!-- /#right-panel -->
-
-    <!-- Right Panel -->
 <script>
 var myTable = "";
 $(document).ready(function(){
-  myTable = $('#stock-table').DataTable({
-    "order": [[ 0, "desc" ]]
-  });
+  myTable = $('#salesLogs-table');
   PopulateItemLogTable();
 });
 function PopulateItemLogTable() {
+    $('#salesLogs-table tr').remove();
     $.ajax({
         method: "GET", url: "../queries/get/getStockTransactionLog.php", 
     }).done(function( data ) {
         var jsonObject = JSON.parse(data);
+        var lastTimestamp = "";
         var result = jsonObject.map(function (item) {
             var result = [];
-            result.push(item.transaction_timestamp);
-            result.push(item.name);
-            result.push(item.qty); 
-            result.push("Php "+item.gross_profit); 
-            result.push(item.first_name+" "+item.last_name);
-            return result;
+            if(lastTimestamp != item.dateToday){
+                lastTimestamp = item.dateToday;
+
+                var f = new Date(lastTimestamp);
+                var month = new Array();
+                month[0] = "January";
+                month[1] = "February";
+                month[2] = "March";
+                month[3] = "April";
+                month[4] = "May";
+                month[5] = "June";
+                month[6] = "July";
+                month[7] = "August";
+                month[8] = "September";
+                month[9] = "October";
+                month[10] = "November";
+                month[11] = "December";
+                
+                myTable.append('<tr style="background-color:#f2f2f2"><td><strong>'+month[f.getMonth()]+" "+f.getDate()+", "+f.getFullYear()+'</strong></td>'
+                +'<td></td><td></td><td></td><td></td><td></td><td></td></tr>'
+                +'<tr style="font-weight:bold"><td>Timestamp</td><td>Item</td><td>Price</td><td>Served</td><td>Gross Profit</td><td>Performed By</td><td>Branch Name</td></tr>');
+            }
+            myTable.append('<tr class="item"><td>'+item.transaction_timestamp+'</td>'
+            +'<td>'+item.name+'</td>'
+            +'<td>'+item.price+'</td>'
+            +'<td>'+item.qty+'</td>'
+            +'<td>'+item.gross_profit+'</td>'
+            +'<td>'+item.first_name+" "+item.last_name+'</td>'
+            +'<td>'+item.branch_name+'</td></tr>');
         });
-        myTable.rows.add(result);
-        myTable.draw();
     });
 }
 

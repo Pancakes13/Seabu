@@ -5,7 +5,8 @@ $result = $conn->query("SELECT `il`.`item_line_id`, `i`.`item_id`, `i`.`name`, `
                 `i`.`qty` AS 'item_qty', `il`.`price`, `il`.`qty`, `il`.`item_line_type`,
                 `il`.`price` * `il`.`qty` AS 'gross_profit',
                 `s`.`transaction_timestamp`, `s`.`type`, `s`.`transaction_timestamp`, 
-                `e`.`first_name`, `e`.`last_name`, `b`.`branch_id`, `b`.`name` AS `branch_name`
+                `e`.`first_name`, `e`.`last_name`, `b`.`branch_id`, `b`.`name` AS `branch_name`,
+                DATE(`s`.`transaction_timestamp`) AS `dateToday`
                 FROM `stock_transaction` `s` 
                 INNER JOIN `item_line` `il`
                 ON  `s`.`stock_transaction_id` = `il`.`stock_transaction_id`

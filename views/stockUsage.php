@@ -2,10 +2,6 @@
 require ("../panelsidebar.php");
 require ("../panelheader.php");
 ?>
-    
-    <a href="stock.php"><button type="button" class="btn" style="margin-left:1.5%;">
-        Back <i class="fa fa-toggle-left"></i>
-    </button></a>
     <form id="searchStockUsage">
         <div class="form-group" style="width:40%; margin-left:1%; margin-top:3%;">
             <label class=" form-control-label">Start Date/End Date <i class="fa fa-calendar"></i></label>
@@ -34,8 +30,6 @@ require ("../panelheader.php");
                 </div>
             </div><!-- .animated -->
         </div><!-- .content -->
-
-    </div><!-- /#right-panel -->
 
     <!-- Right Panel -->
 <script>
