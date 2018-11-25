@@ -16,7 +16,7 @@
     <script src="../assets/js/lib/data-table/buttons.colVis.min.js"></script>
     <script src="../assets/js/lib/data-table/datatables-init.js"></script>
     <script src="../assets/js/chartjs.min.js"></script>
-
+    <script src="../assets/js/jquery.smartWizard.min.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function() {
