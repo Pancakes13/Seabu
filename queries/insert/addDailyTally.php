@@ -42,7 +42,12 @@ if(!$stock_type || !$emp_id || !$item){
 
         for($x=0; $x<count($item); $x++){
           if($qty[$x]>0){
-              echo $type[$x];
+
+            if(!(float)$price[$x] || $price[$x] < 0 || !(int)$stock[$x] || $stock[$x] < 0 || !(int)$item[$x] || $item[$x] < 0){
+              $_error = array($price[$x], $qty[$x], $item[$x]);
+              throw new Exception("one of the variables were not valid: " . $_error);
+            }
+
             $sql2    = "INSERT into `item_line` (`price`, `old_stock`, `qty`, `item_line_type`, `stock_transaction_id`, `item_id`) values (?, ?, ?, ?, ?, ?)  ";
         
             $stmt2   = $conn->prepare($sql2);

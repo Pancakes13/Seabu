@@ -20,6 +20,11 @@ if(!$stock_type || !$emp_id || !$id || !$item || $id < 0){
         
         $stmt2   = $conn->prepare($sql2);
         
+        if(!(float)$price[$x] || $price[$x] < 0 || !(int)$item[$x] || $item[$x] < 0){
+          $_error = array($price[$x], $qty[$x], $item[$x]);
+          throw new Exception("one of the variables were not valid: " . $_error);
+        }
+
         $stmt2->bind_param('sssss', $price[$x], $qty[$x], $type[$x], $id, $item[$x]);
         $stmt2->execute();
               
