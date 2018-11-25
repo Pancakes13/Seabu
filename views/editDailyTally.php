@@ -31,6 +31,23 @@ require ("../panelheader.php");
 
                 <div class="card">
                     <div class="card-header">
+                      <strong class="card-title">Edit Money Denomination</strong>
+                    </div>
+                    <div class="card-body">
+                        <form id="dailyTally">
+                            <table id="moneyTable" class="table">
+                              <tr>
+                                <th>Money Value</th>
+                                <th>Qty</th>
+                                <th style="text-align:right;">Subtotal</th>
+                              </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
                         <strong class="card-title">Add to Tally</strong>
                     </div>
                     <div class="card-body">
@@ -57,11 +74,14 @@ require ("../panelheader.php");
 <script>
 var myTable = "";
 var newTable = "";
+var moneyTable = "";
 $(document).ready(function(){
   myTable = $('#tallyTable');
   newTable = $('#newTallyTable');
+  moneyTable = $('#moneyTable');
   PopulateTallyTable();
   PopulateNewTallyTable();
+  PopulateMoneyDenominationTable()
   $('#dailyTally').submit(function(e) {
     e.preventDefault(); 
     $.ajax({
@@ -160,6 +180,24 @@ function PopulateNewTallyTable() {
   });
 }
 
+function PopulateMoneyDenominationTable() {
+  var exists = false;
+  $.ajax({
+    method: "GET", url: "../queries/get/getMoneyBill.php", 
+  }).done(function( data ) {
+    var jsonObject = JSON.parse(data);
+    exists = true;
+    var result = jsonObject.map(function (item) {
+      var result = [];
+      moneyTable.append('<tr class="moneyItem"><td style="width:40%;">'+item.money_value+'</td>'
+        +'<td style="width:20%;"><input name="moneyQty[]" class="moneyQty form-control" type="number" value="0" min="0"> <input name="moneyId[]" value="'+item.money_bill_id+'" hidden> </td>'
+        +'<td class="moneySubTotal" style="width:10%; text-align:right;">0</td></tr>');
+    });
+    moneyTable.append('<tr><td></td><td id="moneyTotal"><strong>TOTAL</strong></td><td id="moneyTotalValue" style="text-align:right;">0</td></tr>');
+    moneyTable.append('<tr><td></td><td></td><td><button type="submit" class="btn btn-warning btn-sm">Edit Money Denomination <i class="fa fa-edit"></i></button></td></tr>');
+  })
+}
+
 $(document).on('change', ".editQty",function () {
     var numRows = $('#tallyTable tr').length;
     var test1 = $(this).closest(".editQty").val();
@@ -188,6 +226,20 @@ $(document).on('change', ".qty",function () {
     total += parseInt($this.find(".subTotal").html());
   });
   $("#totalValue").html(total);
+});
+
+$(document).on('change', ".moneyQty",function () {
+  var test1 = $(this).closest(".qty").val();
+  var value = $(this).closest("td").parent()[0].cells[0].innerHTML;
+  var qty = parseFloat($(this).closest("td").parent()[0].cells[1].children[0].value);
+  $(this).closest("td").parent()[0].cells[2].innerHTML = qty*value;
+   
+   var total = 0;
+  $("tr.moneyItem").each(function() {
+    $this = $(this);
+    total += parseFloat($this.find(".moneySubTotal").html());
+  });
+  $("#moneyTotalValue").html(total);
 });
 
 $(document).on('click', '#tallyTable .delBtn', function(){ 

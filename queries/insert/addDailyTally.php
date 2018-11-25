@@ -8,6 +8,8 @@ $price = $_POST['price'];
 $stock = $_POST['current_stock'];
 $qty = $_POST['qty'];
 $type = $_POST['type'];
+$moneyId = $_POST['moneyId'];
+$moneyQty = $_POST['moneyQty'];
 
 if(!$stock_type || !$emp_id || !$item){
 
@@ -63,9 +65,21 @@ if(!$stock_type || !$emp_id || !$item){
             $stmt3->bind_param('ss', $qty[$x], $item[$x]);
             
             $stmt3->execute();
-            $result = 1;
           }
         }
+        for($x=0; $x<count($moneyId); $x++){
+          if ($moneyQty[$x] > 0) {
+            $sql4 = "INSERT into `money_denomination`
+            (`money_bill_id`, `stock_transaction_id`, `money_denomination_qty`)
+            values (?, ?, ?) ";
+
+            $stmt4 = $conn->prepare($sql4);
+
+            $stmt4->bind_param('sss', $moneyId[$x], $id, $moneyQty[$x]);
+            $stmt4->execute();
+          }
+        }
+        $result = 1;
         $conn->commit();
         $conn->autocommit(true);
       }
