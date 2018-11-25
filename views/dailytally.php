@@ -16,22 +16,58 @@ require ("../panelheader.php");
     <div class="row">
       <div class="col-md-12">
         <div class="card">
-          <div class="card-header">
-            <strong class="card-title"><?php echo date("F d, Y (l)");?></strong>
-          </div>
-          <div class="card-body">
-            <form id="dailyTally">
-              <table id="tallyTable" class="table">
-                <tr>
-                  <th>Item Name</th>
-                  <th>Price (Php)</th>
-                  <th>Current Stock (Pcs/Kg)</th>
-                  <th>Qty</th>
-                  <th>Type</th>
-                  <th style="text-align:right;">Subtotal</th>
-                </tr>
-              </table>
-            </form>
+          <div id="smartwizard">
+            <ul>
+              <li><a href="#step-1">Step 1<br /><small>Enter Daily Tally</small></a></li>
+              <li><a href="#step-2">Step 2<br /><small>Enter Money Denomination</small></a></li>
+            </ul>
+            <div>
+              <div id="step-1" class="">
+                <div class="card">
+                  <div class="card-header">
+                    <strong class="card-title"><?php echo date("F d, Y (l)");?></strong>
+                  </div>
+                  <div class="card-body">
+                    <form id="dailyTally">
+                      <table id="tallyTable" class="table">
+                        <tr>
+                          <th>Item Name</th>
+                          <th>Price (Php)</th>
+                          <th>Current Stock (Pcs/Kg)</th>
+                          <th>Qty</th>
+                          <th>Type</th>
+                          <th style="text-align:right;">Subtotal</th>
+                        </tr>
+                      </table>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+              <div id="step-2" class="">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="card">
+                      <div class="card-header">
+                        <strong class="card-title">Money Denomination</strong>
+                      </div>
+                      <div class="card-body">
+                        <form id="moneyTally">
+                          <table id="moneyTable" class="table">
+                            <tr>
+                              <th>Money Value</th>
+                              <th>Qty</th>
+                              <th style="text-align:right;">Subtotal</th>
+                            </tr>
+                          </table>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -63,6 +99,23 @@ $(document).ready(function(){
     })
   });
 
+  $('#smartwizard').smartWizard({
+    selected: 0,
+    transitionEffect:'fade',
+    toolbarSettings: {
+      toolbarPosition: 'bottom',
+      toolbarButtonPosition: 'right',
+      showPreviousButton: false
+    },
+    anchorSettings: {
+      anchorClickable: false,
+      removeDoneStepOnNavigateBack: false
+    },
+    lang: {
+      next: 'Enter Money Denomination'
+    },
+    keyNavigation: false
+  });
 });
 
 function PopulateTallyTable() {
@@ -94,29 +147,6 @@ function PopulateTallyTable() {
     });
     $("#totalValue").html(total);
     
-    $('.animated').append('<div class="row">'
-      +'<div class="col-md-12">'
-      +'  <div class="card">'
-      +'    <div class="card-header">'
-      +'      <strong class="card-title">Money Denomination</strong>'
-      +'    </div>'
-      +'    <div class="card-body">'
-      +'      <form id="moneyTally">'
-      +'        <table id="moneyTable" class="table">'
-      +'          <tr>'
-      +'            <th>Money Value</th>'
-      +'            <th>Qty</th>'
-      +'            <th style="text-align:right;">Subtotal</th>'
-      +'          </tr>'
-      +'        </table>'
-      +'      </form>'
-      +'    </div>'
-      +'  </div>'
-      +'</div>'
-    +'</div>');
-    moneyTable = $('#moneyTable');
-    PopulateMoneyDenominationTable();
-    
     } else {
       $.ajax({
       method: "GET", url: "../queries/get/getItems.php", 
@@ -135,8 +165,10 @@ function PopulateTallyTable() {
           +'<td class="subTotal" style="text-align:right;">0</td></tr>');
       });
       myTable.append('<tr><td></td><td></td><td></td><td></td><td id="total"><strong>TOTAL</strong></td><td id="totalValue" style="text-align:right;">0</td></tr>');
-      myTable.append('<tr><td></td><td></td><td></td><td></td><td></td><td><button class="btn btn-success" type="submit">Submit Daily Tally</button></td></tr>');
     });
+    
+    moneyTable = $('#moneyTable');
+    PopulateMoneyDenominationTable();
     }
   });
 }
@@ -155,7 +187,7 @@ function PopulateMoneyDenominationTable() {
         +'<td class="moneySubTotal" style="width:10%; text-align:right;">0</td></tr>');
     });
     moneyTable.append('<tr><td></td><td id="moneyTotal"><strong>TOTAL</strong></td><td id="moneyTotalValue" style="text-align:right;">0</td></tr>');
-    // myTable.append('<tr><td></td><td></td><td></td><td><td style="text-align:right;"><a href="editDailyTally.php?date='+newDate+'"><button type="button" class="btn btn-warning btn-sm">Edit Tally <i class="fa fa-edit"></i></button></a></td></tr>');
+    moneyTable.append('<tr><td></td><td></td><td><button class="btn btn-success" type="submit">Submit Daily Tally</button></td></tr>');
   })
 }
 
