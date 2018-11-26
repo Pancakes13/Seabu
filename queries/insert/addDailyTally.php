@@ -11,7 +11,7 @@ $type = $_POST['type'];
 $moneyId = $_POST['moneyId'];
 $moneyQty = $_POST['moneyQty'];
 
-if(!$stock_type || !$emp_id || !$item){
+if(!$stock_type || !$emp_id || !$item || max($qty) == 0){
 
     $result = 2;
   
