@@ -13,7 +13,7 @@
                 </a>
 
                 <div class="user-menu dropdown-menu">
-                    <a class="nav-link" href="login.php"><i class="fa fa-power -off"></i>Logout</a>
+                    <a class="nav-link" href="../queries/get/logoutEmployee.php"><i class="fa fa-power -off"></i>Logout</a>
                 </div>
             </div>
         </div>

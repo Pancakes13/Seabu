@@ -14,6 +14,12 @@ if(!$email || !$password){
 
         if(password_verify($password, $employee['pass'])){
             $result = 1;
+            session_start();
+            $_SESSION["user_id"] = $employee['employee_id'];
+            $_SESSION["user_fn"] = $employee['first_name'];
+            $_SESSION["user_mn"] = $employee['middle_name'];
+            $_SESSION["user_ln"] = $employee['last_name'];
+            $_SESSION["email"] = $employee['email'];
         }else{
             $result = "password incorrect";
         }

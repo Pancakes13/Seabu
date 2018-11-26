@@ -1,3 +1,9 @@
+<?php
+session_start();
+if (!$_SESSION['user_id']) {
+    header("Location: http://localhost/Seabu/views/login.php");
+}
+?>
 <!doctype html>
 <html class="no-js" lang=""> 
 <?php
