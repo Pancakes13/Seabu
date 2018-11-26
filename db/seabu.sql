@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 18, 2018 at 11:23 AM
+-- Generation Time: Nov 26, 2018 at 03:53 PM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.5.38
 
@@ -48,7 +48,6 @@ INSERT INTO `branch` (`branch_id`, `name`) VALUES
 
 CREATE TABLE `employee` (
   `employee_id` int(11) NOT NULL,
-  `username` varchar(50) NOT NULL,
   `first_name` varchar(50) NOT NULL,
   `last_name` varchar(50) NOT NULL,
   `middle_name` varchar(50) DEFAULT NULL,
@@ -64,12 +63,13 @@ CREATE TABLE `employee` (
 -- Dumping data for table `employee`
 --
 
-INSERT INTO `employee` (`employee_id`, `username`, `first_name`, `last_name`, `middle_name`, `pass`, `email`, `contact_no`, `birthdate`, `branch_id`, `isDeleted`) VALUES
-(1, 'neily', 'Neil', 'Llenes', 'Diaz', '123', 'neilllenes@gmail.com', '09111111111', '1997-11-13', 1, 0),
-(2, 'sammyj', 'Samuel', 'Jones', 'Kevin', '123', 'samjones@gmail.com', '09991234567', '1990-09-13', 3, 0),
-(3, 'sadfsad', 'sadfsadf', 'sdafsad', 'sadfasdf', '123', 'sdafsf@gmail.com', 'kejfwlf', '1111-11-11', 1, 1),
-(4, 'Jdoe', 'John', 'Doe', 'James', '123', 'jdoe@gmail.com', '09999876543', '1987-12-18', 1, 0),
-(5, 'atiu', 'Antonita', 'Tiu', 'Chu', '123', 'atiu@test.com', '09111726354', '1994-04-04', 1, 0);
+INSERT INTO `employee` (`employee_id`, `first_name`, `last_name`, `middle_name`, `pass`, `email`, `contact_no`, `birthdate`, `branch_id`, `isDeleted`) VALUES
+(1, 'Neil', 'Llenes', 'Diaz', '$2y$10$rrpHY16nhUeK8i0Aabfk/.INRoeaLzPQyHpl/tuZbsYtSLhSRQof.', 'neilllenes@gmail.com', '09111111111', '1997-11-13', 1, 0),
+(2, 'Samuel', 'Jones', 'Kevin', '123', 'samjones@gmail.com', '09991234567', '1990-09-13', 3, 0),
+(3, 'sadfsadf', 'sdafsad', 'sadfasdf', '123', 'sdafsf@gmail.com', 'kejfwlf', '1111-11-11', 1, 1),
+(4, 'John', 'Doe', 'James', '123', 'jdoe@gmail.com', '09999876543', '1987-12-18', 1, 0),
+(5, 'Antonita', 'Tiu', 'Chu', '123', 'atiu@test.com', '09111726354', '1994-04-04', 1, 0),
+(6, 'Robin', 'Tubungbanua', 'Mangubat', '$2y$10$rrpHY16nhUeK8i0Aabfk/.INRoeaLzPQyHpl/tuZbsYtSLhSRQof.', 'lobin@gmail.com', '09111111111', '1997-10-19', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -103,7 +103,8 @@ INSERT INTO `employee_log` (`employee_log_id`, `action`, `log_description`, `log
 (10, 'Create', 'Employee was Created', '2018-11-04 14:42:18', 5, 1),
 (11, 'Update', 'Employee was manually updated', '2018-11-05 21:30:06', 1, 1),
 (12, 'Update', 'Employee was manually updated', '2018-11-05 21:33:39', 5, 1),
-(13, 'Update', 'Employee was manually updated', '2018-11-05 21:34:01', 5, 1);
+(13, 'Update', 'Employee was manually updated', '2018-11-05 21:34:01', 5, 1),
+(14, 'Create', 'Employee was Created', '2018-11-23 20:25:49', 6, 1);
 
 -- --------------------------------------------------------
 
@@ -116,7 +117,7 @@ CREATE TABLE `expense` (
   `name` varchar(100) NOT NULL,
   `description` text,
   `price` float NOT NULL,
-  `expense_type` enum('Appliance','Ingredient','Salary') NOT NULL,
+  `expense_type` enum('Utility','Ingredient','Salary') NOT NULL,
   `expense_timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `isDeleted` int(11) NOT NULL DEFAULT '0',
   `employee_id` int(11) DEFAULT NULL
@@ -127,13 +128,16 @@ CREATE TABLE `expense` (
 --
 
 INSERT INTO `expense` (`expense_id`, `name`, `description`, `price`, `expense_type`, `expense_timestamp`, `isDeleted`, `employee_id`) VALUES
-(3, 'Electricity Bill', 'Paid Electricity Bill for September 2018', 8750, 'Appliance', '2018-09-23 18:46:21', 0, 1),
-(4, 'Water Bill', 'Paid water bill for the month', 3420, 'Appliance', '2018-09-23 19:04:20', 0, 1),
-(5, 'Expense', 'A test expense', 10100, 'Appliance', '2018-10-07 20:23:16', 0, 1),
-(6, 'Expense2', 'A test expense', 1500, 'Appliance', '2018-10-07 20:23:33', 0, 1),
-(7, 'Expense3', 'A test expense', 37500, 'Appliance', '2018-10-07 20:23:44', 0, 1),
-(8, 'Stove repair', 'Stove required new parts. Plus labor fee', 3500, 'Appliance', '2018-10-15 21:39:33', 0, 1),
-(10, 'aaa', 'bbb', 222, 'Appliance', '2018-10-15 21:40:09', 1, 1);
+(3, 'Electricity Bill', 'Paid Electricity Bill for September 2018', 8750, 'Utility', '2018-09-23 18:46:21', 0, 1),
+(4, 'Water Bill', 'Paid water bill for the month', 3420, 'Utility', '2018-09-23 19:04:20', 0, 1),
+(5, 'Expense', 'A test expense', 10100, 'Ingredient', '2018-10-07 20:23:16', 0, 1),
+(6, 'Expense2', 'A test expense', 1500, 'Ingredient', '2018-10-07 20:23:33', 0, 1),
+(7, 'Expense3', 'A test expense', 37500, 'Ingredient', '2018-10-07 20:23:44', 0, 1),
+(8, 'Stove repair', 'Stove required new parts. Plus labor fee', 3500, 'Salary', '2018-10-15 21:39:33', 0, 1),
+(10, 'aaa', 'bbb', 222, 'Salary', '2018-10-15 21:40:09', 1, 1),
+(11, 'Salary November 2018', 'Paid employee salary for November 2018', 45000, 'Salary', '2018-11-19 22:31:14', 0, 1),
+(12, 'Electricity November 2018', 'Paid Electricity bill for November 2018', 8500, 'Utility', '2018-11-19 22:31:56', 0, 1),
+(13, 'Ingredients November 2018', 'Purchased ingredients for November 2018', 50000, 'Ingredient', '2018-11-19 22:32:35', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -154,18 +158,18 @@ CREATE TABLE `item` (
 --
 
 INSERT INTO `item` (`item_id`, `name`, `price`, `qty`, `isDeleted`) VALUES
-(1, 'Cheezy Scallop', 179, 20, 0),
+(1, 'Cheezy Scallop', 179, 35, 0),
 (2, '', 0, 0, 1),
-(3, 'Lobster', 175, 5, 0),
-(4, 'Shrimp', 150, 12, 0),
-(5, 'Calamares', 250, 13, 0),
-(6, 'Foods', 112, 5, 0),
+(3, 'Lobster', 175, 12, 0),
+(4, 'Shrimp', 150, 4, 0),
+(5, 'Calamares', 250, 15, 0),
+(6, 'Foods', 112, 13, 0),
 (7, 'fsdjfsldkf', 111, 0, 1),
 (8, 'sadfsad', 111, 0, 1),
 (9, 'sadfds', 111, 0, 1),
 (10, 'faa', 12, 0, 1),
 (11, 'bn', 222, 0, 1),
-(12, 'lumpia', 300, 18, 0),
+(12, 'lumpia', 300, 17, 0),
 (13, 'Lechon', 250, 10, 0),
 (14, 'aaa', 111, 0, 1),
 (15, 'bb', 111, 0, 1),
@@ -272,7 +276,16 @@ INSERT INTO `item_line` (`item_line_id`, `price`, `old_stock`, `qty`, `item_line
 (90, 300, 25, 7, 'local', 56, 12),
 (95, 179, 15, 3, 'local', 63, 1),
 (96, 0, 12, 10, '', 64, 1),
-(97, 0, 22, 2, '', 65, 1);
+(97, 0, 22, 2, '', 65, 1),
+(98, 179, 20, 2, 'honestbee', 66, 1),
+(99, 250, 13, 3, 'local', 66, 5),
+(100, 0, 10, 5, '', 67, 5),
+(101, 0, 5, 8, '', 68, 6),
+(102, 0, 5, 7, '', 69, 3),
+(103, 0, 18, 5, '', 70, 1),
+(104, 0, 23, 12, '', 71, 1),
+(117, 250, 7, 1, 'local', 83, 13),
+(118, 0, 6, 4, '', 84, 13);
 
 -- --------------------------------------------------------
 
@@ -363,6 +376,14 @@ CREATE TABLE `money_denomination` (
   `money_denomination_qty` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `money_denomination`
+--
+
+INSERT INTO `money_denomination` (`money_denomination_id`, `money_bill_id`, `stock_transaction_id`, `money_denomination_qty`) VALUES
+(37, 5, 83, 1),
+(38, 7, 83, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -414,7 +435,15 @@ INSERT INTO `stock_transaction` (`stock_transaction_id`, `transaction_timestamp`
 (56, '2018-11-05 21:26:32', 'Sold', 1),
 (63, '2018-11-11 21:35:25', 'Sold', 1),
 (64, '2018-11-11 21:35:45', 'Restock', 1),
-(65, '2018-11-11 21:35:51', 'Damaged', 1);
+(65, '2018-11-11 21:35:51', 'Damaged', 1),
+(66, '2018-11-21 22:25:57', 'Sold', 1),
+(67, '2018-11-22 21:59:15', 'Restock', 1),
+(68, '2018-11-22 21:59:22', 'Restock', 1),
+(69, '2018-11-22 21:59:49', 'Restock', 1),
+(70, '2018-11-22 22:00:20', 'Restock', 1),
+(71, '2018-11-22 22:00:27', 'Restock', 1),
+(83, '2018-11-25 20:16:19', 'Sold', 1),
+(84, '2018-11-25 20:16:38', 'Restock', 1);
 
 --
 -- Indexes for dumped tables
@@ -431,7 +460,6 @@ ALTER TABLE `branch`
 --
 ALTER TABLE `employee`
   ADD PRIMARY KEY (`employee_id`),
-  ADD UNIQUE KEY `username` (`username`),
   ADD KEY `employee_fk1` (`branch_id`);
 
 --
@@ -505,17 +533,17 @@ ALTER TABLE `branch`
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `employee_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `employee_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `employee_log`
 --
 ALTER TABLE `employee_log`
-  MODIFY `employee_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `employee_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT for table `expense`
 --
 ALTER TABLE `expense`
-  MODIFY `expense_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `expense_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT for table `item`
 --
@@ -525,7 +553,7 @@ ALTER TABLE `item`
 -- AUTO_INCREMENT for table `item_line`
 --
 ALTER TABLE `item_line`
-  MODIFY `item_line_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
+  MODIFY `item_line_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=119;
 --
 -- AUTO_INCREMENT for table `item_log`
 --
@@ -540,12 +568,12 @@ ALTER TABLE `money_bill`
 -- AUTO_INCREMENT for table `money_denomination`
 --
 ALTER TABLE `money_denomination`
-  MODIFY `money_denomination_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `money_denomination_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 --
 -- AUTO_INCREMENT for table `stock_transaction`
 --
 ALTER TABLE `stock_transaction`
-  MODIFY `stock_transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `stock_transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
 --
 -- Constraints for dumped tables
 --
