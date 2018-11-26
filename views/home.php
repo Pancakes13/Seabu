@@ -59,6 +59,38 @@ require ("../panelheader.php");
   </div>
 </div>
 
+<div class="content mt-3">
+  <div class="animated fadeIn">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="card">
+                  <div class="card-header">
+                      <strong class="card-title" id="title">Profit</strong>
+                  </div>
+                  <div class="card-body">
+                      <table id="profitTable" class="table table-bordered">
+                          <tr>
+                            <td>Total Gross Profit</td>
+                            <td>Total Expenses</td>
+                            <td>Total Payment of Stocks</td>
+                            <td>Net Profit</td>
+                          </tr>
+                        <tbody>
+                          <tr>
+                            <td id="grossProfit"></td>
+                            <td id="totalExpenses"></td>
+                            <td id="totalPaymentStocks"></td>
+                            <td id="netProfit"></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
 <script>
 var myTable = "";
 $(document).ready(function(){
