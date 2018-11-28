@@ -5,13 +5,16 @@ require ("../panelheader.php");
 <div class="content mt-3">
   <div class="animated fadeIn">
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-6">
         <div class="card">
           <div class="card-body">
             <h4>Monthly Tally for <?php echo date("Y");?></h4>
             <canvas id="earningChart"></canvas>
           </div>
-
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card">
           <div class="card-body">
             <h4>Expenses for <?php echo date("Y");?></h4>
             <canvas id="expenseChart"></canvas>
@@ -35,8 +38,12 @@ require ("../panelheader.php");
                     <div class="card-header">
                       <h4>Item Sales</h4>
                     </div>
-                    <div id="itemSalesBody" class="card-body">
-                      <canvas id="itemSalesChart"></canvas>
+                    <div class="row justify-content-md-center">
+                      <div class="col-md-8 offset-md2">
+                        <div id="itemSalesBody" class="card-body">
+                          <canvas id="itemSalesChart"></canvas>
+                        </div>
+                      </div>
                     </div>
                     <div id="itemTable" class="card-body">
                       <table id="homeItemTable" class="table table-striped table-bordered"><thead>
