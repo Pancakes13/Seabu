@@ -2,7 +2,20 @@
 require ("../panelsidebar.php");
 require ("../panelheader.php");
 ?>
-    
+<div class="content mt-3">
+  <div class="animated fadeIn">
+    <div class="row justify-content-md-center">
+      <div class="col-md-8 offset-md2">
+        <div class="card">
+          <div class="card-body">
+            <h4>Expenses for <?php echo date("Y");?></h4>
+            <canvas id="expenseChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
         <div class="content mt-3">
           <div class="animated fadeIn">
@@ -140,8 +153,57 @@ $(document).ready(function(){
   myTable = $('#expense-table').DataTable({
     "order": [[ 0, "desc" ]]
   });
+  getTotalExpenses();
   PopulateExpenseTable();
 });
+
+function getTotalExpenses() {
+  $.ajax({
+    method: "GET", url: "../queries/get/getTotalExpensesMonthlyUtility.php", 
+  }).done(function( data ) {
+    var jsonObject = JSON.parse(data);
+    var ctx = document.getElementById( "expenseChart" );
+    //    ctx.height = 200;
+    var myChart = new Chart( ctx, {
+        type: 'bar',
+        data: {
+            labels: [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+            datasets: [
+                {
+                    label: "Monthly Earnings",
+                    data: [
+                      jsonObject[0].janCnt,
+                      jsonObject[0].febCnt,
+                      jsonObject[0].marCnt,
+                      jsonObject[0].aprCnt,
+                      jsonObject[0].mayCnt,
+                      jsonObject[0].junCnt,
+                      jsonObject[0].julCnt,
+                      jsonObject[0].augCnt,
+                      jsonObject[0].sepCnt,
+                      jsonObject[0].octCnt,
+                      jsonObject[0].novCnt,
+                      jsonObject[0].decCnt 
+                    ],
+                    borderColor: "#00ff00",
+                    borderWidth: "0",
+                    backgroundColor: "#66ff66"
+                            }
+                        ]
+        },
+        options: {
+            scales: {
+                yAxes: [ {
+                    ticks: {
+                        beginAtZero: true
+                    }
+                                } ]
+            }
+        }
+    });
+  });
+}
+
 function PopulateExpenseTable() {
     $.ajax({
       method: "POST",
