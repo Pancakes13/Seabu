@@ -79,14 +79,12 @@ require ("../panelheader.php");
                           <tr>
                             <td>Total Gross Profit</td>
                             <td>Total Expenses</td>
-                            <td>Total Payment of Stocks</td>
                             <td>Net Profit</td>
                           </tr>
                         <tbody>
                           <tr>
                             <td id="grossProfit"></td>
                             <td id="totalExpenses"></td>
-                            <td id="totalPaymentStocks"></td>
                             <td id="netProfit"></td>
                           </tr>
                         </tbody>
@@ -104,6 +102,7 @@ $(document).ready(function(){
   getInformation();
   myTable = $('#homeItemTable').DataTable();
   PopulateItemsTable();
+  getProfit();
 });
 
 function getInformation() {
@@ -272,6 +271,21 @@ function PopulateItemsTable() {
 $(document).on('click', '.viewItemSales', function(){
   getItemSales($(this).data("itemid"));
 })
+
+function getProfit() {
+  $.ajax({
+    method: "POST",
+    url: "../queries/get/getProfitTimeframe.php",
+    data: {"date1": '2018-12-01', "date2": '2018-12-31'},
+  }).done(function( data ) {
+    var jsonObject = JSON.parse(data);
+    var result = jsonObject.map(function (item) {
+      $('#grossProfit').html(item.total);
+      $('#totalExpenses').html(item.totalExpenses);
+      $('#netProfit').html(item.netProfit);
+    });
+  });
+}
 
 </script>
 <?php
