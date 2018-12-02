@@ -2,17 +2,28 @@
 require ("../panelsidebar.php");
 require ("../panelheader.php");
 ?>
+
+
 <div class="content mt-3">
-    <div class="animated fadeIn">
-        <div class="row">
-            <div class="col-md-12">
-                <a href="dailytally.php"><button class="btn btn-primary"><i class="fa fa-toggle-left"></i> Go Back</button></a>
-                <div class="card">
+  <div class="animated fadeIn">
+    <div class="row">
+      <div class="col-md-12">
+      <a href="dailytally.php"><button class="btn btn-primary"><i class="fa fa-toggle-left"></i> Go Back</button></a> 
+        <div class="card">
+          <form id="dailyTally">
+            <div id="smartwizard">
+              <ul>
+                <li><a href="#step-1">Step 1<br /><small>Enter Daily Tally</small></a></li>
+                <li><a href="#step-2">Step 2<br /><small>Enter Money Denomination</small></a></li>
+              </ul>
+              <div>
+                <div id="step-1" class="">
+                  <div class="card">
                     <div class="card-header">
                         <strong class="card-title"><?php echo date("F d, Y (l)", strtotime($_GET['date']));?></strong>
                         <input id="searchDate" value="<?php echo $_GET['date'];?>" hidden="true">
                     </div>
-                    <div class="card-body">
+                    <div id="editDailyTallyCard" class="card-body">
                         <form id="dailyTally">
                             <table id="tallyTable" class="table">
                                 <tr>
@@ -27,25 +38,46 @@ require ("../panelheader.php");
                             </table>
                         </form>
                     </div>
+                  </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-header">
-                      <strong class="card-title">Edit Money Denomination</strong>
+                <div id="step-2" class="">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="card">
+                        <div class="card-header">
+                          <strong class="card-title">Edit Money Denomination</strong>
+                        </div>
+                        <div class="card-body">
+                          <form id="dailyTally">
+                              <table id="moneyTable" class="table">
+                                <tr>
+                                  <th>Money Value</th>
+                                  <th>Qty</th>
+                                  <th style="text-align:right;">Subtotal</th>
+                                </tr>
+                              </table>
+                          </form>
+                        </div>
+                      </div>
                     </div>
-                    <div class="card-body">
-                        <form id="dailyTally">
-                            <table id="moneyTable" class="table">
-                              <tr>
-                                <th>Money Value</th>
-                                <th>Qty</th>
-                                <th style="text-align:right;">Subtotal</th>
-                              </tr>
-                            </table>
-                        </form>
-                    </div>
+                  </div>
                 </div>
+              
+              </div>
+            </div>
+          </form>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
+<div class="content mt-3">
+    <div class="animated fadeIn">
+        <div class="row">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
                         <strong class="card-title">Add to Tally</strong>
@@ -81,7 +113,21 @@ $(document).ready(function(){
   moneyTable = $('#moneyTable');
   PopulateTallyTable();
   PopulateNewTallyTable();
-  PopulateMoneyDenominationTable()
+  PopulateMoneyDenominationTable();
+
+  $('#smartwizard').smartWizard({
+    selected: 0,
+    transitionEffect:'fade',
+    toolbarSettings: {
+      showPreviousButton: false,
+      showNextButton: false
+    },
+    anchorSettings: {
+      anchorClickable: false,
+      removeDoneStepOnNavigateBack: false
+    },
+    keyNavigation: false
+  });
   $('#dailyTally').submit(function(e) {
     e.preventDefault(); 
     $.ajax({
@@ -126,26 +172,33 @@ function PopulateTallyTable() {
     data: {"date": date},
   }).done(function( data ) {
     var jsonObject = JSON.parse(data);
-    $("#stockTransactionId").val(jsonObject[0].stock_transaction_id);
-    var result = jsonObject.map(function (item) {
-    var result = [];
-    myTable.append('<tr class="item"><td style="width:40%;">'+item.name+' <input name="item[]" value="'+item.item_id+'" hidden> <input name="item_line_id[]" value="'+item.item_line_id+'" hidden> <input name="stock_transaction_id" value="'+item.stock_transaction_id+'" hidden></td>'
-        +'<td style="width:15%;"><input name="price[]" class="editPrice form-control" type="number" value="'+item.price+'" readonly="true"></td>'
-        +'<td style="width:10%;"><input class="qty form-control" value="'+item.stock_qty+'" readonly></td>'
-        +'<td style="width:10%;"><input name="qty[]" class="editQty form-control" type="number" value="'+item.qty+'" min="1" max="'+item.stock_qty+'"></td>'
-        +'<td><input name="type[]" class="qty form-control" type="text" value="'+item.item_line_type+'"></td>'
-        +'<td class="editSubTotal" style="text-align:right;">'+item.price*item.qty+'</td>'
-        +'<td class="action" style="width:5%; text-align:right;"><button type="button" class="btn btn-danger btn-sm delBtn" data-itemlineid="'+item.item_line_id+'" data-itemname="'+item.name+'" ><i class="fa fa-trash"></i></button></td></tr>');
-    });
-    myTable.append('<tr><td></td><td></td><td></td><td></td><td id="total" style="text-align:right;"><strong>TOTAL</strong><td id="editTotalValue" style="text-align:right;">0</td></tr>');
-    myTable.append('<tr><td></td><td></td><td></td><td><td><td><button type="submit" class="btn btn-warning btn-sm">Edit Tally <i class="fa fa-edit"></i></button></td></tr>');
-
-    var total = 0;
-    $("tr.item").each(function() {
-      $this = $(this);
-      total += parseInt($this.find(".editSubTotal").html());
-    });
-    $("#editTotalValue").html(total);
+    if (jsonObject[0]) {
+      $("#stockTransactionId").val(jsonObject[0].stock_transaction_id);
+      var result = jsonObject.map(function (item) {
+      var result = [];
+      myTable.append('<tr class="item"><td style="width:40%;">'+item.name+' <input name="item[]" value="'+item.item_id+'" hidden> <input name="item_line_id[]" value="'+item.item_line_id+'" hidden> <input name="stock_transaction_id" value="'+item.stock_transaction_id+'" hidden></td>'
+          +'<td style="width:15%;"><input name="price[]" class="editPrice form-control" type="number" value="'+item.price+'" readonly="true"></td>'
+          +'<td style="width:10%;"><input class="qty form-control" value="'+item.stock_qty+'" readonly></td>'
+          +'<td style="width:10%;"><input name="qty[]" class="editQty form-control" type="number" value="'+item.qty+'" min="1" max="'+item.stock_qty+'"></td>'
+          +'<td><input name="type[]" class="qty form-control" type="text" value="'+item.item_line_type+'"></td>'
+          +'<td class="editSubTotal" style="text-align:right;">'+item.price*item.qty+'</td>'
+          +'<td class="action" style="width:5%; text-align:right;"><button type="button" class="btn btn-danger btn-sm delBtn" data-itemlineid="'+item.item_line_id+'" data-itemname="'+item.name+'" ><i class="fa fa-trash"></i></button></td></tr>');
+      });
+      myTable.append('<tr><td></td><td></td><td></td><td></td><td></td><td id="total" style="text-align:right;"><strong>TOTAL</strong><td id="editTotalValue" style="text-align:right;">0</td></tr>');
+      myTable.append('<tr><td></td><td></td><td></td><td></td><td></td><td></td><td><button id="next-btn" class="btn btn-primary" type="button">Enter Money Denomination</button></td></tr>');
+      
+      $("#next-btn").on("click", function() {
+        $('#smartwizard').smartWizard("next");
+      });
+      var total = 0;
+      $("tr.item").each(function() {
+        $this = $(this);
+        total += parseInt($this.find(".editSubTotal").html());
+      });
+      $("#editTotalValue").html(total);
+    } else {
+      $("#editDailyTallyCard").append('<div class="row justify-content-md-center">No daily tally records found for this date!</div>')
+    }
   });
 }
 
@@ -194,7 +247,7 @@ function PopulateMoneyDenominationTable() {
         +'<td class="moneySubTotal" style="width:10%; text-align:right;">0</td></tr>');
     });
     moneyTable.append('<tr><td></td><td id="moneyTotal"><strong>TOTAL</strong></td><td id="moneyTotalValue" style="text-align:right;">0</td></tr>');
-    moneyTable.append('<tr><td></td><td></td><td><button type="submit" class="btn btn-warning btn-sm">Edit Money Denomination <i class="fa fa-edit"></i></button></td></tr>');
+    moneyTable.append('<tr><td></td><td></td><td><button class="btn btn-warning" type="submit">Edit Daily Tally  <i class="fa fa-edit"></button></td></tr>');
   })
 }
 

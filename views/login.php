@@ -12,6 +12,7 @@
                         </a>
                     </div>
                     <div class="login-form bg-dark" >
+                        <div id="loginError" class="alert alert-danger" role="alert"></div>
                         <form id="login">
                             <div class="form-group">
                                 <label style="color:white;">Email address</label>
@@ -36,6 +37,7 @@
 ?>
 <script>
 $(document).ready(function(){
+  $("#loginError").hide();
   $('#login').submit(function(e) {
     e.preventDefault(); 
     $.ajax({
@@ -45,6 +47,9 @@ $(document).ready(function(){
     }).done(function( data ) {
       if (data == 1) {
         window.location.replace("home.php");
+      } else {
+        $("#loginError").html(data);
+        $("#loginError").show();
       }
     })
   });
