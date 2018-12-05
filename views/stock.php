@@ -48,7 +48,7 @@ require ("../panelheader.php");
                   <input id="modelId" type="text" class="form-control" hidden>
                   <div class="form-group">
                     <label>Item Name</label>
-                    <input id="modelName" type="text" class="form-control" readonly>
+                    <input id="stockModelName" type="text" class="form-control" readonly>
                   </div>
                   <div class="form-group">
                     <label>Current Stock</label>
@@ -288,17 +288,16 @@ $("#addBtn").on('click', function(){
 
         $(document).on('click', '#itemTable .stockBtn', function(){ 
           var id  = $(this).data("itemid");
-          var name  = $(this).data("itemname");
+          var name = $(this).data("itemname")
           var qty  = $(this).data("qty");
           
           $("#modelId").val(id);
-          $("#modelName").val(name);
+          $("#stockModelName").val(name);
           $("#modelStock").val(qty);
         });
 
         $(document).on('click', '#submitStock', function(){
           var id = $("#modelId").val();
-          var name  = $("#modelName").val();
           var type  = $("#modelType").val();
           var stock = $("#modelStock").val();
           var qty = $("#modelQty").val();
@@ -335,10 +334,9 @@ $("#addBtn").on('click', function(){
 
         $(document).on('click', '#submitEdit', function(){
           var id = $("#modelId").val();
-          var name  = $("#modelName").val();
+          var name  = $("#modelName.form-control").val();
           var price  = $("#modelPrice.price").val();
           var qty = $("#modelQty.stock").val();
-
             $.ajax({ 
 
               method: "POST",

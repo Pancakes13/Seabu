@@ -1,5 +1,6 @@
 <?php
 require("../../connection.php");
+session_start();
 $id = $_POST['id'];
 $fn  = $_POST['first_name'];
 $mn  = $_POST['middle_name'];
@@ -33,7 +34,7 @@ if(!$id || !$fn || !$mn || !$ln || !$email || !$num || !$birthdate || !$branch){
         $stmt2   = $conn->prepare($sql2);
   
         $action = 'Update';
-        $employee_id = 1; //Session value//
+        $employee_id = $_SESSION["user_id"];
         $desc = 'Employee was manually updated';
 
         $stmt2->bind_param('ssss', $action, $desc, $id, $employee_id);

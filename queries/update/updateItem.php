@@ -1,5 +1,6 @@
 <?php
 require("../../connection.php");
+session_start();
 $id = $_POST['id'];
 $name  = $_POST['name'];
 $price  = $_POST['price'];
@@ -25,7 +26,7 @@ if(!$id && !$name || !$price || !$qty){
         $stmt2   = $conn->prepare($sql2);
   
         $action = 'Update';
-        $employee_id = 1; //Session value//
+        $employee_id = $_SESSION["user_id"];
         $desc = 'Item was manually updated';
 
         $stmt2->bind_param('ssss', $action, $desc, $employee_id, $id);

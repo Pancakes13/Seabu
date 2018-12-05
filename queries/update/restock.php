@@ -1,5 +1,6 @@
 <?php
 require("../../connection.php");
+session_start();
 $item_id = $_POST['item_id'];
 $stock = $_POST['current_stock'];
 $qty  = $_POST['qty'];
@@ -22,7 +23,7 @@ if(!$item_id || !$qty || !$type){
   
         $stmt2   = $conn->prepare($sql2);
   
-        $employee_id = 1; //Session value//
+        $employee_id = $_SESSION["user_id"];
         $stmt2->bind_param('ss', $type, $employee_id);
         if($stmt2->execute()){
             $id = $conn->insert_id;
@@ -31,7 +32,7 @@ if(!$item_id || !$qty || !$type){
   
             $stmt3   = $conn->prepare($sql3);
     
-            $employee_id = 1; //Session value//
+            $employee_id = $_SESSION["user_id"];
             $desc = 'Item was restocked';
             $stmt3->bind_param('ssssss', $price, $stock, $qty, $type, $id, $item_id);
             if($stmt3->execute()){

@@ -1,10 +1,11 @@
 <?php
 require("../../connection.php");
+session_start();
 $name  = (strlen($_POST['name']) <= 100) ? $_POST['name'] : null;
 $desc  = $_POST['desc'];
 $price  = ((float)$_POST['price']) ? $_POST['price'] : null;
 $type = $_POST['type'];
-$emp_id = 1; //SESSION VALUE
+$emp_id = $_SESSION["user_id"];
 
 /* validate whether user has entered all values. */
 

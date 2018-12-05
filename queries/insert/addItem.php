@@ -1,5 +1,6 @@
 -<?php
 require("../../connection.php");
+session_start();
 $name  = (strlen($_POST['name']) <= 50) ? $_POST['name'] : null;
 
 $price  = ((float)$_POST['price']) ? $_POST['price'] : null;
@@ -28,7 +29,7 @@ if(!$name || !$price || $price < 0){
 
         $action = 'Create';
         $item_id = $conn->insert_id;
-        $employee_id = 1; //Session value//
+        $employee_id = $_SESSION["user_id"];
         $desc = 'Item was Created';
 
         $stmt2->bind_param('ssss', $action, $desc, $item_id, $employee_id);

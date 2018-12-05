@@ -1,5 +1,6 @@
 <?php
 require("../../connection.php");
+session_start();
 $username  = (strlen($_POST['username']) <= 50) ? $_POST['username'] : null ;
 $fn = (strlen($_POST['first_name']) <= 50) ? $_POST['first_name'] : null;
 $mn  = (strlen($_POST['middle_name']) <= 50) ? $_POST['middle_name'] : null;
@@ -44,7 +45,7 @@ if(!$username || !$fn || !$mn || !$ln || !$email || !$num || !$bday || !$branch 
 
                     //Insert Item Log
             $empId = $conn->insert_id;
-            $pId = 1; //SESSION
+            $pId = $_SESSION["user_id"];
             $sql2    = "INSERT into `employee_log` (`action`, `log_description`, `employee_id`, `performed_by`) values (?, ?, ?, ?)  ";
         
             $stmt2   = $conn->prepare($sql2);

@@ -1,5 +1,6 @@
 <?php
 require("../../connection.php");
+session_start();
 $qty  = $_POST['qty'];
 
 if(!$qty){
@@ -21,7 +22,7 @@ if(!$qty){
   
         $action = 'Update';
         $item_id = 1; //Latest inserted item id//
-        $employee_id = 1; //Session value//
+        $employee_id = $_SESSION["user_id"];
         $desc = 'Item was removed due to damages';
         $stmt2->bind_param('ssss', $action, $desc, $item_id, $employee_id);
         if($stmt2->execute()){

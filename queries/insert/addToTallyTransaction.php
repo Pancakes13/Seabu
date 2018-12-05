@@ -1,8 +1,8 @@
 <?php
 require("../../connection.php");
-
+session_start();
 $stock_type = "Sold";
-$emp_id = 1; //Session value//
+$emp_id = $_SESSION["user_id"];
 $id = ((int)$_POST['stock_transaction_id']) ? $_POST['stock_transaction_id'] : null;
 $item  = $_POST['item']; 
 $price = $_POST['price'];
