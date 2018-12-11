@@ -6,6 +6,8 @@ $id = $_POST['stock_transaction_id'];
 $item_line  = $_POST['item_line_id'];
 $qty = $_POST['qty'];
 $type = $_POST['type'];
+$moneyId = $_POST['moneyId'];
+$moneyQty = $_POST['moneyQty'];
 
 if(!$item || !$id || !$item_line || !$qty || !$type){
   $result = 2;
@@ -30,6 +32,20 @@ if(!$item || !$id || !$item_line || !$qty || !$type){
               if($stmt2->execute()){
                 $result = 1;
               }
+            }
+            //DELETE OLD MONEY DENOMINATION//
+
+            for($x=0; $x<count($moneyId); $x++){
+                if ($moneyQty[$x] > 0) {
+                    $sql4 = "INSERT into `money_denomination`
+                    (`money_bill_id`, `stock_transaction_id`, `money_denomination_qty`)
+                    values (?, ?, ?) ";
+        
+                    $stmt4 = $conn->prepare($sql4);
+        
+                    $stmt4->bind_param('sss', $moneyId[$x], $id, $moneyQty[$x]);
+                    $stmt4->execute();
+                }
             }
         }
     }
