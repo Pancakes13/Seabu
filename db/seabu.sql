@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 26, 2018 at 03:53 PM
+-- Generation Time: Dec 17, 2018 at 03:21 PM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.5.38
 
@@ -37,8 +37,8 @@ CREATE TABLE `branch` (
 
 INSERT INTO `branch` (`branch_id`, `name`) VALUES
 (1, 'Sugbo Mercado'),
-(2, 'Option 2'),
-(3, 'Option 3');
+(2, 'The Market'),
+(3, 'Yellowcube');
 
 -- --------------------------------------------------------
 
@@ -150,6 +150,7 @@ CREATE TABLE `item` (
   `name` varchar(50) NOT NULL,
   `price` float NOT NULL,
   `qty` int(11) NOT NULL DEFAULT '0',
+  `branch_id` int(11) NOT NULL,
   `isDeleted` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -157,41 +158,49 @@ CREATE TABLE `item` (
 -- Dumping data for table `item`
 --
 
-INSERT INTO `item` (`item_id`, `name`, `price`, `qty`, `isDeleted`) VALUES
-(1, 'Cheezy Scallop', 179, 35, 0),
-(2, '', 0, 0, 1),
-(3, 'Lobster', 175, 12, 0),
-(4, 'Shrimp', 150, 4, 0),
-(5, 'Calamares', 250, 15, 0),
-(6, 'Foods', 112, 13, 0),
-(7, 'fsdjfsldkf', 111, 0, 1),
-(8, 'sadfsad', 111, 0, 1),
-(9, 'sadfds', 111, 0, 1),
-(10, 'faa', 12, 0, 1),
-(11, 'bn', 222, 0, 1),
-(12, 'lumpia', 300, 17, 0),
-(13, 'Lechon', 250, 10, 0),
-(14, 'aaa', 111, 0, 1),
-(15, 'bb', 111, 0, 1),
-(16, 'ccc', 222, 0, 1),
-(17, 'abc', 123, 0, 1),
-(18, 'aaaa', 123, 0, 1),
-(19, 'aa', 22, 0, 1),
-(20, 'a', 1, 0, 1),
-(21, 'a', 1, 0, 1),
-(22, 'aaaa', 11111, 0, 1),
-(23, '11111', 55555, 0, 1),
-(24, 'a', 123, 0, 1),
-(25, 'a', 123, 0, 1),
-(26, 'a', 54321, 0, 1),
-(27, 'zoo', 200, 0, 1),
-(28, 'zoo', 200, 0, 1),
-(29, 'zoo', 199, 0, 1),
-(30, 'zoo', 199, 0, 1),
-(31, '123', 123, 0, 1),
-(32, 'Yummy food', 120, 0, 1),
-(33, 'Fried Chicken (4 pc)', 280, 12, 0),
-(34, 'Nachos', 234, 6, 0);
+INSERT INTO `item` (`item_id`, `name`, `price`, `qty`, `branch_id`, `isDeleted`) VALUES
+(1, 'Cheezy Scallop', 179, 30, 1, 0),
+(2, '', 0, 0, 1, 1),
+(3, 'Lobster', 175, 12, 1, 0),
+(4, 'Shrimp', 150, 4, 1, 0),
+(5, 'Calamares', 250, 12, 1, 0),
+(6, 'Foods', 112, 12, 1, 0),
+(7, 'fsdjfsldkf', 111, 0, 1, 1),
+(8, 'sadfsad', 111, 0, 1, 1),
+(9, 'sadfds', 111, 0, 1, 1),
+(10, 'faa', 12, 0, 1, 1),
+(11, 'bn', 222, 0, 1, 1),
+(12, 'lumpia', 300, 17, 1, 0),
+(13, 'Lechon', 250, 10, 1, 0),
+(14, 'aaa', 111, 0, 1, 1),
+(15, 'bb', 111, 0, 1, 1),
+(16, 'ccc', 222, 0, 1, 1),
+(17, 'abc', 123, 0, 1, 1),
+(18, 'aaaa', 123, 0, 1, 1),
+(19, 'aa', 22, 0, 1, 1),
+(20, 'a', 1, 0, 1, 1),
+(21, 'a', 1, 0, 1, 1),
+(22, 'aaaa', 11111, 0, 1, 1),
+(23, '11111', 55555, 0, 1, 1),
+(24, 'a', 123, 0, 1, 1),
+(25, 'a', 123, 0, 1, 1),
+(26, 'a', 54321, 0, 1, 1),
+(27, 'zoo', 200, 0, 1, 1),
+(28, 'zoo', 200, 0, 1, 1),
+(29, 'zoo', 199, 0, 1, 1),
+(30, 'zoo', 199, 0, 1, 1),
+(31, '123', 123, 0, 1, 1),
+(32, 'Yummy food', 120, 0, 1, 1),
+(33, 'Fried Chicken (4 pc)', 280, 12, 1, 0),
+(34, 'Nachos', 234, 6, 1, 0),
+(35, 'Rice (1 Cup)', 17, 30, 1, 0),
+(36, 'Coke (1 Liter)', 35, 0, 1, 1),
+(37, 'Coke', 35, 0, 1, 1),
+(38, 'Coke (1 Liter)', 35, 0, 1, 1),
+(39, 'Coke (1 Liter)', 35, 0, 1, 0),
+(43, 'The Market Lobster', 350, 0, 1, 1),
+(44, 'The Market Lobster', 350, 0, 2, 0),
+(45, 'sadfsadf', 123, 0, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -285,7 +294,11 @@ INSERT INTO `item_line` (`item_line_id`, `price`, `old_stock`, `qty`, `item_line
 (103, 0, 18, 5, '', 70, 1),
 (104, 0, 23, 12, '', 71, 1),
 (117, 250, 7, 1, 'local', 83, 13),
-(118, 0, 6, 4, '', 84, 13);
+(118, 0, 6, 4, '', 84, 13),
+(119, 179, 35, 5, 'local', 85, 1),
+(120, 250, 15, 3, 'local', 85, 5),
+(121, 112, 13, 1, 'local', 85, 6),
+(122, 0, 0, 30, '', 86, 35);
 
 -- --------------------------------------------------------
 
@@ -332,7 +345,29 @@ INSERT INTO `item_log` (`item_log_id`, `log_timestamp`, `log_action`, `log_descr
 (28, '2018-10-10 21:55:01', 'Update', 'Item was manually updated', 1, 1),
 (29, '2018-10-10 21:55:25', 'Update', 'Item was manually updated', 1, 1),
 (30, '2018-10-10 21:55:40', 'Update', 'Item was manually updated', 1, 1),
-(31, '2018-10-14 20:32:36', 'Update', 'Item was manually updated', 1, 5);
+(31, '2018-10-14 20:32:36', 'Update', 'Item was manually updated', 1, 5),
+(32, '2018-12-05 20:50:26', 'Create', 'Item was Created', NULL, 35),
+(33, '2018-12-05 20:53:15', 'Update', 'Item was manually updated', 1, 35),
+(34, '2018-12-05 20:53:45', 'Update', 'Item was manually updated', 1, 35),
+(35, '2018-12-05 20:54:25', 'Update', 'Item was manually updated', 1, 35),
+(36, '2018-12-05 20:56:24', 'Update', 'Item was manually updated', 1, 35),
+(37, '2018-12-05 20:56:54', 'Update', 'Item was manually updated', 1, 35),
+(38, '2018-12-05 20:57:45', 'Update', 'Item was manually updated', 1, 35),
+(39, '2018-12-05 20:58:46', 'Update', 'Item was manually updated', 1, 35),
+(40, '2018-12-05 21:02:23', 'Update', 'Item was manually updated', 1, 35),
+(41, '2018-12-05 21:03:24', 'Create', 'Item was Created', NULL, 36),
+(42, '2018-12-05 21:03:36', 'Create', 'Item was Created', NULL, 37),
+(43, '2018-12-05 21:04:31', 'Create', 'Item was Created', 6, 38),
+(44, '2018-12-05 21:04:35', 'Delete', 'Item was deleted', 1, 38),
+(45, '2018-12-05 21:04:45', 'Delete', 'Item was deleted', 1, 37),
+(46, '2018-12-05 21:04:49', 'Delete', 'Item was deleted', 1, 36),
+(47, '2018-12-05 21:04:58', 'Create', 'Item was Created', 6, 39),
+(48, '2018-12-17 22:16:56', 'Create', 'Item was Created', 1, 43),
+(49, '2018-12-17 22:17:21', 'Delete', 'Item was deleted', 1, 43),
+(50, '2018-12-17 22:17:34', 'Create', 'Item was Created', 1, 44),
+(51, '2018-12-17 22:17:57', 'Delete', 'Item was deleted', 1, 44),
+(52, '2018-12-17 22:20:02', 'Create', 'Item was Created', 1, 45),
+(53, '2018-12-17 22:20:08', 'Delete', 'Item was deleted', 1, 45);
 
 -- --------------------------------------------------------
 
@@ -358,7 +393,7 @@ INSERT INTO `money_bill` (`money_bill_id`, `money_value`) VALUES
 (6, 100),
 (7, 200),
 (8, 500),
-(9, 2000),
+(9, 1000),
 (10, 0.05),
 (11, 0.1),
 (12, 0.25);
@@ -382,7 +417,13 @@ CREATE TABLE `money_denomination` (
 
 INSERT INTO `money_denomination` (`money_denomination_id`, `money_bill_id`, `stock_transaction_id`, `money_denomination_qty`) VALUES
 (37, 5, 83, 1),
-(38, 7, 83, 1);
+(38, 7, 83, 1),
+(39, 1, 85, 2),
+(40, 2, 85, 1),
+(41, 5, 85, 1),
+(42, 7, 85, 1),
+(43, 8, 85, 1),
+(44, 9, 85, 1);
 
 -- --------------------------------------------------------
 
@@ -443,7 +484,9 @@ INSERT INTO `stock_transaction` (`stock_transaction_id`, `transaction_timestamp`
 (70, '2018-11-22 22:00:20', 'Restock', 1),
 (71, '2018-11-22 22:00:27', 'Restock', 1),
 (83, '2018-11-25 20:16:19', 'Sold', 1),
-(84, '2018-11-25 20:16:38', 'Restock', 1);
+(84, '2018-11-25 20:16:38', 'Restock', 1),
+(85, '2018-12-02 18:41:41', 'Sold', 1),
+(86, '2018-12-05 20:51:46', 'Restock', 1);
 
 --
 -- Indexes for dumped tables
@@ -481,7 +524,8 @@ ALTER TABLE `expense`
 -- Indexes for table `item`
 --
 ALTER TABLE `item`
-  ADD PRIMARY KEY (`item_id`);
+  ADD PRIMARY KEY (`item_id`),
+  ADD KEY `item_fk` (`branch_id`);
 
 --
 -- Indexes for table `item_line`
@@ -548,17 +592,17 @@ ALTER TABLE `expense`
 -- AUTO_INCREMENT for table `item`
 --
 ALTER TABLE `item`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 --
 -- AUTO_INCREMENT for table `item_line`
 --
 ALTER TABLE `item_line`
-  MODIFY `item_line_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=119;
+  MODIFY `item_line_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=123;
 --
 -- AUTO_INCREMENT for table `item_log`
 --
 ALTER TABLE `item_log`
-  MODIFY `item_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `item_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 --
 -- AUTO_INCREMENT for table `money_bill`
 --
@@ -568,12 +612,12 @@ ALTER TABLE `money_bill`
 -- AUTO_INCREMENT for table `money_denomination`
 --
 ALTER TABLE `money_denomination`
-  MODIFY `money_denomination_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `money_denomination_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 --
 -- AUTO_INCREMENT for table `stock_transaction`
 --
 ALTER TABLE `stock_transaction`
-  MODIFY `stock_transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `stock_transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
 --
 -- Constraints for dumped tables
 --
@@ -596,6 +640,12 @@ ALTER TABLE `employee_log`
 --
 ALTER TABLE `expense`
   ADD CONSTRAINT `expense_fk` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`employee_id`);
+
+--
+-- Constraints for table `item`
+--
+ALTER TABLE `item`
+  ADD CONSTRAINT `item_fk` FOREIGN KEY (`branch_id`) REFERENCES `branch` (`branch_id`);
 
 --
 -- Constraints for table `item_line`
