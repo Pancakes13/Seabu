@@ -4,6 +4,14 @@ require ("../panelheader.php");
 ?>
     
 
+        <div class="col-md-4">
+          Select Branch
+          <select id="branch" class="form-control">
+            <option value="1">Sugbo Mercado</option>
+            <option value="2">The Market</option>
+            <option value="3">Yellowcube</option>
+          </select>
+        </div>
         <div class="content mt-3">
           <div class="animated fadeIn">
             <div class="row">
@@ -11,12 +19,12 @@ require ("../panelheader.php");
                 <div class="card">
                   <div class="card-header">
                     <strong class="card-title">Items in Stock</strong>
-                    <button type="button" class="btn btn-success" 
-                    style="float:right;" data-toggle="modal" data-target="#addModal"
-                    >
-                      Add Item <i class="fa fa-plus"></i>
-                    </button>
-                  </div>
+                      <button type="button" class="btn btn-success" 
+                      style="float:right;" data-toggle="modal" data-target="#addModal"
+                      >
+                        Add Item <i class="fa fa-plus"></i>
+                      </button>
+                    </div>
                   <div id="itemTable" class="card-body">
                     <table id="bootstrap-data-table" class="table table-striped table-bordered"><thead>
                       <tr>
@@ -183,8 +191,12 @@ $(document).ready(function(){
   PopulateItemsTable();
 });
 function PopulateItemsTable() {
+    let id = $("#branch").val();
+
     $.ajax({
-      method: "GET", url: "../queries/get/getItems.php", 
+      method: "POST",
+      url: "../queries/get/getItems.php",
+      data: {"branch_id": id},
     }).done(function( data ) {
       var jsonObject = JSON.parse(data);
       var result = jsonObject.map(function (item) {
@@ -207,12 +219,14 @@ $("#addBtn").on('click', function(){
   
             var price  = $("#price").val();
             
+            var id = $("#branch").val();
+
             $.ajax({ 
 
               method: "POST",
               url: "../queries/insert/addItem.php",
 
-              data: {"name": name, "price": price},
+              data: {"name": name, "price": price, "branch_id": id},
 
              }).done(function( data ) { 
                 var result = $.parseJSON(data); 

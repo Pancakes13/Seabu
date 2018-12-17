@@ -2,8 +2,15 @@
 require ("../panelsidebar.php");
 require ("../panelheader.php");
 ?>
-
-<div class="form-group" style="width:30%; margin-left:1%; margin-top:3%;">
+<div style="width:30%; margin-left:1%;">
+  Select Branch
+  <select id="branch" class="form-control">
+    <option value="1">Sugbo Mercado</option>
+    <option value="2">The Market</option>
+    <option value="3">Yellowcube</option>
+  </select>
+</div>
+<div class="form-group" style="width:30%; margin-left:1%; margin-top:2%;">
   <label class=" form-control-label">Search Tally By Date <i class="fa fa-calendar"></i></label>
   <div class="input-group">
     <input id="searchDate" class="form-control" type="date" value="<?php echo date('Y-m-d');?>">
@@ -161,8 +168,12 @@ function PopulateTallyTable() {
       keyNavigation: false
     });
     } else {
+      let id = $("#branch").val();
+      
       $.ajax({
-      method: "GET", url: "../queries/get/getItems.php", 
+      method: "POST",
+      url: "../queries/get/getItems.php",
+      data: {"branch_id": id},
     }).done(function( data ) {
       var jsonObject = JSON.parse(data);
       var result = jsonObject.map(function (item) {
@@ -181,6 +192,7 @@ function PopulateTallyTable() {
       myTable.append('<tr><td></td><td></td><td></td><td></td><td><button id="next-btn" class="btn btn-primary" type="button">Enter Money Denomination</button></td><td></td></tr>');
       
       $("#next-btn").on("click", function() {
+        $('#expectedEarnings').html($("#totalValue").html());
         $('#smartwizard').smartWizard("next");
       });
     });
@@ -204,6 +216,7 @@ function PopulateMoneyDenominationTable() {
         +'<td class="moneySubTotal" style="width:10%; text-align:right;">0</td></tr>');
     });
     moneyTable.append('<tr><td></td><td id="moneyTotal"><strong>TOTAL</strong></td><td id="moneyTotalValue" style="text-align:right;">0</td></tr>');
+    moneyTable.append('<tr><td></td><td id="moneyTotal"><strong>EXPECTED EARNINGS</strong></td><td id="expectedEarnings" style="text-align:right;"></td></tr>');
     moneyTable.append('<tr><td></td><td></td><td><button class="btn btn-success" type="submit">Submit Daily Tally</button></td></tr>');
   })
 }
