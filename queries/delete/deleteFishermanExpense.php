@@ -1,15 +1,15 @@
 <?php
 require("../../connection.php");
-$id  = $_POST['expense_id'];
+$id  = $_POST['fisherman_expense_id'];
 
 if(!$id){
   $result = 2;
 }else{
     //Insert Item
     try{
-        $sql    = "UPDATE `expense` 
+        $sql    = "UPDATE `fisherman_expense` 
         SET `isDeleted` = 1
-        WHERE `expense_id` = ?";
+        WHERE `fisherman_expense_id` = ?";
         
         $stmt   = $conn->prepare($sql);
         $stmt->bind_param('s', $id);

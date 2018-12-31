@@ -13,7 +13,7 @@ if(!$id){
         
         $stmt   = $conn->prepare($sql);
         $stmt->bind_param('s', $id);
-        echo $id;
+        
         $stmt->execute();
         $result = 1;
     }

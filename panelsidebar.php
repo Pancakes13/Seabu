@@ -68,6 +68,10 @@ if (!$_SESSION['user_id']) {
                         <a href="salaryExpenses.php"> <i class="menu-icon fa fa-users"></i>Salary</a>
                     </li>
 
+                    <li>
+                        <a href="fishermanExpenses.php"> <i class="menu-icon fa fa-ship"></i>Fisherman Expense</a>
+                    </li>
+
                     <h3 class="menu-title" style="color: white;">Maintenance</h3><!-- /.menu-title -->
                     <li>
                         <a href="employee.php"> <i class="menu-icon fa fa-group"></i>Employee</a>
