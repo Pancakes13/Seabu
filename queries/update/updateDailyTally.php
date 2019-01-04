@@ -5,6 +5,8 @@ $item = $_POST['item'];
 $id = $_POST['stock_transaction_id'];
 $item_line  = $_POST['item_line_id'];
 $qty = $_POST['qty'];
+$qty = $_POST['oldStock'];
+$qty = $_POST['currentStock'];
 $type = $_POST['type'];
 $moneyId = $_POST['moneyId'];
 $moneyQty = $_POST['moneyQty'];
@@ -22,18 +24,28 @@ if(!$item || !$id || !$item_line || !$qty || !$type){
                 
             $stmt   = $conn->prepare($sql);
             $stmt->bind_param('sss', $qty[$x], $type[$x], $item_line[$x]);
+            
+            $newStock = $currentStock[$x] - $qty[$x];
             if($stmt->execute()){
               $sql2 = "UPDATE `item` 
-              SET `qty` = (`qty` - ?)
+              SET `qty` = ?
               WHERE `item_id` = ?";
               
               $stmt2 = $conn->prepare($sql2);
-              $stmt2->bind_param('ss', $qty[$x], $item[$x]);
+              $stmt2->bind_param('ss', $newStock, $item[$x]);
               if($stmt2->execute()){
                 $result = 1;
               }
             }
             //DELETE OLD MONEY DENOMINATION//
+
+            $sqlDel = "DELETE
+            FROM `money_denomination`
+            WHERE `stock_transaction_id` = ?";
+            $stmtDel = $conn->prepare($sqlDel);
+            $stmtDel->bind_param('s', $id);
+            
+            $stmtDel->execute();
 
             for($x=0; $x<count($moneyId); $x++){
                 if ($moneyQty[$x] > 0) {

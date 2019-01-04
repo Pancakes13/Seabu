@@ -1,7 +1,7 @@
 <?php
 require("../../connection.php");
 
-$result = $conn->query("SELECT `e`.`employee_id`, `e`.`username`, `e`.`first_name`, `e`.`last_name`, 
+$result = $conn->query("SELECT `e`.`employee_id`, `e`.`first_name`, `e`.`last_name`, 
                       `e`.`middle_name`, `e`.`email`, `e`.`contact_no`, `e`.`birthdate`, `b`.`branch_id`, `b`.`name`
                       FROM `employee` `e`
                       INNER JOIN `branch` `b`

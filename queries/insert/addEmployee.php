@@ -1,7 +1,6 @@
 <?php
 require("../../connection.php");
 session_start();
-$username  = (strlen($_POST['username']) <= 50) ? $_POST['username'] : null ;
 $fn = (strlen($_POST['first_name']) <= 50) ? $_POST['first_name'] : null;
 $mn  = (strlen($_POST['middle_name']) <= 50) ? $_POST['middle_name'] : null;
 $ln  = (strlen($_POST['last_name']) <= 50) ? $_POST['last_name'] : null;
@@ -17,7 +16,7 @@ if(isset($_POST['password'])){
 
 /* validate whether user has entered all values. */
 
-if(!$username || !$fn || !$mn || !$ln || !$email || !$num || !$bday || !$branch || !$pass || $branch < 0){
+if(!$fn || !$mn || !$ln || !$email || !$num || !$bday || !$branch || !$pass || $branch < 0){
 
   $result = 2;
 
@@ -37,10 +36,10 @@ if(!$username || !$fn || !$mn || !$ln || !$email || !$num || !$bday || !$branch 
         try{
             $conn->autocommit(false);
             //Insert Item
-            $sql    = "INSERT into `employee` (`username`, `first_name`, `middle_name`, `last_name`, `branch_id`, `pass`, `email`, `contact_no`, `birthdate`) values (?, ?, ?, ?, ?, ?, ?, ?, ?)  ";
+            $sql    = "INSERT into `employee` (`first_name`, `middle_name`, `last_name`, `branch_id`, `pass`, `email`, `contact_no`, `birthdate`) values (?, ?, ?, ?, ?, ?, ?, ?)  ";
 
             $stmt   = $conn->prepare($sql);
-            $stmt->bind_param('sssssssss', $username, $fn, $mn, $ln, $branch, $passwordHash, $email, $num, $bday);
+            $stmt->bind_param('ssssssss', $fn, $mn, $ln, $branch, $passwordHash, $email, $num, $bday);
             $stmt->execute();
 
                     //Insert Item Log

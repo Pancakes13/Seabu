@@ -20,7 +20,6 @@ require ("../panelheader.php");
                   <div id="itemTable" class="card-body">
                     <table id="bootstrap-data-table" class="table table-striped table-bordered"><thead>
                       <tr>
-                        <th>Username</th>
                         <th>Last Name</th>
                         <th>First Name</th>
                         <th>Middle Name</th>
@@ -51,10 +50,6 @@ require ("../panelheader.php");
                 </div>
                 <div class="modal-body">
                   <div class="form-group">
-                    <label>Username</label>
-                    <input type="text" class="form-control" id="username" name="username">
-                  </div>
-                  <div class="form-group">
                     <label>First Name</label>
                     <input type="text" class="form-control" id="first_name" name="first_name">
                   </div>
@@ -70,8 +65,8 @@ require ("../panelheader.php");
                     <label>Branch</label>
                     <select class="form-control" id="branch" name="branchName">
                       <option value="1">Sugbo Mercado</option>
-                      <option value="2">Option 2</option>
-                      <option value="3">Option 3</option>
+                      <option value="2">The Market</option>
+                      <option value="3">Yellowcube</option>
                     </select>
                   </div>
                   <div class="form-group">
@@ -213,7 +208,6 @@ function PopulateItemsTable() {
       var jsonObject = JSON.parse(data);
       var result = jsonObject.map(function (item) {
         var result = [];
-        result.push(item.username);
         result.push(item.last_name);
         result.push(item.first_name);
         result.push(item.middle_name);
@@ -227,8 +221,8 @@ function PopulateItemsTable() {
         +'data-name="'+item.name+'"'
         +'data-email="'+item.email+'" data-contact_no="'+item.contact_no+'" data-birthdate="'+item.birthdate+'">'
         +'<i class="fa fa-edit"></i></button>'
-          +'<button type="button" class="btn btn-danger btn-sm delBtn" data-employee_id="'+item.employee_id+'" data-employee_username="'+item.username+'" ><i class="fa fa-trash"></i></button>'
-          +'<a href="employee_logs.php?employee_id='+item.employee_id+'&employee_username='+item.username+'"><button type="button" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></button></a>');
+          +'<button type="button" class="btn btn-danger btn-sm delBtn" data-employee_id="'+item.employee_id+'" ><i class="fa fa-trash"></i></button>'
+          +'<a href="employee_logs.php?employee_id='+item.employee_id+'"><button type="button" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></button></a>');
         return result;
       });
       myTable.rows.add(result);
@@ -244,7 +238,7 @@ function PopulateItemsTable() {
 
           swalWithBootstrapButtons({
             title: 'Are you sure you want to delete this item?',
-            text: $(this).data("employee_username"),
+            text: $(this).data("first_name"),
             type: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Yes, delete it!',
