@@ -29,6 +29,7 @@ require ("../panelheader.php");
                                 <tr>
                                     <th>Item Name</th>
                                     <th>Price (Php)</th>
+                                    <th>Old Stock (Pcs/Kg)</th>
                                     <th>Current Stock (Pcs/Kg)</th>
                                     <th>Qty</th>
                                     <th>Type</th>
@@ -89,6 +90,7 @@ require ("../panelheader.php");
                                 <tr>
                                     <th>Item Name</th>
                                     <th>Price (Php)</th>
+                                    <th>Old Stock (Pcs/Kg)</th>
                                     <th>Current Stock (Pcs/Kg)</th>
                                     <th>Qty</th>
                                     <th>Type</th>
@@ -178,7 +180,8 @@ function PopulateTallyTable() {
       var result = [];
       myTable.append('<tr class="item"><td style="width:40%;">'+item.name+' <input name="item[]" value="'+item.item_id+'" hidden> <input name="item_line_id[]" value="'+item.item_line_id+'" hidden> <input name="stock_transaction_id" value="'+item.stock_transaction_id+'" hidden></td>'
           +'<td style="width:15%;"><input name="price[]" class="editPrice form-control" type="number" value="'+item.price+'" readonly="true"></td>'
-          +'<td style="width:10%;"><input class="qty form-control" value="'+item.stock_qty+'" readonly></td>'
+          +'<td style="width:10%;"><input name="oldStock[]" class="qty form-control" value="'+item.old_stock+'" readonly></td>'
+          +'<td style="width:10%;"><input name="currentStock[]" class="qty form-control" value="'+item.stock_qty+'" readonly></td>'
           +'<td style="width:10%;"><input name="qty[]" class="editQty form-control" type="number" value="'+item.qty+'" min="1" max="'+item.stock_qty+'"></td>'
           +'<td><input name="type[]" class="qty form-control" type="text" value="'+item.item_line_type+'"></td>'
           +'<td class="editSubTotal" style="text-align:right;">'+item.price*item.qty+'</td>'
