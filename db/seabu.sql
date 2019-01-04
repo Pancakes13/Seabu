@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 17, 2018 at 03:21 PM
+-- Generation Time: Jan 04, 2019 at 01:44 PM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.5.38
 
@@ -67,9 +67,10 @@ INSERT INTO `employee` (`employee_id`, `first_name`, `last_name`, `middle_name`,
 (1, 'Neil', 'Llenes', 'Diaz', '$2y$10$rrpHY16nhUeK8i0Aabfk/.INRoeaLzPQyHpl/tuZbsYtSLhSRQof.', 'neilllenes@gmail.com', '09111111111', '1997-11-13', 1, 0),
 (2, 'Samuel', 'Jones', 'Kevin', '123', 'samjones@gmail.com', '09991234567', '1990-09-13', 3, 0),
 (3, 'sadfsadf', 'sdafsad', 'sadfasdf', '123', 'sdafsf@gmail.com', 'kejfwlf', '1111-11-11', 1, 1),
-(4, 'John', 'Doe', 'James', '123', 'jdoe@gmail.com', '09999876543', '1987-12-18', 1, 0),
+(4, 'John', 'Doe', 'JImmy', '123', 'jdoe@gmail.com', '09999876543', '1987-12-18', 1, 0),
 (5, 'Antonita', 'Tiu', 'Chu', '123', 'atiu@test.com', '09111726354', '1994-04-04', 1, 0),
-(6, 'Robin', 'Tubungbanua', 'Mangubat', '$2y$10$rrpHY16nhUeK8i0Aabfk/.INRoeaLzPQyHpl/tuZbsYtSLhSRQof.', 'lobin@gmail.com', '09111111111', '1997-10-19', 1, 0);
+(6, 'Robin', 'Tubungbanua', 'Mangubat', '$2y$10$rrpHY16nhUeK8i0Aabfk/.INRoeaLzPQyHpl/tuZbsYtSLhSRQof.', 'lobin@gmail.com', '09111111111', '1997-10-19', 1, 0),
+(7, 'Ted', 'Mosby', 'Evelynn', '$2y$10$JcYsP4zFwZX0suNWn5H3mOZbS1VvJXxAV9/QiFi6suNQMqL3A3RCm', 'ted@test.com', '09111726354', '1970-01-01', 2, 0);
 
 -- --------------------------------------------------------
 
@@ -104,7 +105,9 @@ INSERT INTO `employee_log` (`employee_log_id`, `action`, `log_description`, `log
 (11, 'Update', 'Employee was manually updated', '2018-11-05 21:30:06', 1, 1),
 (12, 'Update', 'Employee was manually updated', '2018-11-05 21:33:39', 5, 1),
 (13, 'Update', 'Employee was manually updated', '2018-11-05 21:34:01', 5, 1),
-(14, 'Create', 'Employee was Created', '2018-11-23 20:25:49', 6, 1);
+(14, 'Create', 'Employee was Created', '2018-11-23 20:25:49', 6, 1),
+(15, 'Update', 'Employee was manually updated', '2019-01-04 20:39:52', 4, 1),
+(16, 'Create', 'Employee was Created', '2019-01-04 20:43:17', 7, 1);
 
 -- --------------------------------------------------------
 
@@ -137,7 +140,34 @@ INSERT INTO `expense` (`expense_id`, `name`, `description`, `price`, `expense_ty
 (10, 'aaa', 'bbb', 222, 'Salary', '2018-10-15 21:40:09', 1, 1),
 (11, 'Salary November 2018', 'Paid employee salary for November 2018', 45000, 'Salary', '2018-11-19 22:31:14', 0, 1),
 (12, 'Electricity November 2018', 'Paid Electricity bill for November 2018', 8500, 'Utility', '2018-11-19 22:31:56', 0, 1),
-(13, 'Ingredients November 2018', 'Purchased ingredients for November 2018', 50000, 'Ingredient', '2018-11-19 22:32:35', 0, 1);
+(13, 'Ingredients November 2018', 'Purchased ingredients for November 2018', 50000, 'Ingredient', '2018-11-19 22:32:35', 0, 1),
+(14, 'Scallops', '100 pcs of scallops', 1000, 'Ingredient', '2018-12-31 13:53:52', 0, 1),
+(15, 'fweqf', 'wef', 1, 'Ingredient', '2018-12-31 13:54:12', 0, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `fisherman_expense`
+--
+
+CREATE TABLE `fisherman_expense` (
+  `fisherman_expense_id` int(11) NOT NULL,
+  `item_name` varchar(100) NOT NULL,
+  `price` float NOT NULL,
+  `item_qty` int(11) NOT NULL,
+  `expense_timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `employee_id` int(11) DEFAULT NULL,
+  `isDeleted` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `fisherman_expense`
+--
+
+INSERT INTO `fisherman_expense` (`fisherman_expense_id`, `item_name`, `price`, `item_qty`, `expense_timestamp`, `employee_id`, `isDeleted`) VALUES
+(1, 'Scallops', 1500, 100, '2018-12-31 14:02:00', 1, 0),
+(2, 'Lobsters', 2500, 15, '2018-12-31 14:03:34', 1, 0),
+(3, 'sdaf', 1, 1, '2018-12-31 14:07:53', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -159,10 +189,10 @@ CREATE TABLE `item` (
 --
 
 INSERT INTO `item` (`item_id`, `name`, `price`, `qty`, `branch_id`, `isDeleted`) VALUES
-(1, 'Cheezy Scallop', 179, 30, 1, 0),
+(1, 'Cheezy Scallop', 179, 27, 1, 0),
 (2, '', 0, 0, 1, 1),
 (3, 'Lobster', 175, 12, 1, 0),
-(4, 'Shrimp', 150, 4, 1, 0),
+(4, 'Shrimp', 150, 2, 1, 0),
 (5, 'Calamares', 250, 12, 1, 0),
 (6, 'Foods', 112, 12, 1, 0),
 (7, 'fsdjfsldkf', 111, 0, 1, 1),
@@ -298,7 +328,9 @@ INSERT INTO `item_line` (`item_line_id`, `price`, `old_stock`, `qty`, `item_line
 (119, 179, 35, 5, 'local', 85, 1),
 (120, 250, 15, 3, 'local', 85, 5),
 (121, 112, 13, 1, 'local', 85, 6),
-(122, 0, 0, 30, '', 86, 35);
+(122, 0, 0, 30, '', 86, 35),
+(123, 179, 30, 3, 'local', 87, 1),
+(124, 150, 4, 2, 'local', 87, 4);
 
 -- --------------------------------------------------------
 
@@ -423,7 +455,14 @@ INSERT INTO `money_denomination` (`money_denomination_id`, `money_bill_id`, `sto
 (41, 5, 85, 1),
 (42, 7, 85, 1),
 (43, 8, 85, 1),
-(44, 9, 85, 1);
+(44, 9, 85, 1),
+(45, 1, 87, 2),
+(46, 2, 87, 1),
+(47, 3, 87, 1),
+(48, 4, 87, 1),
+(49, 6, 87, 1),
+(50, 7, 87, 1),
+(51, 8, 87, 1);
 
 -- --------------------------------------------------------
 
@@ -486,7 +525,8 @@ INSERT INTO `stock_transaction` (`stock_transaction_id`, `transaction_timestamp`
 (83, '2018-11-25 20:16:19', 'Sold', 1),
 (84, '2018-11-25 20:16:38', 'Restock', 1),
 (85, '2018-12-02 18:41:41', 'Sold', 1),
-(86, '2018-12-05 20:51:46', 'Restock', 1);
+(86, '2018-12-05 20:51:46', 'Restock', 1),
+(87, '2018-12-31 12:27:40', 'Sold', 1);
 
 --
 -- Indexes for dumped tables
@@ -519,6 +559,13 @@ ALTER TABLE `employee_log`
 ALTER TABLE `expense`
   ADD PRIMARY KEY (`expense_id`),
   ADD KEY `expense_fk` (`employee_id`);
+
+--
+-- Indexes for table `fisherman_expense`
+--
+ALTER TABLE `fisherman_expense`
+  ADD PRIMARY KEY (`fisherman_expense_id`),
+  ADD KEY `fisherman_expense_fk` (`employee_id`);
 
 --
 -- Indexes for table `item`
@@ -577,17 +624,22 @@ ALTER TABLE `branch`
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `employee_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `employee_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `employee_log`
 --
 ALTER TABLE `employee_log`
-  MODIFY `employee_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `employee_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT for table `expense`
 --
 ALTER TABLE `expense`
-  MODIFY `expense_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `expense_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+--
+-- AUTO_INCREMENT for table `fisherman_expense`
+--
+ALTER TABLE `fisherman_expense`
+  MODIFY `fisherman_expense_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `item`
 --
@@ -597,7 +649,7 @@ ALTER TABLE `item`
 -- AUTO_INCREMENT for table `item_line`
 --
 ALTER TABLE `item_line`
-  MODIFY `item_line_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=123;
+  MODIFY `item_line_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=125;
 --
 -- AUTO_INCREMENT for table `item_log`
 --
@@ -612,12 +664,12 @@ ALTER TABLE `money_bill`
 -- AUTO_INCREMENT for table `money_denomination`
 --
 ALTER TABLE `money_denomination`
-  MODIFY `money_denomination_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `money_denomination_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 --
 -- AUTO_INCREMENT for table `stock_transaction`
 --
 ALTER TABLE `stock_transaction`
-  MODIFY `stock_transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
+  MODIFY `stock_transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
 --
 -- Constraints for dumped tables
 --
@@ -640,6 +692,12 @@ ALTER TABLE `employee_log`
 --
 ALTER TABLE `expense`
   ADD CONSTRAINT `expense_fk` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`employee_id`);
+
+--
+-- Constraints for table `fisherman_expense`
+--
+ALTER TABLE `fisherman_expense`
+  ADD CONSTRAINT `fisherman_expense_fk` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`employee_id`);
 
 --
 -- Constraints for table `item`
