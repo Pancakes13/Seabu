@@ -24,20 +24,18 @@ require ("../panelheader.php");
                         <input id="searchDate" value="<?php echo $_GET['date'];?>" hidden="true">
                     </div>
                     <div id="editDailyTallyCard" class="card-body">
-                        <form id="dailyTally">
-                            <table id="tallyTable" class="table">
-                                <tr>
-                                    <th>Item Name</th>
-                                    <th>Price (Php)</th>
-                                    <th>Old Stock (Pcs/Kg)</th>
-                                    <th>Current Stock (Pcs/Kg)</th>
-                                    <th>Qty</th>
-                                    <th>Type</th>
-                                    <th style="text-align:right;">Subtotal</th>
-                                    <th style="text-align:right;">Action</th>
-                                </tr>
-                            </table>
-                        </form>
+                      <table id="tallyTable" class="table">
+                          <tr>
+                              <th>Item Name</th>
+                              <th>Price (Php)</th>
+                              <th>Old Stock (Pcs/Kg)</th>
+                              <th>Current Stock (Pcs/Kg)</th>
+                              <th>Qty</th>
+                              <th>Type</th>
+                              <th style="text-align:right;">Subtotal</th>
+                              <th style="text-align:right;">Action</th>
+                          </tr>
+                      </table>
                     </div>
                   </div>
                 </div>
@@ -50,15 +48,13 @@ require ("../panelheader.php");
                           <strong class="card-title">Edit Money Denomination</strong>
                         </div>
                         <div class="card-body">
-                          <form id="dailyTally">
-                              <table id="moneyTable" class="table">
-                                <tr>
-                                  <th>Money Value</th>
-                                  <th>Qty</th>
-                                  <th style="text-align:right;">Subtotal</th>
-                                </tr>
-                              </table>
-                          </form>
+                          <table id="moneyTable" class="table">
+                            <tr>
+                              <th>Money Value</th>
+                              <th>Qty</th>
+                              <th style="text-align:right;">Subtotal</th>
+                            </tr>
+                          </table>
                         </div>
                       </div>
                     </div>
@@ -258,8 +254,8 @@ $(document).on('change', ".editQty",function () {
     var numRows = $('#tallyTable tr').length;
     var test1 = $(this).closest(".editQty").val();
     var qty = parseInt($(this).closest("td").parent()[0].cells[1].children[0].value);
-    var price = parseInt($(this).closest("td").parent()[0].cells[3].children[0].value);
-    $(this).closest("td").parent()[0].cells[5].innerHTML = qty*price;
+    var price = parseInt($(this).closest("td").parent()[0].cells[4].children[0].value);
+    $(this).closest("td").parent()[0].cells[6].innerHTML = qty*price;
     
     var total = 0;
     $("tr.item").each(function() {
