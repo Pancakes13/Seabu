@@ -186,7 +186,7 @@ function PopulateTallyTable() {
           +'<option value="local">Local</option>'
           +'<option value="honestbee">Honestbee</option>'
           +'</select></td>'
-          +'<td class="subTotal" style="text-align:right;">0</td></tr>');
+          +'<td class="subTotal" style="text-align:right;"><b>0</b></td></tr>');
       });
       myTable.append('<tr><td></td><td></td><td></td><td></td><td id="total"><strong>TOTAL</strong></td><td id="totalValue" style="text-align:right;">0</td></tr>');
       myTable.append('<tr><td></td><td></td><td></td><td></td><td><button id="next-btn" class="btn btn-primary" type="button">Enter Money Denomination</button></td><td></td></tr>');
