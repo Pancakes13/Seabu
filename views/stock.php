@@ -189,6 +189,11 @@ var myTable = "";
 $(document).ready(function(){
   myTable = $('#bootstrap-data-table').DataTable();
   PopulateItemsTable();
+
+  $("#branch").change(function(){
+    myTable.clear();
+    PopulateItemsTable();
+  });
 });
 function PopulateItemsTable() {
     let id = $("#branch").val();

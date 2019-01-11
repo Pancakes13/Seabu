@@ -119,12 +119,20 @@ $(document).ready(function(){
     },
     keyNavigation: false
   });
+
+  $("#branch").change(function(){
+    $('#tallyTable tr').remove();
+    PopulateTallyTable();
+  });
 });
 
 function PopulateTallyTable() {
   var exists = false;
+  let id = $("#branch").val();
+  
   $.ajax({
-    method: "GET", url: "../queries/get/getDailyTally.php", 
+    method: "POST", url: "../queries/get/getDailyTally.php",
+    data: {"branch_id": id},
   }).done(function( data ) {
     var jsonObject = JSON.parse(data);
     if(jsonObject.length > 0){
