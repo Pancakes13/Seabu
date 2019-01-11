@@ -14,7 +14,7 @@ $moneyQty = $_POST['moneyQty'];
 
 if(!$stock_type || !$emp_id || !$item || max($qty) == 0){
 
-    $result = 2;
+    $result = "Missing Parameters";
   
   }else{
     $tallyExists = $conn->query("SELECT `i`.`item_id`, `i`.`name`, `i`.`qty` AS 'item_qty', `il`.`price`, `il`.`qty`, `il`.`item_line_type`,
@@ -25,9 +25,9 @@ if(!$stock_type || !$emp_id || !$item || max($qty) == 0){
     INNER JOIN `item` `i`
     ON `il`.`item_id` = `i`.`item_id`
     AND DATE(`s`.`transaction_timestamp`) = CURDATE()
-    AND `s`.`type` = 'Sold'");
+    AND `s`.`type` = 'Sold'
+    AND `s`.`isVoid` = 0");
     
-    $result = 2;
 
     if($tallyExists->num_rows == 0){
       try{
