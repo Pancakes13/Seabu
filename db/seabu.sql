@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 04, 2019 at 01:44 PM
+-- Generation Time: Jan 11, 2019 at 01:51 PM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.5.38
 
@@ -189,9 +189,9 @@ CREATE TABLE `item` (
 --
 
 INSERT INTO `item` (`item_id`, `name`, `price`, `qty`, `branch_id`, `isDeleted`) VALUES
-(1, 'Cheezy Scallop', 179, 27, 1, 0),
+(1, 'Cheezy Scallop', 179, 25, 1, 0),
 (2, '', 0, 0, 1, 1),
-(3, 'Lobster', 175, 12, 1, 0),
+(3, 'Lobster', 175, 10, 1, 0),
 (4, 'Shrimp', 150, 2, 1, 0),
 (5, 'Calamares', 250, 12, 1, 0),
 (6, 'Foods', 112, 12, 1, 0),
@@ -229,7 +229,7 @@ INSERT INTO `item` (`item_id`, `name`, `price`, `qty`, `branch_id`, `isDeleted`)
 (38, 'Coke (1 Liter)', 35, 0, 1, 1),
 (39, 'Coke (1 Liter)', 35, 0, 1, 0),
 (43, 'The Market Lobster', 350, 0, 1, 1),
-(44, 'The Market Lobster', 350, 0, 2, 0),
+(44, 'The Market Lobster', 350, 12, 2, 0),
 (45, 'sadfsadf', 123, 0, 3, 1);
 
 -- --------------------------------------------------------
@@ -330,7 +330,11 @@ INSERT INTO `item_line` (`item_line_id`, `price`, `old_stock`, `qty`, `item_line
 (121, 112, 13, 1, 'local', 85, 6),
 (122, 0, 0, 30, '', 86, 35),
 (123, 179, 30, 3, 'local', 87, 1),
-(124, 150, 4, 2, 'local', 87, 4);
+(124, 150, 4, 2, 'local', 87, 4),
+(125, 179, 27, 2, 'local', 88, 1),
+(126, 175, 12, 2, 'local', 88, 3),
+(127, 0, 0, 15, '', 89, 44),
+(128, 350, 15, 3, 'local', 90, 44);
 
 -- --------------------------------------------------------
 
@@ -462,7 +466,13 @@ INSERT INTO `money_denomination` (`money_denomination_id`, `money_bill_id`, `sto
 (48, 4, 87, 1),
 (49, 6, 87, 1),
 (50, 7, 87, 1),
-(51, 8, 87, 1);
+(51, 8, 87, 1),
+(138, 1, 88, 3),
+(139, 2, 88, 1),
+(140, 7, 88, 1),
+(141, 8, 88, 1),
+(142, 5, 90, 1),
+(143, 9, 90, 1);
 
 -- --------------------------------------------------------
 
@@ -474,6 +484,7 @@ CREATE TABLE `stock_transaction` (
   `stock_transaction_id` int(11) NOT NULL,
   `transaction_timestamp` datetime DEFAULT CURRENT_TIMESTAMP,
   `type` enum('Restock','Sold','Damaged') NOT NULL,
+  `isVoid` int(11) NOT NULL DEFAULT '0',
   `employee_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -481,52 +492,55 @@ CREATE TABLE `stock_transaction` (
 -- Dumping data for table `stock_transaction`
 --
 
-INSERT INTO `stock_transaction` (`stock_transaction_id`, `transaction_timestamp`, `type`, `employee_id`) VALUES
-(13, '2018-09-30 20:05:42', 'Sold', 1),
-(14, '2018-09-30 21:11:23', 'Sold', 1),
-(15, '2018-09-30 21:12:59', 'Sold', 1),
-(16, '2018-10-02 22:28:02', 'Sold', 1),
-(18, '2018-10-03 21:58:55', 'Sold', 1),
-(22, '2018-10-04 21:49:46', 'Sold', 1),
-(23, '2018-10-06 18:43:33', 'Sold', 1),
-(27, '2018-10-07 20:40:13', 'Sold', 1),
-(28, '2018-10-09 21:18:38', 'Sold', 1),
-(29, '2018-10-10 21:41:37', 'Sold', 1),
-(35, '2018-10-12 23:50:09', 'Restock', 1),
-(36, '2018-10-14 19:40:42', 'Damaged', 1),
-(37, '2018-10-15 21:36:45', 'Sold', 1),
-(38, '2018-10-17 21:34:40', 'Sold', 1),
-(39, '2018-10-18 22:19:45', 'Sold', 1),
-(40, '2018-10-18 23:00:04', 'Restock', 1),
-(41, '2018-10-18 23:01:16', 'Restock', 1),
-(42, '2018-10-18 23:01:22', 'Restock', 1),
-(43, '2018-10-18 23:01:27', 'Restock', 1),
-(44, '2018-10-18 23:01:32', 'Restock', 1),
-(45, '2018-10-18 23:01:38', 'Restock', 1),
-(46, '2018-10-28 19:47:11', 'Sold', 1),
-(48, '2018-10-30 22:11:56', 'Restock', 1),
-(49, '2018-10-30 22:12:20', 'Restock', 1),
-(50, '2018-10-30 22:12:27', 'Restock', 1),
-(51, '2018-10-30 22:12:33', 'Restock', 1),
-(52, '2018-10-30 22:12:40', 'Restock', 1),
-(53, '2018-10-30 22:21:04', 'Sold', 1),
-(54, '2018-10-30 22:22:17', 'Sold', 1),
-(55, '2018-10-30 22:23:11', 'Sold', 1),
-(56, '2018-11-05 21:26:32', 'Sold', 1),
-(63, '2018-11-11 21:35:25', 'Sold', 1),
-(64, '2018-11-11 21:35:45', 'Restock', 1),
-(65, '2018-11-11 21:35:51', 'Damaged', 1),
-(66, '2018-11-21 22:25:57', 'Sold', 1),
-(67, '2018-11-22 21:59:15', 'Restock', 1),
-(68, '2018-11-22 21:59:22', 'Restock', 1),
-(69, '2018-11-22 21:59:49', 'Restock', 1),
-(70, '2018-11-22 22:00:20', 'Restock', 1),
-(71, '2018-11-22 22:00:27', 'Restock', 1),
-(83, '2018-11-25 20:16:19', 'Sold', 1),
-(84, '2018-11-25 20:16:38', 'Restock', 1),
-(85, '2018-12-02 18:41:41', 'Sold', 1),
-(86, '2018-12-05 20:51:46', 'Restock', 1),
-(87, '2018-12-31 12:27:40', 'Sold', 1);
+INSERT INTO `stock_transaction` (`stock_transaction_id`, `transaction_timestamp`, `type`, `isVoid`, `employee_id`) VALUES
+(13, '2018-09-30 20:05:42', 'Sold', 0, 1),
+(14, '2018-09-30 21:11:23', 'Sold', 0, 1),
+(15, '2018-09-30 21:12:59', 'Sold', 0, 1),
+(16, '2018-10-02 22:28:02', 'Sold', 0, 1),
+(18, '2018-10-03 21:58:55', 'Sold', 0, 1),
+(22, '2018-10-04 21:49:46', 'Sold', 0, 1),
+(23, '2018-10-06 18:43:33', 'Sold', 0, 1),
+(27, '2018-10-07 20:40:13', 'Sold', 0, 1),
+(28, '2018-10-09 21:18:38', 'Sold', 0, 1),
+(29, '2018-10-10 21:41:37', 'Sold', 0, 1),
+(35, '2018-10-12 23:50:09', 'Restock', 0, 1),
+(36, '2018-10-14 19:40:42', 'Damaged', 0, 1),
+(37, '2018-10-15 21:36:45', 'Sold', 0, 1),
+(38, '2018-10-17 21:34:40', 'Sold', 0, 1),
+(39, '2018-10-18 22:19:45', 'Sold', 0, 1),
+(40, '2018-10-18 23:00:04', 'Restock', 0, 1),
+(41, '2018-10-18 23:01:16', 'Restock', 0, 1),
+(42, '2018-10-18 23:01:22', 'Restock', 0, 1),
+(43, '2018-10-18 23:01:27', 'Restock', 0, 1),
+(44, '2018-10-18 23:01:32', 'Restock', 0, 1),
+(45, '2018-10-18 23:01:38', 'Restock', 0, 1),
+(46, '2018-10-28 19:47:11', 'Sold', 0, 1),
+(48, '2018-10-30 22:11:56', 'Restock', 0, 1),
+(49, '2018-10-30 22:12:20', 'Restock', 0, 1),
+(50, '2018-10-30 22:12:27', 'Restock', 0, 1),
+(51, '2018-10-30 22:12:33', 'Restock', 0, 1),
+(52, '2018-10-30 22:12:40', 'Restock', 0, 1),
+(53, '2018-10-30 22:21:04', 'Sold', 0, 1),
+(54, '2018-10-30 22:22:17', 'Sold', 0, 1),
+(55, '2018-10-30 22:23:11', 'Sold', 0, 1),
+(56, '2018-11-05 21:26:32', 'Sold', 0, 1),
+(63, '2018-11-11 21:35:25', 'Sold', 0, 1),
+(64, '2018-11-11 21:35:45', 'Restock', 0, 1),
+(65, '2018-11-11 21:35:51', 'Damaged', 0, 1),
+(66, '2018-11-21 22:25:57', 'Sold', 0, 1),
+(67, '2018-11-22 21:59:15', 'Restock', 0, 1),
+(68, '2018-11-22 21:59:22', 'Restock', 0, 1),
+(69, '2018-11-22 21:59:49', 'Restock', 0, 1),
+(70, '2018-11-22 22:00:20', 'Restock', 0, 1),
+(71, '2018-11-22 22:00:27', 'Restock', 0, 1),
+(83, '2018-11-25 20:16:19', 'Sold', 0, 1),
+(84, '2018-11-25 20:16:38', 'Restock', 0, 1),
+(85, '2018-12-02 18:41:41', 'Sold', 0, 1),
+(86, '2018-12-05 20:51:46', 'Restock', 0, 1),
+(87, '2018-12-31 12:27:40', 'Sold', 0, 1),
+(88, '2019-01-05 19:23:02', 'Sold', 0, 1),
+(89, '2019-01-11 20:42:55', 'Restock', 0, 1),
+(90, '2019-01-11 20:43:20', 'Sold', 0, 1);
 
 --
 -- Indexes for dumped tables
@@ -649,7 +663,7 @@ ALTER TABLE `item`
 -- AUTO_INCREMENT for table `item_line`
 --
 ALTER TABLE `item_line`
-  MODIFY `item_line_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=125;
+  MODIFY `item_line_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=129;
 --
 -- AUTO_INCREMENT for table `item_log`
 --
@@ -664,12 +678,12 @@ ALTER TABLE `money_bill`
 -- AUTO_INCREMENT for table `money_denomination`
 --
 ALTER TABLE `money_denomination`
-  MODIFY `money_denomination_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `money_denomination_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=144;
 --
 -- AUTO_INCREMENT for table `stock_transaction`
 --
 ALTER TABLE `stock_transaction`
-  MODIFY `stock_transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
+  MODIFY `stock_transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
 --
 -- Constraints for dumped tables
 --
