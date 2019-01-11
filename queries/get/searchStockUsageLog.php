@@ -16,6 +16,7 @@ $result = $conn->query("SELECT `il`.`item_line_id`, `i`.`item_id`, `i`.`name`, `
                 INNER JOIN `branch` `b`
                 ON `e`.`branch_id` = `b`.`branch_id`
                 AND DATE(`s`.`transaction_timestamp`) >= '$date1' AND DATE(`s`.`transaction_timestamp`) <= '$date2'
+                AND `s`.`isVoid` = 0
                 ORDER BY `s`.`transaction_timestamp` DESC");
 
 $result_array = array();

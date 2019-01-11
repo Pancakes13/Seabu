@@ -12,6 +12,7 @@ $result2 = $conn->query("SELECT SUM(`i`.`price`*`i`.`qty`) AS `total`
 FROM `item_line` `i`
 INNER JOIN `stock_transaction` `s`
 ON `i`.`stock_transaction_id` = `s`.`stock_transaction_id`
+AND `s`.`isVoid` = 0
 WHERE DATE(`transaction_timestamp`) >= '$date1' AND DATE(`transaction_timestamp`) <= '$date2'");
 
 $result_array = array();

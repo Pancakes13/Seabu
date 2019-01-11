@@ -14,6 +14,7 @@ $result = $conn->query("SELECT `i`.`item_id`, `i`.`name`, `i`.`qty` AS 'item_qty
                     ON `i`.`branch_id` = `b`.`branch_id`
                     AND DATE(`s`.`transaction_timestamp`) = CURDATE()
                     AND `s`.`type` = 'Sold'
+                    AND `s`.`isVoid` = 0
                     AND `b`.`branch_id` = $id"); //convert timestamp to date
 $outp = "";
 $result_array = array();

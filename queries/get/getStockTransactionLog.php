@@ -16,7 +16,8 @@ $result = $conn->query("SELECT `il`.`item_line_id`, `i`.`item_id`, `i`.`name`, `
                 ON `e`.`employee_id` = `s`.`employee_id`
                 INNER JOIN `branch` `b`
                 ON `e`.`branch_id` = `b`.`branch_id`
-                AND `s`.`type` = 'Sold'");
+                AND `s`.`type` = 'Sold'
+                AND `s`.`isVoid` = 0");
 
 $result_array = array();
 while($rs = $result->fetch_assoc()) {

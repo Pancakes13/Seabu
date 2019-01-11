@@ -19,7 +19,8 @@ FROM `item_line` `i`
 INNER JOIN `stock_transaction` `s`
 ON `i`.`stock_transaction_id` = `s`.`stock_transaction_id`
 AND `s`.`type` = 'Sold'
-AND `i`.`item_id` = $item");
+AND `i`.`item_id` = $item
+AND `s`.`isVoid` = 0");
 $outp = "";
 $result_array = array();
 while($rs = $result->fetch_assoc()) {

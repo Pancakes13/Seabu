@@ -2,6 +2,14 @@
 require ("../panelsidebar.php");
 require ("../panelheader.php");
 ?>
+<div style="width:30%; margin-left:1%;">
+  Select Branch
+  <select id="branch" class="form-control">
+    <option value="1">Sugbo Mercado</option>
+    <option value="2">The Market</option>
+    <option value="3">Yellowcube</option>
+  </select>
+</div>
 <div class="content mt-3">
   <div class="animated fadeIn">
     <div class="row">
@@ -103,6 +111,11 @@ $(document).ready(function(){
   myTable = $('#homeItemTable').DataTable();
   PopulateItemsTable();
   getProfit();
+
+  $("#branch").change(function(){
+    myTable.clear();
+    PopulateItemsTable();
+  });
 });
 
 function getInformation() {
@@ -251,8 +264,12 @@ function getItemSales(item) {
 }
 
 function PopulateItemsTable() {
+    let id = $("#branch").val();
+    
     $.ajax({
-      method: "GET", url: "../queries/get/getItems.php", 
+      method: "POST",
+      url: "../queries/get/getItems.php",
+      data: {"branch_id": id},
     }).done(function( data ) {
       var jsonObject = JSON.parse(data);
       var result = jsonObject.map(function (item) {

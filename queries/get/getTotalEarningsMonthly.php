@@ -16,7 +16,8 @@ SUM(CASE WHEN MONTH(`s`.`transaction_timestamp`) = '11' && YEAR(CURDATE()) THEN 
 SUM(CASE WHEN MONTH(`s`.`transaction_timestamp`) = '12' && YEAR(CURDATE()) THEN `i`.`price`*`i`.`qty` ELSE 0 END) AS 'decCnt'
 FROM `item_line` `i`
 INNER JOIN `stock_transaction` `s`
-ON `i`.`stock_transaction_id` = `s`.`stock_transaction_id`");
+ON `i`.`stock_transaction_id` = `s`.`stock_transaction_id`
+AND `s`.`isVoid` = 0");
 $outp = "";
 $result_array = array();
 while($rs = $result->fetch_assoc()) {

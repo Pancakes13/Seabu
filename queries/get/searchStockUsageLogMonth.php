@@ -15,6 +15,7 @@ $result = $conn->query("SELECT `il`.`item_line_id`, `i`.`item_id`, `i`.`name`, `
    INNER JOIN `branch` `b`
    ON `e`.`branch_id` = `b`.`branch_id`
    AND MONTH(DATE(`s`.`transaction_timestamp`)) = $month
+   AND `s`.`isVoid` = 0
    ORDER BY `s`.`transaction_timestamp` DESC");
 
 $result_array = array();

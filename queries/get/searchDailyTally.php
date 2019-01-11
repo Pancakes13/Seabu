@@ -9,7 +9,8 @@ $result = $conn->query("SELECT `i`.`item_id`, `i`.`name`, `il`.`item_line_id`, `
                 INNER JOIN `item` `i`
                 ON `il`.`item_id` = `i`.`item_id`
                 AND DATE(`s`.`transaction_timestamp`) ='$date'
-                AND `s`.`type` = 'Sold'");
+                AND `s`.`type` = 'Sold'
+                AND `s`.`isVoid` = 0");
 $outp = "";
 $result_array = array();
 while($rs = $result->fetch_assoc()) {
