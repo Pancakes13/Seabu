@@ -149,7 +149,7 @@ require ("../panelheader.php");
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                  <button id="submitEdit" type="button" class="btn btn-warning" type="submit" data-dismiss="modal">Edit Item</button>
+                  <button id="submitEdit" class="btn btn-warning" type="submit" data-dismiss="modal">Edit Item</button>
                 </div>
               </div>
             </div>

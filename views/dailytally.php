@@ -38,14 +38,6 @@ require ("../panelheader.php");
                     </div>
                     <div class="card-body">
                       <table id="tallyTable" class="table">
-                        <tr>
-                          <th>Item Name</th>
-                          <th>Price (Php)</th>
-                          <th>Current Stock (Pcs/Kg)</th>
-                          <th>Qty</th>
-                          <th>Type</th>
-                          <th style="text-align:right;">Subtotal</th>
-                        </tr>
                       </table>
                     </div>
                   </div>
@@ -82,9 +74,34 @@ require ("../panelheader.php");
   </div>
 </div>
 
+<!--Delete Modal-->
+<div class="modal fade" id="voidModal" aria-hidden="true">
+  <form>
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="mediumModalLabel">Void Transaction</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to void this transaction?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button id="voidTally" type="submit" class="btn btn-danger" data-dismiss="modal">Void Transaction</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<!--END OF Delete Modal-->
+
 <script>
 var myTable = "";
 var moneyTable = "";
+var stock_transaction = 0;
 $(document).ready(function(){
   myTable = $('#tallyTable');
   PopulateTallyTable();
@@ -101,6 +118,22 @@ $(document).ready(function(){
       swal(
         'Success!',
         'You have submitted the daily tally!',
+        'success'
+      )
+    })
+  });
+
+  $(document).on('click', '#voidTally', function(){
+    $.ajax({
+      type: "POST",
+      url: "../queries/delete/voidDailyTally.php",
+      data: {"stock_transaction_id": stock_transaction},
+    }).done(function( data ) {
+      $('#tallyTable tr').remove();
+      PopulateTallyTable();
+      swal(
+        'Success!',
+        'You have voided the transaction!',
         'success'
       )
     })
@@ -137,8 +170,16 @@ function PopulateTallyTable() {
     var jsonObject = JSON.parse(data);
     if(jsonObject.length > 0){
       exists = true;
+      myTable.append('<tr><th>Item Name</th>'
+        +'<th>Price (Php)</th>'
+        +'<th>Current Stock (Pcs/Kg)</th>'
+        +'<th>Qty</th>'
+        +'<th>Type</th>'
+        +'<th style="text-align:right;">Subtotal</th>'
+        +'</tr>');
       var result = jsonObject.map(function (item) {
       var result = [];
+      stock_transaction = item.stock_transaction_id;
       myTable.append('<tr class="item"><td style="width:25%;">'+item.name+' <input name="item[]" value="'+item.item_id+'" hidden></td>'
         +'<td style="width:20%;"><input name="price[]" class="price form-control" type="number" value="'+item.price+'" readonly="true"></td>'
         +'<td><input name="current_stock[]" class="qty form-control" value="'+item.item_qty+'" readonly></td>'
@@ -149,7 +190,7 @@ function PopulateTallyTable() {
     var date  = new Date();
     var newDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
     myTable.append('<tr><td></td><td></td><td></td><td></td><td id="total"><strong>TOTAL</strong><td id="totalValue" style="text-align:right;">0</td></tr>');
-    myTable.append('<tr><td></td><td></td><td></td><td></td><td></td><td style="text-align:right;"><a href="editDailyTally.php?date='+newDate+'"><button type="button" class="btn btn-warning btn-sm">Edit Tally <i class="fa fa-edit"></i></button></a></td></tr>');
+    myTable.append('<tr><td></td><td></td><td></td><td></td><td></td><td style="text-align:right;"><button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#voidModal">Void Tally <i class="fa fa-trash"></i></button></td></tr>');
 
     var total = 0;
     $("tr.item").each(function() {
@@ -184,6 +225,13 @@ function PopulateTallyTable() {
       data: {"branch_id": id},
     }).done(function( data ) {
       var jsonObject = JSON.parse(data);
+      myTable.append('<tr><th>Item Name</th>'
+        +'<th>Price (Php)</th>'
+        +'<th>Current Stock (Pcs/Kg)</th>'
+        +'<th>Qty</th>'
+        +'<th>Type</th>'
+        +'<th style="text-align:right;">Subtotal</th>'
+        +'</tr>');
       var result = jsonObject.map(function (item) {
         var result = [];
         myTable.append('<tr class="item"><td style="width:25%;">'+item.name+' <input name="item[]" value="'+item.item_id+'" hidden> <input name="stock_transaction_id" value="'+item.stock_transaction_id+'" hidden></td>'
@@ -194,7 +242,7 @@ function PopulateTallyTable() {
           +'<option value="local">Local</option>'
           +'<option value="honestbee">Honestbee</option>'
           +'</select></td>'
-          +'<td class="subTotal" style="text-align:right;"><b>0</b></td></tr>');
+          +'<td class="subTotal" style="text-align:right; font-weight:bold;">0</td></tr>');
       });
       myTable.append('<tr><td></td><td></td><td></td><td></td><td id="total"><strong>TOTAL</strong></td><td id="totalValue" style="text-align:right;">0</td></tr>');
       myTable.append('<tr><td></td><td></td><td></td><td></td><td><button id="next-btn" class="btn btn-primary" type="button">Enter Money Denomination</button></td><td></td></tr>');
@@ -234,7 +282,7 @@ $(document).on('change', ".qty",function () {
   var qty = parseInt($(this).closest("td").parent()[0].cells[1].children[0].value);
   var price = parseInt($(this).closest("td").parent()[0].cells[3].children[0].value);
   $(this).closest("td").parent()[0].cells[5].innerHTML = qty*price;
-          
+  
   var total = 0;
   $("tr.item").each(function() {
     $this = $(this);

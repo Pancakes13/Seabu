@@ -4,7 +4,7 @@ require("../../connection.php");
 $id = $_POST['branch_id'];
 
 $result = $conn->query("SELECT `i`.`item_id`, `i`.`name`, `i`.`qty` AS 'item_qty', `il`.`price`, `il`.`qty`, `il`.`item_line_type`,
-                    `s`.`transaction_timestamp`, `s`.`type`
+                    `s`.`transaction_timestamp`, `s`.`type`, `s`.`stock_transaction_id`
                     FROM `stock_transaction` `s` 
                     INNER JOIN `item_line` `il`
                     ON  `s`.`stock_transaction_id` = `il`.`stock_transaction_id`
