@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 11, 2019 at 01:51 PM
+-- Generation Time: Jan 13, 2019 at 11:16 AM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.5.38
 
@@ -229,7 +229,7 @@ INSERT INTO `item` (`item_id`, `name`, `price`, `qty`, `branch_id`, `isDeleted`)
 (38, 'Coke (1 Liter)', 35, 0, 1, 1),
 (39, 'Coke (1 Liter)', 35, 0, 1, 0),
 (43, 'The Market Lobster', 350, 0, 1, 1),
-(44, 'The Market Lobster', 350, 12, 2, 0),
+(44, 'The Market Lobster', 350, 11, 2, 0),
 (45, 'sadfsadf', 123, 0, 3, 1);
 
 -- --------------------------------------------------------
@@ -334,7 +334,8 @@ INSERT INTO `item_line` (`item_line_id`, `price`, `old_stock`, `qty`, `item_line
 (125, 179, 27, 2, 'local', 88, 1),
 (126, 175, 12, 2, 'local', 88, 3),
 (127, 0, 0, 15, '', 89, 44),
-(128, 350, 15, 3, 'local', 90, 44);
+(128, 350, 15, 3, 'local', 90, 44),
+(129, 350, 12, 1, 'local', 91, 44);
 
 -- --------------------------------------------------------
 
@@ -472,7 +473,10 @@ INSERT INTO `money_denomination` (`money_denomination_id`, `money_bill_id`, `sto
 (140, 7, 88, 1),
 (141, 8, 88, 1),
 (142, 5, 90, 1),
-(143, 9, 90, 1);
+(143, 9, 90, 1),
+(144, 5, 91, 1),
+(145, 6, 91, 1),
+(146, 7, 91, 1);
 
 -- --------------------------------------------------------
 
@@ -540,7 +544,21 @@ INSERT INTO `stock_transaction` (`stock_transaction_id`, `transaction_timestamp`
 (87, '2018-12-31 12:27:40', 'Sold', 0, 1),
 (88, '2019-01-05 19:23:02', 'Sold', 0, 1),
 (89, '2019-01-11 20:42:55', 'Restock', 0, 1),
-(90, '2019-01-11 20:43:20', 'Sold', 0, 1);
+(90, '2019-01-11 20:43:20', 'Sold', 1, 1),
+(91, '2019-01-11 21:23:26', 'Sold', 0, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `void_transaction`
+--
+
+CREATE TABLE `void_transaction` (
+  `void_transaction_id` int(11) NOT NULL,
+  `transaction_timestamp` datetime NOT NULL,
+  `employee_id` int(11) NOT NULL,
+  `stock_transaction_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Indexes for dumped tables
@@ -626,6 +644,14 @@ ALTER TABLE `stock_transaction`
   ADD KEY `stock_transaction_fk` (`employee_id`);
 
 --
+-- Indexes for table `void_transaction`
+--
+ALTER TABLE `void_transaction`
+  ADD PRIMARY KEY (`void_transaction_id`),
+  ADD KEY `void_transaction_fk1` (`employee_id`),
+  ADD KEY `void_transaction_fk2` (`stock_transaction_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -663,7 +689,7 @@ ALTER TABLE `item`
 -- AUTO_INCREMENT for table `item_line`
 --
 ALTER TABLE `item_line`
-  MODIFY `item_line_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=129;
+  MODIFY `item_line_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
 --
 -- AUTO_INCREMENT for table `item_log`
 --
@@ -678,12 +704,17 @@ ALTER TABLE `money_bill`
 -- AUTO_INCREMENT for table `money_denomination`
 --
 ALTER TABLE `money_denomination`
-  MODIFY `money_denomination_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=144;
+  MODIFY `money_denomination_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=147;
 --
 -- AUTO_INCREMENT for table `stock_transaction`
 --
 ALTER TABLE `stock_transaction`
-  MODIFY `stock_transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
+  MODIFY `stock_transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
+--
+-- AUTO_INCREMENT for table `void_transaction`
+--
+ALTER TABLE `void_transaction`
+  MODIFY `void_transaction_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Constraints for dumped tables
 --
@@ -745,6 +776,13 @@ ALTER TABLE `money_denomination`
 --
 ALTER TABLE `stock_transaction`
   ADD CONSTRAINT `stock_transaction_fk` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`employee_id`);
+
+--
+-- Constraints for table `void_transaction`
+--
+ALTER TABLE `void_transaction`
+  ADD CONSTRAINT `void_transaction_fk1` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`employee_id`),
+  ADD CONSTRAINT `void_transaction_fk2` FOREIGN KEY (`stock_transaction_id`) REFERENCES `stock_transaction` (`stock_transaction_id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
