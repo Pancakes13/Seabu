@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 13, 2019 at 11:16 AM
+-- Generation Time: Jan 13, 2019 at 11:21 AM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.5.38
 
@@ -555,7 +555,7 @@ INSERT INTO `stock_transaction` (`stock_transaction_id`, `transaction_timestamp`
 
 CREATE TABLE `void_transaction` (
   `void_transaction_id` int(11) NOT NULL,
-  `transaction_timestamp` datetime NOT NULL,
+  `transaction_timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `employee_id` int(11) NOT NULL,
   `stock_transaction_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
