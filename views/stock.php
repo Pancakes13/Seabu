@@ -321,6 +321,9 @@ $("#addBtn").on('click', function(){
           var stock = $("#modelStock").val();
           var qty = $("#modelQty").val();
           
+          if (type === 'Damaged') {
+            qty *= -1;
+          }
           $.ajax({ 
             method: "POST",
             url: "../queries/update/restock.php",

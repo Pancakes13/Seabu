@@ -155,6 +155,7 @@ $(document).ready(function(){
 
   $("#branch").change(function(){
     $('#tallyTable tr').remove();
+    $('#moneyTable tr').remove();
     PopulateTallyTable();
   });
 });
@@ -277,7 +278,7 @@ function PopulateMoneyDenominationTable() {
   })
 }
 
-$(document).on('change', ".qty",function () {
+$(document).on('input', ".qty",function () {
   var test1 = $(this).closest(".qty").val();
   var qty = parseInt($(this).closest("td").parent()[0].cells[1].children[0].value);
   var price = parseInt($(this).closest("td").parent()[0].cells[3].children[0].value);
@@ -291,7 +292,7 @@ $(document).on('change', ".qty",function () {
   $("#totalValue").html(total);
 });
 
-$(document).on('change', ".moneyQty",function () {
+$(document).on('input', ".moneyQty",function () {
   var test1 = $(this).closest(".qty").val();
   var value = $(this).closest("td").parent()[0].cells[0].innerHTML;
   var qty = parseFloat($(this).closest("td").parent()[0].cells[1].children[0].value);
