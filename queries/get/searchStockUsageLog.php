@@ -21,6 +21,10 @@ $result = $conn->query("SELECT `il`.`item_line_id`, `i`.`item_id`, `i`.`name`, `
 
 $result_array = array();
 while($rs = $result->fetch_assoc()) {
+   $rs['sold'] = ($rs['type'] === 'Sold')? $rs['qty'] : 0;
+   $rs['new'] = ($rs['type'] === 'Restock')? $rs['qty'] : 0;
+   $rs['damaged'] = ($rs['type'] === 'Damaged')? $rs['qty'] : 0;
+   $rs['stock'] = $rs['old_stock'] + $rs['new'] - $rs['sold'] - $rs['damaged'];
    array_push($result_array, $rs);
 }       
 echo json_encode($result_array);
