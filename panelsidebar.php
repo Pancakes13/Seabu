@@ -57,6 +57,10 @@ if (!$_SESSION['user_id']) {
                         <a href="sales_logs.php"> <i class="menu-icon fa fa-book"></i>Sales Logs</a>
                     </li>
 
+                    <li>
+                        <a href="voidTransactions.php"> <i class="menu-icon fa fa-trash"></i>Void Transactions</a>
+                    </li>
+
                     <h3 class="menu-title" style="color: white;">Expenses</h3><!-- /.menu-title -->
                     <li>
                         <a href="utilityExpenses.php"> <i class="menu-icon fa fa-wrench"></i>Utility</a>
