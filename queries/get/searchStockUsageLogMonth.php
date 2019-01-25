@@ -1,6 +1,7 @@
 <?php
 require("../../connection.php");
 $month = $_POST['month'];
+$id = $_POST['branch_id'];
 
 $result = $conn->query("SELECT `il`.`item_line_id`, `i`.`item_id`, `i`.`name`, `il`.`old_stock`, `i`.`qty` AS 'item_qty', `il`.`price`, `il`.`qty`, `il`.`item_line_type`,
    `s`.`transaction_timestamp`, `s`.`type`, `s`.`transaction_timestamp`, `e`.`first_name`, `e`.`last_name`, DATE(`s`.`transaction_timestamp`) AS `dateToday`,
@@ -16,10 +17,15 @@ $result = $conn->query("SELECT `il`.`item_line_id`, `i`.`item_id`, `i`.`name`, `
    ON `e`.`branch_id` = `b`.`branch_id`
    AND MONTH(DATE(`s`.`transaction_timestamp`)) = $month
    AND `s`.`isVoid` = 0
+   AND `i`.`branch_id` = $id
    ORDER BY `s`.`transaction_timestamp` DESC");
 
 $result_array = array();
 while($rs = $result->fetch_assoc()) {
+   $rs['sold'] = ($rs['type'] === 'Sold')? $rs['qty'] : 0;
+   $rs['new'] = ($rs['type'] === 'Restock')? $rs['qty'] : 0;
+   $rs['damaged'] = ($rs['type'] === 'Damaged')? $rs['qty'] : 0;
+   $rs['stock'] = $rs['old_stock'] + $rs['new'] - $rs['sold'] - $rs['damaged'];
    array_push($result_array, $rs);
 }       
 echo json_encode($result_array);

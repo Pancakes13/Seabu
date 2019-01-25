@@ -2,16 +2,6 @@
 require ("../panelsidebar.php");
 require ("../panelheader.php");
 ?>
-    
-
-        <div class="col-md-4">
-          Select Branch
-          <select id="branch" class="form-control">
-            <option value="1">Sugbo Mercado</option>
-            <option value="2">The Market</option>
-            <option value="3">Yellowcube</option>
-          </select>
-        </div>
         <div class="content mt-3">
           <div class="animated fadeIn">
             <div class="row">

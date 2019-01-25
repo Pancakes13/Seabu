@@ -16,13 +16,13 @@ if(isset($_POST['password'])){
 
 /* validate whether user has entered all values. */
 
-if(!$fn || !$mn || !$ln || !$email || !$num || !$bday || !$branch || !$pass || $branch < 0){
+if(!$fn || !$ln || !$email || !$num || !$bday || !$branch || !$pass || $branch < 0){
 
   $result = 2;
 
 }else{
     //check if employee exists, if true, then error: email already exists
-    $checkIfUserExists = $conn->query("SELECT * FROM `employee` `e` WHERE e.email = '$email' ");
+    $checkIfUserExists = $conn->query("SELECT * FROM `employee` `e` WHERE e.email = '$email' AND e.isDeleted = 0 ");
 
     if($checkIfUserExists->num_rows > 0){
         $result = "email already exists";

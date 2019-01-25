@@ -1,5 +1,6 @@
 <?php
 require("../../connection.php");
+$id = $_POST['branch_id'];
 
 $result = $conn->query("SELECT `il`.`item_line_id`, `i`.`item_id`, `i`.`name`, `il`.`old_stock`, 
                 `i`.`qty` AS 'item_qty', `il`.`price`, `il`.`qty`, `il`.`item_line_type`,
@@ -17,7 +18,9 @@ $result = $conn->query("SELECT `il`.`item_line_id`, `i`.`item_id`, `i`.`name`, `
                 INNER JOIN `branch` `b`
                 ON `e`.`branch_id` = `b`.`branch_id`
                 AND `s`.`type` = 'Sold'
-                AND `s`.`isVoid` = 0");
+                AND `s`.`isVoid` = 0
+                AND `i`.`branch_id` = $id
+                ORDER BY `s`.`transaction_timestamp` DESC");
 
 $result_array = array();
 while($rs = $result->fetch_assoc()) {

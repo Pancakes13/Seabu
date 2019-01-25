@@ -4,7 +4,7 @@ require ("../panelheader.php");
 ?>
     
 
-        <div class="col-md-4">
+        <div class="content mt-3" style="width:40%;">
           Select Branch
           <select id="branch" class="form-control">
             <option value="1">Sugbo Mercado</option>

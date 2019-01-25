@@ -2,7 +2,7 @@
 require ("../panelsidebar.php");
 require ("../panelheader.php");
 ?>
-<div style="width:30%; margin-left:1%;">
+<div style="width:40%; margin-left:1%;">
   Select Branch
   <select id="branch" class="form-control">
     <option value="1">Sugbo Mercado</option>

@@ -10,7 +10,7 @@ $email  = $_POST['email'];
 $num  = $_POST['num'];
 $birthdate  = $_POST['birthdate'];
 
-if(!$id || !$fn || !$mn || !$ln || !$email || !$num || !$birthdate || !$branch){
+if(!$id || !$fn || !$ln || !$email || !$num || !$birthdate || !$branch){
   $result = 2;
 }else{
     //Insert Item

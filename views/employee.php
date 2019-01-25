@@ -81,6 +81,10 @@ require ("../panelheader.php");
                     <label>Birthdate</label>
                     <input type="date" class="form-control" id="birthdate" name="bday">
                   </div>
+                  <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" class="form-control" id="password" name="password">
+                  </div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -140,7 +144,7 @@ require ("../panelheader.php");
                   </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                  <button id="submitEdit" type="button" class="btn btn-warning" type="submit" data-dismiss="modal">Edit Employee</button>
+                  <button id="submitEdit" class="btn btn-warning" type="submit" data-dismiss="modal">Edit Employee</button>
                 </div>
               </div>
             </div>
@@ -188,16 +192,40 @@ $(document).ready(function(){
       url: "../queries/insert/addEmployee.php",
       data: $(this).serialize(),
     }).done(function( data ) {
-      var result = $.parseJSON(data); 
-      var str = '';
-      $("#message").css('color', 'red').html(str);
-      myTable.clear();
-      PopulateItemsTable();
-      swal(
-        'Success!',
-        'You have added an Employee!',
-        'success'
-      )
+      $("#first_name").val('');
+      $("#middle_name").val('');
+      $("#last_name").val('');
+      $("#email").val('');
+      $("#contact_no").val('');
+      $("#birthdate").val('');
+      $("#password").val('');
+      
+      if (data == 'email already exists') {
+        swal(
+          'Error!',
+          'Email already exists!',
+          'error'
+        )
+      } else {
+        var result = $.parseJSON(data);
+        if (result == 1) {
+          var str = '';
+          $("#message").css('color', 'red').html(str);
+          myTable.clear();
+          PopulateItemsTable();
+          swal(
+            'Success!',
+            'You have added an Employee!',
+            'success'
+          )
+        } else if (result == 2) {
+          swal(
+            'Error!',
+            'Missing a required field!',
+            'error'
+          )
+        }
+      }
     })
   });
 });

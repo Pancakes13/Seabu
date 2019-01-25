@@ -2,6 +2,14 @@
 require ("../panelsidebar.php");
 require ("../panelheader.php");
 ?>
+    <div class="content mt-3" style="width:40%;">
+        Select Branch
+        <select id="branch" class="form-control">
+            <option value="1">Sugbo Mercado</option>
+            <option value="2">The Market</option>
+            <option value="3">Yellowcube</option>
+        </select>
+    </div>
     <div class="content mt-3">
         <div class="animated fadeIn">
             <div class="row">
@@ -25,11 +33,19 @@ var myTable = "";
 $(document).ready(function(){
   myTable = $('#salesLogs-table');
   PopulateItemLogTable();
+
+  $("#branch").change(function(){
+    $('#salesLogs-table tr').remove();
+    PopulateItemLogTable();
+  });
 });
 function PopulateItemLogTable() {
     $('#salesLogs-table tr').remove();
+    let id = $("#branch").val();
     $.ajax({
-        method: "GET", url: "../queries/get/getStockTransactionLog.php", 
+        method: "POST",
+        url: "../queries/get/getStockTransactionLog.php",
+        data: {"branch_id": id}
     }).done(function( data ) {
         var jsonObject = JSON.parse(data);
         var lastTimestamp = "";
