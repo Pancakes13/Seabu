@@ -35,6 +35,7 @@ require ("../panelheader.php");
                   <div class="card">
                     <div class="card-header">
                       <strong class="card-title"><?php echo date("F d, Y (l)");?></strong>
+                      <input id="branch_id" name="branch_id" hidden>
                     </div>
                     <div class="card-body">
                       <table id="tallyTable" class="table">
@@ -104,6 +105,7 @@ var moneyTable = "";
 var stock_transaction = 0;
 $(document).ready(function(){
   myTable = $('#tallyTable');
+  moneyTable = $('#moneyTable');
   PopulateTallyTable();
 
   $('#dailyTally').submit(function(e) {
@@ -113,13 +115,24 @@ $(document).ready(function(){
       url: "../queries/insert/addDailyTally.php",
       data: $(this).serialize(),
     }).done(function( data ) {
-      $('#tallyTable tr').remove();
-      PopulateTallyTable();
-      swal(
-        'Success!',
-        'You have submitted the daily tally!',
-        'success'
-      )
+      if (data == 1) {
+        $('#tallyTable tr').remove();
+        $('#moneyTable tr').remove();
+        PopulateTallyTable();
+        swal(
+          'Success!',
+          'You have submitted the daily tally!',
+          'success'
+        )
+        $('#smartwizard').smartWizard("prev");
+      } else if (data == 'Missing Parameters') {
+        swal(
+          'Error!',
+          'Missing Required Fields! Daily tally not submitted!',
+          'error'
+        )
+        $('#smartwizard').smartWizard("prev");
+      }
     })
   });
 
@@ -157,7 +170,10 @@ $(document).ready(function(){
     $('#tallyTable tr').remove();
     $('#moneyTable tr').remove();
     PopulateTallyTable();
+    $("#branch_id").val($("#branch").val());
   });
+  $('#smartwizard').smartWizard("prev");
+  $("#branch_id").val($("#branch").val());
 });
 
 function PopulateTallyTable() {

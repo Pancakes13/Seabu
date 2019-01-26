@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 13, 2019 at 11:21 AM
+-- Generation Time: Jan 26, 2019 at 11:36 AM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.5.38
 
@@ -70,7 +70,12 @@ INSERT INTO `employee` (`employee_id`, `first_name`, `last_name`, `middle_name`,
 (4, 'John', 'Doe', 'JImmy', '123', 'jdoe@gmail.com', '09999876543', '1987-12-18', 1, 0),
 (5, 'Antonita', 'Tiu', 'Chu', '123', 'atiu@test.com', '09111726354', '1994-04-04', 1, 0),
 (6, 'Robin', 'Tubungbanua', 'Mangubat', '$2y$10$rrpHY16nhUeK8i0Aabfk/.INRoeaLzPQyHpl/tuZbsYtSLhSRQof.', 'lobin@gmail.com', '09111111111', '1997-10-19', 1, 0),
-(7, 'Ted', 'Mosby', 'Evelynn', '$2y$10$JcYsP4zFwZX0suNWn5H3mOZbS1VvJXxAV9/QiFi6suNQMqL3A3RCm', 'ted@test.com', '09111726354', '1970-01-01', 2, 0);
+(7, 'Ted', 'Mosby', 'Evelynn', '$2y$10$JcYsP4zFwZX0suNWn5H3mOZbS1VvJXxAV9/QiFi6suNQMqL3A3RCm', 'ted@test.com', '09111726354', '1970-01-01', 2, 0),
+(8, 'aa', 'aa', '', '$2y$10$a2Uv1qEtzvOTNd5KZyS4Ie6n4vn4fr4IZLMAK7jvN4hqcqtt7lH9u', 'aa@test.com', '12123123', '1111-11-11', 1, 0),
+(9, 'Swag', 'Test', '', '$2y$10$qLQ2whZ0n/b5n8Zwuh1QjuWUlvXEI4rhfbMYxKvWpyBNzlsG5dBlm', 'swag@test.com', '09111234567', '2222-02-22', 3, 0),
+(10, 'bb', 'bb', '', '$2y$10$VCWLuz1Pc6ykETMaYKfZjuIiEzzpKgOtP70XXHEASNt8cuiuPIpmu', 'bb@test.com', '123123123', '1997-11-11', 3, 1),
+(11, 'bb', 'bb', '', '$2y$10$Pida3iY92YqZmWQsk9Ydc.7rAHHOIb20AcDLPsG9MyrtwRsoYqrJ6', 'bb@test.com', '09111726354', '1986-11-11', 3, 0),
+(12, 'cc', 'cc', '', '$2y$10$ML02udbDdxZ1KrY33.g6zecUlFGK/yey6em6QJEBMJ1PB01xg76xy', 'cc@test.com', '0918273645', '1121-02-12', 3, 0);
 
 -- --------------------------------------------------------
 
@@ -107,7 +112,15 @@ INSERT INTO `employee_log` (`employee_log_id`, `action`, `log_description`, `log
 (13, 'Update', 'Employee was manually updated', '2018-11-05 21:34:01', 5, 1),
 (14, 'Create', 'Employee was Created', '2018-11-23 20:25:49', 6, 1),
 (15, 'Update', 'Employee was manually updated', '2019-01-04 20:39:52', 4, 1),
-(16, 'Create', 'Employee was Created', '2019-01-04 20:43:17', 7, 1);
+(16, 'Create', 'Employee was Created', '2019-01-04 20:43:17', 7, 1),
+(17, 'Create', 'Employee was Created', '2019-01-25 21:38:30', 8, 1),
+(18, 'Create', 'Employee was Created', '2019-01-25 21:40:01', 9, 1),
+(19, 'Update', 'Employee was manually updated', '2019-01-25 21:40:55', 8, 1),
+(20, 'Update', 'Employee was manually updated', '2019-01-25 21:44:33', 8, 1),
+(21, 'Create', 'Employee was Created', '2019-01-25 21:47:33', 10, 1),
+(22, 'Delete', 'Employee was deleted', '2019-01-25 21:51:33', 10, 1),
+(23, 'Create', 'Employee was Created', '2019-01-25 22:11:16', 11, 1),
+(24, 'Create', 'Employee was Created', '2019-01-25 22:18:44', 12, 1);
 
 -- --------------------------------------------------------
 
@@ -192,16 +205,16 @@ INSERT INTO `item` (`item_id`, `name`, `price`, `qty`, `branch_id`, `isDeleted`)
 (1, 'Cheezy Scallop', 179, 25, 1, 0),
 (2, '', 0, 0, 1, 1),
 (3, 'Lobster', 175, 10, 1, 0),
-(4, 'Shrimp', 150, 2, 1, 0),
-(5, 'Calamares', 250, 12, 1, 0),
-(6, 'Foods', 112, 12, 1, 0),
+(4, 'Shrimp', 150, 0, 1, 0),
+(5, 'Calamares', 250, 5, 1, 0),
+(6, 'Food', 100, 0, 1, 0),
 (7, 'fsdjfsldkf', 111, 0, 1, 1),
 (8, 'sadfsad', 111, 0, 1, 1),
 (9, 'sadfds', 111, 0, 1, 1),
 (10, 'faa', 12, 0, 1, 1),
 (11, 'bn', 222, 0, 1, 1),
-(12, 'lumpia', 300, 17, 1, 0),
-(13, 'Lechon', 250, 10, 1, 0),
+(12, 'lumpia', 300, 10, 1, 0),
+(13, 'Lechon', 250, 15, 1, 0),
 (14, 'aaa', 111, 0, 1, 1),
 (15, 'bb', 111, 0, 1, 1),
 (16, 'ccc', 222, 0, 1, 1),
@@ -229,8 +242,9 @@ INSERT INTO `item` (`item_id`, `name`, `price`, `qty`, `branch_id`, `isDeleted`)
 (38, 'Coke (1 Liter)', 35, 0, 1, 1),
 (39, 'Coke (1 Liter)', 35, 0, 1, 0),
 (43, 'The Market Lobster', 350, 0, 1, 1),
-(44, 'The Market Lobster', 350, 11, 2, 0),
-(45, 'sadfsadf', 123, 0, 3, 1);
+(44, 'The Market Lobster', 350, 20, 2, 0),
+(45, 'sadfsadf', 123, 0, 3, 1),
+(46, 'Cheezy Scallop', 200, 50, 3, 0);
 
 -- --------------------------------------------------------
 
@@ -335,7 +349,42 @@ INSERT INTO `item_line` (`item_line_id`, `price`, `old_stock`, `qty`, `item_line
 (126, 175, 12, 2, 'local', 88, 3),
 (127, 0, 0, 15, '', 89, 44),
 (128, 350, 15, 3, 'local', 90, 44),
-(129, 350, 12, 1, 'local', 91, 44);
+(129, 350, 12, 1, 'local', 91, 44),
+(130, 250, 12, 1, 'local', 92, 5),
+(131, 250, 10, 1, 'local', 92, 13),
+(132, 250, 11, 1, 'local', 93, 5),
+(133, 300, 17, 1, 'local', 93, 12),
+(134, 250, 10, 1, 'local', 94, 5),
+(135, 300, 16, 1, 'local', 94, 12),
+(136, 250, 9, 1, 'local', 95, 5),
+(137, 300, 15, 1, 'local', 95, 12),
+(138, 250, 8, 1, 'local', 96, 5),
+(139, 300, 14, 1, 'local', 96, 12),
+(140, 250, 7, 1, 'local', 97, 5),
+(141, 300, 13, 1, 'local', 97, 12),
+(142, 250, 6, 1, 'local', 98, 5),
+(143, 300, 12, 1, 'local', 98, 12),
+(144, 300, 11, 1, 'local', 99, 12),
+(145, 250, 9, 1, 'local', 99, 13),
+(146, 150, 2, 1, 'local', 100, 4),
+(147, 100, 12, 1, 'local', 100, 6),
+(148, 300, 1, 1, 'local', 101, 12),
+(149, 250, 8, 1, 'local', 101, 13),
+(150, 0, 0, 15, '', 102, 13),
+(151, 0, 0, 10, '', 103, 12),
+(152, 300, 10, 3, 'local', 104, 12),
+(153, 250, 15, 2, 'local', 104, 13),
+(154, 300, 10, 3, 'local', 105, 12),
+(155, 250, 15, 2, 'local', 105, 13),
+(156, 300, 10, 3, 'local', 106, 12),
+(157, 250, 15, 2, 'local', 106, 13),
+(158, 350, 11, 3, 'local', 107, 44),
+(159, 0, 8, 10, '', 108, 44),
+(160, 0, 18, 3, '', 109, 44),
+(161, 0, 0, 50, '', 110, 46),
+(162, 200, 50, 3, 'local', 111, 46),
+(163, 350, 21, 1, 'local', 112, 44),
+(164, 350, 21, 1, 'local', 113, 44);
 
 -- --------------------------------------------------------
 
@@ -404,7 +453,11 @@ INSERT INTO `item_log` (`item_log_id`, `log_timestamp`, `log_action`, `log_descr
 (50, '2018-12-17 22:17:34', 'Create', 'Item was Created', 1, 44),
 (51, '2018-12-17 22:17:57', 'Delete', 'Item was deleted', 1, 44),
 (52, '2018-12-17 22:20:02', 'Create', 'Item was Created', 1, 45),
-(53, '2018-12-17 22:20:08', 'Delete', 'Item was deleted', 1, 45);
+(53, '2018-12-17 22:20:08', 'Delete', 'Item was deleted', 1, 45),
+(54, '2019-01-13 19:56:21', 'Update', 'Item was manually updated', 1, 6),
+(55, '2019-01-13 19:56:55', 'Update', 'Item was manually updated', 1, 6),
+(56, '2019-01-13 19:57:04', 'Update', 'Item was manually updated', 1, 6),
+(57, '2019-01-25 21:27:42', 'Create', 'Item was Created', 1, 46);
 
 -- --------------------------------------------------------
 
@@ -476,7 +529,43 @@ INSERT INTO `money_denomination` (`money_denomination_id`, `money_bill_id`, `sto
 (143, 9, 90, 1),
 (144, 5, 91, 1),
 (145, 6, 91, 1),
-(146, 7, 91, 1);
+(146, 7, 91, 1),
+(147, 8, 92, 1),
+(148, 5, 93, 1),
+(149, 8, 93, 1),
+(150, 5, 94, 1),
+(151, 8, 94, 1),
+(152, 5, 95, 1),
+(153, 8, 95, 1),
+(154, 5, 96, 1),
+(155, 8, 96, 1),
+(156, 5, 97, 1),
+(157, 8, 97, 1),
+(158, 5, 98, 1),
+(159, 8, 98, 1),
+(160, 5, 100, 1),
+(161, 7, 100, 1),
+(162, 5, 101, 1),
+(163, 8, 101, 1),
+(164, 6, 104, 2),
+(165, 7, 104, 1),
+(166, 9, 104, 1),
+(167, 5, 105, 2),
+(168, 6, 105, 1),
+(169, 7, 105, 1),
+(170, 8, 105, 2),
+(171, 7, 106, 2),
+(172, 9, 106, 1),
+(173, 5, 107, 1),
+(174, 9, 107, 1),
+(175, 6, 111, 1),
+(176, 8, 111, 1),
+(177, 5, 112, 1),
+(178, 6, 112, 1),
+(179, 7, 112, 1),
+(180, 5, 113, 1),
+(181, 6, 113, 1),
+(182, 7, 113, 1);
 
 -- --------------------------------------------------------
 
@@ -545,7 +634,29 @@ INSERT INTO `stock_transaction` (`stock_transaction_id`, `transaction_timestamp`
 (88, '2019-01-05 19:23:02', 'Sold', 0, 1),
 (89, '2019-01-11 20:42:55', 'Restock', 0, 1),
 (90, '2019-01-11 20:43:20', 'Sold', 1, 1),
-(91, '2019-01-11 21:23:26', 'Sold', 0, 1);
+(91, '2019-01-11 21:23:26', 'Sold', 0, 1),
+(92, '2019-01-13 19:11:07', 'Sold', 1, 1),
+(93, '2019-01-13 19:46:33', 'Sold', 1, 1),
+(94, '2019-01-13 19:48:17', 'Sold', 1, 1),
+(95, '2019-01-13 19:49:13', 'Sold', 1, 1),
+(96, '2019-01-13 19:53:45', 'Sold', 1, 1),
+(97, '2019-01-13 19:54:26', 'Sold', 1, 1),
+(98, '2019-01-13 19:59:35', 'Sold', 1, 1),
+(99, '2019-01-13 20:01:07', 'Sold', 1, 1),
+(100, '2019-01-13 20:13:08', 'Sold', 1, 1),
+(101, '2019-01-13 20:15:43', 'Sold', 1, 1),
+(102, '2019-01-13 20:18:39', 'Restock', 0, 1),
+(103, '2019-01-13 20:18:51', 'Restock', 0, 1),
+(104, '2019-01-13 20:19:17', 'Sold', 1, 1),
+(105, '2019-01-13 20:20:20', 'Sold', 1, 1),
+(106, '2019-01-13 20:21:31', 'Sold', 1, 1),
+(107, '2019-01-20 18:10:25', 'Sold', 0, 1),
+(108, '2019-01-20 18:10:53', 'Restock', 0, 1),
+(109, '2019-01-20 18:11:04', 'Damaged', 0, 1),
+(110, '2019-01-25 21:27:58', 'Restock', 0, 1),
+(111, '2019-01-25 21:28:33', 'Sold', 1, 1),
+(112, '2019-01-26 17:50:43', 'Sold', 1, 1),
+(113, '2019-01-26 18:00:07', 'Sold', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -559,6 +670,27 @@ CREATE TABLE `void_transaction` (
   `employee_id` int(11) NOT NULL,
   `stock_transaction_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `void_transaction`
+--
+
+INSERT INTO `void_transaction` (`void_transaction_id`, `transaction_timestamp`, `employee_id`, `stock_transaction_id`) VALUES
+(1, '2019-01-13 19:45:35', 1, 92),
+(2, '2019-01-13 19:46:36', 7, 93),
+(3, '2019-01-13 19:48:41', 1, 94),
+(4, '2019-01-13 19:48:48', 2, 94),
+(5, '2019-01-13 19:49:24', 1, 95),
+(6, '2019-01-13 19:53:47', 1, 96),
+(7, '2019-01-13 19:58:53', 1, 97),
+(8, '2019-01-13 19:59:40', 1, 98),
+(9, '2019-01-13 20:13:20', 1, 100),
+(10, '2019-01-13 20:15:53', 6, 101),
+(11, '2019-01-13 20:19:26', 1, 104),
+(12, '2019-01-13 20:20:26', 6, 105),
+(13, '2019-01-13 20:21:35', 1, 106),
+(14, '2019-01-25 21:28:45', 1, 111),
+(15, '2019-01-26 17:53:58', 1, 112);
 
 --
 -- Indexes for dumped tables
@@ -664,12 +796,12 @@ ALTER TABLE `branch`
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `employee_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `employee_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `employee_log`
 --
 ALTER TABLE `employee_log`
-  MODIFY `employee_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `employee_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 --
 -- AUTO_INCREMENT for table `expense`
 --
@@ -684,17 +816,17 @@ ALTER TABLE `fisherman_expense`
 -- AUTO_INCREMENT for table `item`
 --
 ALTER TABLE `item`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 --
 -- AUTO_INCREMENT for table `item_line`
 --
 ALTER TABLE `item_line`
-  MODIFY `item_line_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
+  MODIFY `item_line_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=165;
 --
 -- AUTO_INCREMENT for table `item_log`
 --
 ALTER TABLE `item_log`
-  MODIFY `item_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `item_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 --
 -- AUTO_INCREMENT for table `money_bill`
 --
@@ -704,17 +836,17 @@ ALTER TABLE `money_bill`
 -- AUTO_INCREMENT for table `money_denomination`
 --
 ALTER TABLE `money_denomination`
-  MODIFY `money_denomination_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=147;
+  MODIFY `money_denomination_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=183;
 --
 -- AUTO_INCREMENT for table `stock_transaction`
 --
 ALTER TABLE `stock_transaction`
-  MODIFY `stock_transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
+  MODIFY `stock_transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=114;
 --
 -- AUTO_INCREMENT for table `void_transaction`
 --
 ALTER TABLE `void_transaction`
-  MODIFY `void_transaction_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `void_transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 --
 -- Constraints for dumped tables
 --
