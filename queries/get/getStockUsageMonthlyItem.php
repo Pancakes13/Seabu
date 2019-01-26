@@ -1,6 +1,7 @@
 <?php
 require("../../connection.php");
 $item = $_POST['item'];
+$id = $_POST['branch_id'];
 
 $result = $conn->query("SELECT 
 SUM(CASE WHEN MONTH(`s`.`transaction_timestamp`) = '01' && YEAR(CURDATE()) THEN `i`.`qty` ELSE 0 END) AS 'janCnt',
@@ -18,8 +19,13 @@ SUM(CASE WHEN MONTH(`s`.`transaction_timestamp`) = '12' && YEAR(CURDATE()) THEN 
 FROM `item_line` `i`
 INNER JOIN `stock_transaction` `s`
 ON `i`.`stock_transaction_id` = `s`.`stock_transaction_id`
+INNER JOIN `item` `it`
+ON `i`.`item_id` = `it`.`item_id`
+INNER JOIN `branch` `b`
+ON `it`.`branch_id` = `b`.`branch_id`
 AND `s`.`type` = 'Sold'
 AND `i`.`item_id` = $item
+AND `b`.`branch_id` = $id
 AND `s`.`isVoid` = 0");
 $outp = "";
 $result_array = array();

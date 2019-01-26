@@ -17,7 +17,9 @@ require ("../panelheader.php");
         <div class="card">
           <div class="card-body">
             <h4>Monthly Tally for <?php echo date("Y");?></h4>
-            <canvas id="earningChart"></canvas>
+            <div id="earningBody">
+              <canvas id="earningChart"></canvas>
+            </div>
           </div>
         </div>
       </div>
@@ -25,7 +27,9 @@ require ("../panelheader.php");
         <div class="card">
           <div class="card-body">
             <h4>Expenses for <?php echo date("Y");?></h4>
-            <canvas id="expenseChart"></canvas>
+            <div id="expenseBody">
+              <canvas id="expenseChart"></canvas>
+            </div>
           </div>
         </div>
       </div>
@@ -114,14 +118,24 @@ $(document).ready(function(){
 
   $("#branch").change(function(){
     myTable.clear();
+    getInformation();
+    $(document.getElementById( "earningChart")).remove();
+    $('#earningBody').append('<canvas id="earningChart"><canvas>');
+    $(document.getElementById( "expenseChart")).remove();
+    $('#expenseBody').append('<canvas id="expenseChart"><canvas>');
+    myTable.clear();
     PopulateItemsTable();
   });
 });
 
 function getInformation() {
   var exists = false;
+  let id = $("#branch").val();
+  
   $.ajax({
-    method: "GET", url: "../queries/get/getTotalEarningsMonthly.php", 
+    method: "POST",
+    url: "../queries/get/getTotalEarningsMonthly.php",
+    data: {"branch_id": id},
   }).done(function( data ) {
     var jsonObject = JSON.parse(data);
     var ctx = document.getElementById( "earningChart" );
@@ -166,7 +180,7 @@ function getInformation() {
   });
 
   $.ajax({
-    method: "GET", url: "../queries/get/getTotalExpensesMonthly.php", 
+    method: "GET", url: "../queries/get/getTotalExpensesMonthly.php",
   }).done(function( data ) {
     var jsonObject = JSON.parse(data);
     var ctx = document.getElementById( "expenseChart" );
@@ -209,14 +223,15 @@ function getInformation() {
         }
     });
   });
-  getItemSales(1);
 }
 
 function getItemSales(item) {
+  let id = $("#branch").val();
+
   $.ajax({
     method: "POST",
     url: "../queries/get/getStockUsageMonthlyItem.php",
-    data: {"item": item},
+    data: {"item": item, "branch_id": id},
   }).done(function( data ) {
     var jsonObject = JSON.parse(data);
     
@@ -272,6 +287,7 @@ function PopulateItemsTable() {
       data: {"branch_id": id},
     }).done(function( data ) {
       var jsonObject = JSON.parse(data);
+      getItemSales(jsonObject[0].item_id);
       var result = jsonObject.map(function (item) {
         var result = [];
         result.push(item.name);
