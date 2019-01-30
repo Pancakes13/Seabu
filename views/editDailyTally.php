@@ -26,15 +26,6 @@ require ("../panelheader.php");
               </div>
               <div id="editDailyTallyCard" class="card-body">
                 <table id="tallyTable" class="table">
-                    <tr>
-                        <th>Item Name</th>
-                        <th>Price (Php)</th>
-                        <th>Old Stock (Pcs/Kg)</th>
-                        <th>Current Stock (Pcs/Kg)</th>
-                        <th>Qty</th>
-                        <th>Type</th>
-                        <th style="text-align:right;">Subtotal</th>
-                    </tr>
                 </table>
               </div>
             </div>
@@ -123,6 +114,7 @@ $(document).ready(function(){
   $("#branch").change(function(){
     $('#tallyTable tr').remove();
     $("#noDailyTally").remove();
+    $("#inputDailyTally").remove();
     PopulateTallyTable();
   });
 });
@@ -142,6 +134,14 @@ function PopulateTallyTable() {
       var result = jsonObject.map(function (item) {
       var result = [];
       stock_transaction = item.stock_transaction_id;
+      myTable.append(
+      '<tr><th>Item Name</th>'
+      +'<th>Price (Php)</th>'
+      +'<th>Old Stock (Pcs/Kg)</th>'
+      +'<th>Current Stock (Pcs/Kg)</th>'
+      +'<th>Qty</th>'
+      +'<th>Type</th>'
+      +'<th style="text-align:right;">Subtotal</th></tr>');
       myTable.append('<tr class="item"><td>'+item.name+' <input name="item[]" value="'+item.item_id+'" hidden> <input name="item_line_id[]" value="'+item.item_line_id+'" hidden> <input name="stock_transaction_id" value="'+item.stock_transaction_id+'" hidden></td>'
           +'<td><input name="price[]" class="editPrice form-control" type="number" value="'+item.price+'" readonly="true"></td>'
           +'<td><input name="oldStock[]" class="qty form-control" value="'+item.old_stock+'" readonly></td>'
@@ -163,7 +163,22 @@ function PopulateTallyTable() {
       });
       $("#editTotalValue").html(total);
     } else {
-      $("#editDailyTallyCard").append('<div id="noDailyTally" class="row justify-content-md-center">No daily tally records found for this date!</div>');
+      myTable.append(
+      '<tr><th>Item Name</th>'
+      +'<th>Price (Php)</th>'
+      +'<th>Old Stock (Pcs/Kg)</th>'
+      +'<th>Current Stock (Pcs/Kg)</th>'
+      +'<th>Qty</th>'
+      +'<th>Type</th>'
+      +'<th style="text-align:right;">Subtotal</th></tr>');
+      $("#editDailyTallyCard").append(
+      '<div id="noDailyTally" class="row justify-content-md-center">'
+      +'  No daily tally records found for this date!</div>'
+      +'<div id="inputDailyTally" class="row justify-content-md-center">'
+      +'<button class="btn btn-success" type="button" id="inputDailyTallyButton">Input Daily Tally</button></div>');
+      $("#inputDailyTallyButton").on("click", function() {
+        window.location = "inputPastDailyTally.php?date="+date+"&branch_id="+id;
+      });
     }
   });
 }
