@@ -297,7 +297,8 @@ function PopulateMoneyDenominationTable() {
 $(document).on('input', ".qty",function () {
   var test1 = $(this).closest(".qty").val();
   var qty = parseInt($(this).closest("td").parent()[0].cells[1].children[0].value);
-  var price = parseInt($(this).closest("td").parent()[0].cells[3].children[0].value);
+  var price = (isNaN(parseInt($(this).closest("td").parent()[0].cells[3].children[0].value))) ? 0 : parseInt($(this).closest("td").parent()[0].cells[3].children[0].value);
+
   $(this).closest("td").parent()[0].cells[5].innerHTML = qty*price;
   
   var total = 0;
@@ -311,7 +312,7 @@ $(document).on('input', ".qty",function () {
 $(document).on('input', ".moneyQty",function () {
   var test1 = $(this).closest(".qty").val();
   var value = $(this).closest("td").parent()[0].cells[0].innerHTML;
-  var qty = parseFloat($(this).closest("td").parent()[0].cells[1].children[0].value);
+  var qty = (isNaN(parseFloat($(this).closest("td").parent()[0].cells[1].children[0].value))) ? 0 : parseFloat($(this).closest("td").parent()[0].cells[1].children[0].value);
   $(this).closest("td").parent()[0].cells[2].innerHTML = qty*value;
    
    var total = 0;
