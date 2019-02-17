@@ -199,7 +199,7 @@ function PopulateTallyTable() {
     var jsonObject = JSON.parse(data);
     myTable.append('<tr><th>Item Name</th>'
       +'<th>Price (Php)</th>'
-      +'<th>Current Stock (Pcs/Kg)</th>'
+      +'<th hidden>Current Stock (Pcs/Kg)</th>'
       +'<th>Qty</th>'
       +'<th>Type</th>'
       +'<th style="text-align:right;">Subtotal</th>'

@@ -138,7 +138,7 @@ function PopulateTallyTable() {
       '<tr><th>Item Name</th>'
       +'<th>Price (Php)</th>'
       +'<th>Old Stock (Pcs/Kg)</th>'
-      +'<th>Current Stock (Pcs/Kg)</th>'
+      +'<th hidden>Current Stock (Pcs/Kg)</th>'
       +'<th>Qty</th>'
       +'<th>Type</th>'
       +'<th style="text-align:right;">Subtotal</th></tr>');
@@ -167,7 +167,7 @@ function PopulateTallyTable() {
       '<tr><th>Item Name</th>'
       +'<th>Price (Php)</th>'
       +'<th>Old Stock (Pcs/Kg)</th>'
-      +'<th>Current Stock (Pcs/Kg)</th>'
+      +'<th hidden>Current Stock (Pcs/Kg)</th>'
       +'<th>Qty</th>'
       +'<th>Type</th>'
       +'<th style="text-align:right;">Subtotal</th></tr>');
