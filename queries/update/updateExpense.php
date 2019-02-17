@@ -13,11 +13,11 @@ if(!$id || !$name || !$price || !$desc || !$type){
     $sql = "UPDATE `expense` 
     SET `name` = ?,
     `price` = ?,
-    `description` = ?
+    `description` = ?,
     `expense_type` = ?
     WHERE `expense_id` = ?";
     
-    $stmt   = $conn->prepare($sql);
+    $stmt = $conn->prepare($sql);
     $stmt->bind_param('sssss', $name, $price, $desc, $type, $id);
 
     if($stmt->execute()){

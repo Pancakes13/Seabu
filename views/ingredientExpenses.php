@@ -170,7 +170,7 @@ function getTotalExpenses() {
             labels: [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
             datasets: [
                 {
-                    label: "Monthly Earnings",
+                    label: "Monthly Expenses",
                     data: [
                       jsonObject[0].janCnt,
                       jsonObject[0].febCnt,
@@ -341,11 +341,12 @@ $("#addBtn").on('click', function(){
           var name = $("#modelName.form-control").val();
           var price = $("#modelPrice").val();
           var desc = $("#modelDesc").val();
-          
+          var type = "Ingredient";
+
           $.ajax({ 
             method: "POST",
             url: "../queries/update/updateExpense.php",
-            data: {"id": id, "name": name, "price": price, "desc": desc},
+            data: {"id": id, "name": name, "price": price, "desc": desc, "type": type},
           }).done(function( data ) { 
             var result = $.parseJSON(data); 
             myTable.clear();

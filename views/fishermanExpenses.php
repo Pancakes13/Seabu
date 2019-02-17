@@ -169,7 +169,7 @@ function getTotalExpenses() {
             labels: [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
             datasets: [
                 {
-                    label: "Monthly Earnings",
+                    label: "Monthly Expenses",
                     data: [
                       jsonObject[0].janCnt,
                       jsonObject[0].febCnt,
