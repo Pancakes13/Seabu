@@ -109,31 +109,45 @@ $(document).ready(function(){
   PopulateTallyTable();
 
   $('#dailyTally').submit(function(e) {
-    e.preventDefault(); 
-    $.ajax({
-      type: "POST",
-      url: "../queries/insert/addDailyTally.php",
-      data: $(this).serialize(),
-    }).done(function( data ) {
-      if (data == 1) {
-        $('#tallyTable tr').remove();
-        $('#moneyTable tr').remove();
-        PopulateTallyTable();
-        swal(
-          'Success!',
-          'You have submitted the daily tally!',
-          'success'
-        )
-        $('#smartwizard').smartWizard("prev");
-      } else if (data == 'Missing Parameters') {
-        swal(
-          'Error!',
-          'Missing Required Fields! Daily tally not submitted!',
-          'error'
-        )
-        $('#smartwizard').smartWizard("prev");
-      }
-    })
+    e.preventDefault();
+    if (parseFloat($('#moneyTotalValue').html()) < parseFloat($('#expectedEarnings').html())) {
+      swal(
+        'Error!',
+        'Money is LESS than expected value!',
+        'error'
+      )
+    } else if (parseFloat($('#moneyTotalValue').html()) > parseFloat($('#expectedEarnings').html())) {
+      swal(
+        'Error!',
+        'Money is MORE than expected value!',
+        'error'
+      )
+    } else {
+        $.ajax({
+        type: "POST",
+        url: "../queries/insert/addDailyTally.php",
+        data: $(this).serialize(),
+      }).done(function( data ) {
+        if (data == 1) {
+          $('#tallyTable tr').remove();
+          $('#moneyTable tr').remove();
+          PopulateTallyTable();
+          swal(
+            'Success!',
+            'You have submitted the daily tally!',
+            'success'
+          )
+          $('#smartwizard').smartWizard("prev");
+        } else if (data == 'Missing Parameters') {
+          swal(
+            'Error!',
+            'Missing Required Fields! Daily tally not submitted!',
+            'error'
+          )
+          $('#smartwizard').smartWizard("prev");
+        }
+      })
+    }
   });
 
   $(document).on('click', '#voidTally', function(){
