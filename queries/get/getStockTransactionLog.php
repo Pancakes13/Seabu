@@ -20,6 +20,7 @@ $result = $conn->query("SELECT `il`.`item_line_id`, `i`.`item_id`, `i`.`name`, `
                 AND `s`.`type` = 'Sold'
                 AND `s`.`isVoid` = 0
                 AND `i`.`branch_id` = $id
+                AND `i`.`branch_id` != 10
                 ORDER BY `s`.`transaction_timestamp` DESC");
 
 $result_array = array();

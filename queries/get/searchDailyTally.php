@@ -15,6 +15,7 @@ $result = $conn->query("SELECT `i`.`item_id`, `i`.`name`, `il`.`item_line_id`, `
                 AND DATE(`s`.`transaction_timestamp`) ='$date'
                 AND `s`.`type` = 'Sold'
                 AND `b`.`branch_id` = $id
+                AND `b`.`branch_id` != 10
                 AND `s`.`isVoid` = 0");
 $outp = "";
 $result_array = array();

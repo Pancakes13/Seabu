@@ -23,6 +23,7 @@ ON `i`.`item_id` = `it`.`item_id`
 INNER JOIN `branch` `b`
 ON `it`.`branch_id` = `b`.`branch_id`
 AND `b`.`branch_id` = $id
+AND `b`.`branch_id` != 10
 AND `s`.`isVoid` = 0");
 $outp = "";
 $result_array = array();
