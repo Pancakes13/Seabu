@@ -6,7 +6,7 @@ $name  = $_POST['name'];
 $price  = $_POST['price'];
 $qty  = $_POST['qty'];
 
-if(!$id && !$name || !$price || !$qty){
+if(!$id || !$name || is_null($price) || is_null($qty)){
   $result = 2;
 }else{
     //Insert Item

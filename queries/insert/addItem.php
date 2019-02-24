@@ -10,7 +10,7 @@ $price  = ((float)$_POST['price']) ? $_POST['price'] : null;
 
 /* validate whether user has entered all values. */
 
-if(!$name || !$price || $price < 0){
+if(!$name || !$price || ($price < 0 && $branch != 10)){
 
   $result = 2;
 
