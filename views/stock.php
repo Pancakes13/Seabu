@@ -10,6 +10,7 @@ require ("../panelheader.php");
             <option value="1">Sugbo Mercado</option>
             <option value="2">The Market</option>
             <option value="3">Yellowcube</option>
+            <option value="10">House</option>
           </select>
         </div>
         <div class="content mt-3">
@@ -209,10 +210,17 @@ function PopulateItemsTable() {
         result.push(item.name);
         result.push(item.price);
         result.push(item.qty);
-        result.push('<button type="button" class="btn btn-warning btn-sm editBtn" data-toggle="modal" data-target="#editModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-price="'+item.price+'" data-qty="'+item.qty+'"><i class="fa fa-edit"></i></button>'
-          +'<button type="button" class="btn btn-danger btn-sm delBtn" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" ><i class="fa fa-trash"></i></button>'
-          +'<button type="button" class="btn btn-primary btn-sm stockBtn" data-toggle="modal" data-target="#stockModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-qty="'+item.qty+'"><i class="fa fa-archive"></i></button>'
-          +'<a href="item_logs.php?item_id='+item.item_id+'&item_name='+item.name+'"><button type="button" class="btn btn-secondary btn-sm"><i class="fa fa-eye"></i></button></a>');
+        if (item.branch_id != 10) {
+          result.push('<button type="button" class="btn btn-warning btn-sm editBtn" data-toggle="modal" data-target="#editModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-price="'+item.price+'" data-qty="'+item.qty+'"><i class="fa fa-edit"></i></button>'
+            +'<button type="button" class="btn btn-danger btn-sm delBtn" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" ><i class="fa fa-trash"></i></button>'
+            +'<button type="button" class="btn btn-primary btn-sm stockBtn" data-toggle="modal" data-target="#stockModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-qty="'+item.qty+'"><i class="fa fa-archive"></i></button>'
+            +'<a href="item_logs.php?item_id='+item.item_id+'&item_name='+item.name+'"><button type="button" class="btn btn-secondary btn-sm"><i class="fa fa-eye"></i></button></a>');
+        } else {
+          result.push('<button type="button" class="btn btn-warning btn-sm editBtn" data-toggle="modal" data-target="#editModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-price="'+item.price+'" data-qty="'+item.qty+'"><i class="fa fa-edit"></i></button>'
+            +'<button type="button" class="btn btn-danger btn-sm delBtn" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" ><i class="fa fa-trash"></i></button>'
+            +'<button type="button" class="btn btn-primary btn-sm stockBtn" data-toggle="modal" data-target="#stockModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-qty="'+item.qty+'"><i class="fa fa-truck"></i></button>'
+            +'<a href="item_logs.php?item_id='+item.item_id+'&item_name='+item.name+'"><button type="button" class="btn btn-secondary btn-sm"><i class="fa fa-eye"></i></button></a>');
+        }
         return result;
       });
       myTable.rows.add(result);
@@ -234,26 +242,30 @@ $("#addBtn").on('click', function(){
               data: {"name": name, "price": price, "branch_id": id},
 
              }).done(function( data ) { 
-                var result = $.parseJSON(data); 
-    
-                var str = '';
+                if (data == 1) {
+                  var result = $.parseJSON(data); 
+                  var str = '';
 
-                if(result == 1) {
-
-                  str = 'User record saved successfully.';
-                
-                }else{
-                  str == 'All fields are required.';
+                  if(result == 1) {
+                    str = 'User record saved successfully.';
+                  }else{
+                    str == 'All fields are required.';
+                  }
+                  $("#message").css('color', 'red').html(str);
+                  myTable.clear();
+                  PopulateItemsTable();
+                  swal(
+                    'Success!',
+                    'You have created an item!',
+                    'success'
+                  )
+                } else {
+                  swal(
+                    'Error!',
+                    'Item creation failed!',
+                    'error'
+                  )
                 }
-
-              $("#message").css('color', 'red').html(str);
-              myTable.clear();
-              PopulateItemsTable();
-              swal(
-                  'Success!',
-                  'You have created an item!',
-                  'success'
-                )
               });
               
        }); 
