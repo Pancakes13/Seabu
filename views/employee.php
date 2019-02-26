@@ -20,13 +20,11 @@ require ("../panelheader.php");
                   <div id="itemTable" class="card-body">
                     <table id="bootstrap-data-table" class="table table-striped table-bordered"><thead>
                       <tr>
-                        <th>Last Name</th>
-                        <th>First Name</th>
-                        <th>Middle Name</th>
-                        <th>Branch Name</th>
+                        <th>Employee</th>
+                        <th>Branch</th>
                         <th>Email</th>
-                        <th>Contact Number</th>
-                        <th>Birthdate</th>
+                        <th width="15%">Contact Number</th>
+                        <th width="15%">Birthdate</th>
                         <th style="width:10%;">Action</th>
                       </tr>
                     </table>
@@ -236,9 +234,7 @@ function PopulateItemsTable() {
       var jsonObject = JSON.parse(data);
       var result = jsonObject.map(function (item) {
         var result = [];
-        result.push(item.last_name);
-        result.push(item.first_name);
-        result.push(item.middle_name);
+        result.push(item.last_name + ', ' + item.first_name + item.middle_name[1]);
         result.push(item.name);
         result.push(item.email);
         result.push(item.contact_no);

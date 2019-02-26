@@ -2,7 +2,7 @@
 require("../../connection.php");
 
 $id = $_POST['branch_id'];
-$result = $conn->query("SELECT `item_id`, `name`, `price`, `qty`  
+$result = $conn->query("SELECT `item_id`, `name`, `price`, `qty`, `branch_id`
                           FROM `item` 
                           WHERE `branch_id` = $id
                           AND `isDeleted` = 0");
