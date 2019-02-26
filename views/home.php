@@ -76,7 +76,7 @@ require ("../panelheader.php");
           <div class="content mt-3">
             <div class="animated fadeIn">
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6">
                   <div class="card">
                     <div class="card-header">
                       <h4>Item Sales</h4>
@@ -93,8 +93,25 @@ require ("../panelheader.php");
                         <tr>
                           <th>Item Name</th>
                           <th>Price (Php)</th>
-                          <th>Current Stock (Pcs/Kg)</th>
-                          <th style="width:15%;">Action</th>
+                          <th width="20%">Stock <span class="fa fa-question-circle-o" title="Current Stock (pc/Kg)"></span></th>
+                          <th style="width:5%;">Action</th>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="card">
+                    <div class="card-header">
+                      <h4>Upcoming Birthdays</h4>
+                    </div>
+                    <div id="#" class="card-body">
+                      <table id="upcomingBirthdayTable" class="table table-striped table-bordered"><thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>Birthdate</th>
+                          <th>Contact #</th>
+                          <th>Branch</th>
                         </tr>
                       </table>
                     </div>
@@ -111,10 +128,13 @@ require ("../panelheader.php");
 
 <script>
 var myTable = "";
+var bdayTable = "";
 $(document).ready(function(){
   getInformation();
   myTable = $('#homeItemTable').DataTable();
   PopulateItemsTable();
+  bdayTable = $('#upcomingBirthdayTable').DataTable();
+  getBirthdayTable();
   getProfit();
 
   $("#branch").change(function(){
@@ -294,11 +314,33 @@ function PopulateItemsTable() {
         result.push(item.name);
         result.push(item.price);
         result.push(item.qty);
-        result.push('<button type="button" data-itemid="'+item.item_id+'" class="btn btn-primary btn-sm viewItemSales"> View Item <i class="fa fa-eye"></i></button>');
+        result.push('<button type="button" data-itemid="'+item.item_id+'" class="btn btn-primary btn-sm viewItemSales"> <i class="fa fa-eye"></i></button>');
         return result;
       });
       myTable.rows.add(result);
       myTable.draw();
+    });
+}
+
+function getBirthdayTable() {
+    let id = $("#branch").val();
+    
+    $.ajax({
+      method: "POST",
+      url: "../queries/get/getEmployeeBirthday.php"
+    }).done(function( data ) {
+      var jsonObject = JSON.parse(data);
+      getItemSales(jsonObject[0].item_id);
+      var result = jsonObject.map(function (item) {
+        var result = [];
+        result.push(item.last_name + ', ' + item.first_name);
+        result.push(item.birthdate);
+        result.push(item.contact_no);
+        result.push(item.name);
+        return result;
+      });
+      bdayTable.rows.add(result);
+      bdayTable.draw();
     });
 }
 
