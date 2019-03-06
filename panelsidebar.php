@@ -42,6 +42,9 @@ if (!$_SESSION['user_id']) {
                         <a href="dailytally.php"> <i class="menu-icon fa fa-calendar-plus-o"></i>Daily Tally</a>
                     </li>
                     <li>
+                        <a href="house.php"> <i class="menu-icon fa fa-truck"></i>Warehouse Stock</a>
+                    </li>
+                    <li>
                         <a href="stock.php"> <i class="menu-icon fa fa-cutlery"></i>Stock</a>
                     </li>
                     <!--
