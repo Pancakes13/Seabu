@@ -1,4 +1,4 @@
--<?php
+<?php
 require("../../connection.php");
 session_start();
 $branch = $_POST['branch_id'];
@@ -18,7 +18,7 @@ if(!$name || !$price || ($price < 0 && $branch != 10)){
     try{
         //Insert Item
         $conn->autocommit(false);
-        $sql    = "INSERT into `item` (`name`, `price`, `branch_id`) values (?, ?, ?)  ";
+        $sql    = "INSERT into `item` (`name`, `price`, `branch_id`) values (?, ?, ?)";
 
         $stmt   = $conn->prepare($sql);
         $stmt->bind_param('sss', $name, $price, $branch);
