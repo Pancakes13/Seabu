@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 08, 2019 at 02:57 PM
+-- Generation Time: Mar 11, 2019 at 01:23 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.1
 
@@ -51,10 +51,24 @@ INSERT INTO `branch` (`branch_id`, `name`) VALUES
 
 CREATE TABLE `branch_item` (
   `branch_item_id` int(11) NOT NULL,
-  `branch_stock` int(11) NOT NULL DEFAULT '0',
+  `qty` int(11) NOT NULL DEFAULT '0',
   `branch_id` int(11) DEFAULT NULL,
   `item_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `branch_item`
+--
+
+INSERT INTO `branch_item` (`branch_item_id`, `qty`, `branch_id`, `item_id`) VALUES
+(49, 0, 1, 16),
+(50, 0, 2, 16),
+(51, 0, 3, 16),
+(52, 0, 100, 16),
+(53, 0, 1, 17),
+(54, 0, 2, 17),
+(55, 0, 3, 17),
+(56, 0, 100, 17);
 
 -- --------------------------------------------------------
 
@@ -154,6 +168,14 @@ CREATE TABLE `item` (
   `isDeleted` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `item`
+--
+
+INSERT INTO `item` (`item_id`, `name`, `price`, `isDeleted`) VALUES
+(16, 'a', '1.00', 1),
+(17, 'Scallop', '270.00', 0);
+
 -- --------------------------------------------------------
 
 --
@@ -183,6 +205,15 @@ CREATE TABLE `item_log` (
   `employee_id` int(11) DEFAULT NULL,
   `item_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `item_log`
+--
+
+INSERT INTO `item_log` (`item_log_id`, `log_timestamp`, `log_action`, `log_description`, `employee_id`, `item_id`) VALUES
+(13, '2019-03-11 20:17:47', 'Create', 'Item was Created', 1, 16),
+(14, '2019-03-11 20:22:16', 'Create', 'Item was Created', 1, 17),
+(15, '2019-03-11 20:22:31', 'Delete', 'Item was deleted', 1, 16);
 
 -- --------------------------------------------------------
 
@@ -235,7 +266,7 @@ CREATE TABLE `money_denomination` (
 CREATE TABLE `stock_transaction` (
   `stock_transaction_id` int(11) NOT NULL,
   `transaction_timestamp` datetime DEFAULT CURRENT_TIMESTAMP,
-  `type` enum('Restock','Sold','Damaged') NOT NULL,
+  `type` enum('Restock','Sold','Damaged','Transfer') NOT NULL,
   `isVoid` int(11) NOT NULL DEFAULT '0',
   `employee_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -365,7 +396,7 @@ ALTER TABLE `branch`
 -- AUTO_INCREMENT for table `branch_item`
 --
 ALTER TABLE `branch_item`
-  MODIFY `branch_item_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `branch_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT for table `employee`
@@ -395,7 +426,7 @@ ALTER TABLE `fisherman_expense`
 -- AUTO_INCREMENT for table `item`
 --
 ALTER TABLE `item`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `item_line`
@@ -407,7 +438,7 @@ ALTER TABLE `item_line`
 -- AUTO_INCREMENT for table `item_log`
 --
 ALTER TABLE `item_log`
-  MODIFY `item_log_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `item_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `money_bill`
@@ -425,7 +456,7 @@ ALTER TABLE `money_denomination`
 -- AUTO_INCREMENT for table `stock_transaction`
 --
 ALTER TABLE `stock_transaction`
-  MODIFY `stock_transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=114;
+  MODIFY `stock_transaction_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `void_transaction`
