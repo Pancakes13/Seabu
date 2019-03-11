@@ -7,6 +7,7 @@ require ("../panelheader.php");
         <div class="content mt-3" style="width:40%;">
           Select Branch
           <select id="branch" class="form-control">
+            <option value="100">Warehouse</option>
             <option value="1">Sugbo Mercado</option>
             <option value="2">The Market</option>
             <option value="3">Yellowcube</option>

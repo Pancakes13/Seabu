@@ -15,7 +15,6 @@ if(!$id){
         
         $stmt   = $conn->prepare($sql);
         $stmt->bind_param('s', $id);
-        echo $id;
         $stmt->execute();
 
         $sql2    = "INSERT into `item_log` (`log_action`, `log_description`, `item_id`, `employee_id`) values (?, ?, ?, ?)  ";

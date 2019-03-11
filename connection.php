@@ -1,7 +1,7 @@
 <?php
 	try {
 		$host ='localhost'; 
-		$dbname='seabu';
+		$dbname='seabu_db';
 		$username = "root";
 		$password = "";
 		$conn = new mysqli($host, $username, $password, $dbname);

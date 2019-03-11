@@ -2,21 +2,23 @@
 require("../../connection.php");
 session_start();
 $item_id = $_POST['item_id'];
-$stock = $_POST['current_stock'];
-$qty  = $_POST['qty'];
-$type = $_POST['type'];
+$stock = $_POST['stock'];
+$branch  = $_POST['branch_id'];
+$type = 'Transfer';
 
-if(!$item_id || !$qty || !$type){
+if(!$item_id || !$stock || !$branch){
   $result = 2;
 }else{
     //Insert Item
+    for($x=0; $x<count($item_id); $x++){
+
     $sql    = "UPDATE `branch_item` 
-    SET `qty` = `qty`+ ?
+    SET `branch_stock` = `branch_stock`+ ?
     WHERE `item_id` = ?
-    AND `branch_id` = 100";
+    AND `branch_id` = ?";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('ss', $qty, $item_id);
+    $stmt->bind_param('sss', $stock[$x], $item_id[$x], $branch[$x]);
     
     if($stmt->execute()){
         
