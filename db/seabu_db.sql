@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 11, 2019 at 01:23 PM
+-- Generation Time: Mar 17, 2019 at 06:27 AM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.1
 
@@ -38,10 +38,10 @@ CREATE TABLE `branch` (
 --
 
 INSERT INTO `branch` (`branch_id`, `name`) VALUES
-(1, 'Sugbo Mercado'),
-(2, 'The Market'),
-(3, 'Yellowcube'),
-(100, 'Warehouse');
+(1, 'Warehouse'),
+(2, 'Sugbo Mercado'),
+(3, 'The Market'),
+(4, 'Yellowcube');
 
 -- --------------------------------------------------------
 
@@ -61,14 +61,10 @@ CREATE TABLE `branch_item` (
 --
 
 INSERT INTO `branch_item` (`branch_item_id`, `qty`, `branch_id`, `item_id`) VALUES
-(49, 0, 1, 16),
-(50, 0, 2, 16),
-(51, 0, 3, 16),
-(52, 0, 100, 16),
-(53, 0, 1, 17),
-(54, 0, 2, 17),
-(55, 0, 3, 17),
-(56, 0, 100, 17);
+(57, 0, 1, 18),
+(58, 0, 2, 18),
+(59, 0, 3, 18),
+(60, 0, 4, 18);
 
 -- --------------------------------------------------------
 
@@ -95,17 +91,9 @@ CREATE TABLE `employee` (
 
 INSERT INTO `employee` (`employee_id`, `first_name`, `last_name`, `middle_name`, `pass`, `email`, `contact_no`, `birthdate`, `branch_id`, `isDeleted`) VALUES
 (1, 'Neil', 'Llenes', 'Diaz', '$2y$10$rrpHY16nhUeK8i0Aabfk/.INRoeaLzPQyHpl/tuZbsYtSLhSRQof.', 'neilllenes@gmail.com', '09111111111', '1997-11-13', 1, 0),
-(2, 'Samuel', 'Jones', 'Kevin', '123', 'samjones@gmail.com', '09991234567', '1990-09-13', 3, 0),
-(3, 'sadfsadf', 'sdafsad', 'sadfasdf', '123', 'sdafsf@gmail.com', 'kejfwlf', '1111-11-11', 1, 1),
-(4, 'John', 'Doe', 'JImmy', '123', 'jdoe@gmail.com', '09999876543', '1987-12-18', 1, 0),
-(5, 'Antonita', 'Tiu', 'Chu', '123', 'atiu@test.com', '09111726354', '1994-04-04', 1, 0),
 (6, 'Robin', 'Tubungbanua', 'Mangubat', '$2y$10$rrpHY16nhUeK8i0Aabfk/.INRoeaLzPQyHpl/tuZbsYtSLhSRQof.', 'lobin@gmail.com', '09111111111', '1997-10-19', 1, 0),
 (7, 'Ted', 'Mosby', 'Evelynn', '$2y$10$JcYsP4zFwZX0suNWn5H3mOZbS1VvJXxAV9/QiFi6suNQMqL3A3RCm', 'ted@test.com', '09111726354', '1970-01-01', 2, 0),
-(8, 'aa', 'aa', '', '$2y$10$a2Uv1qEtzvOTNd5KZyS4Ie6n4vn4fr4IZLMAK7jvN4hqcqtt7lH9u', 'aa@test.com', '12123123', '1111-11-11', 1, 0),
-(9, 'Swag', 'Test', '', '$2y$10$qLQ2whZ0n/b5n8Zwuh1QjuWUlvXEI4rhfbMYxKvWpyBNzlsG5dBlm', 'swag@test.com', '09111234567', '2222-02-22', 3, 0),
-(10, 'bb', 'bb', '', '$2y$10$VCWLuz1Pc6ykETMaYKfZjuIiEzzpKgOtP70XXHEASNt8cuiuPIpmu', 'bb@test.com', '123123123', '1997-11-11', 3, 1),
-(11, 'bb', 'bb', '', '$2y$10$Pida3iY92YqZmWQsk9Ydc.7rAHHOIb20AcDLPsG9MyrtwRsoYqrJ6', 'bb@test.com', '09111726354', '1986-11-11', 3, 0),
-(12, 'cc', 'cc', '', '$2y$10$ML02udbDdxZ1KrY33.g6zecUlFGK/yey6em6QJEBMJ1PB01xg76xy', 'cc@test.com', '0918273645', '1121-02-12', 3, 0);
+(8, 'aa', 'aa', '', '$2y$10$a2Uv1qEtzvOTNd5KZyS4Ie6n4vn4fr4IZLMAK7jvN4hqcqtt7lH9u', 'aa@test.com', '12123123', '1111-11-11', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -173,8 +161,7 @@ CREATE TABLE `item` (
 --
 
 INSERT INTO `item` (`item_id`, `name`, `price`, `isDeleted`) VALUES
-(16, 'a', '1.00', 1),
-(17, 'Scallop', '270.00', 0);
+(18, 'Scallop', '200.00', 0);
 
 -- --------------------------------------------------------
 
@@ -211,9 +198,7 @@ CREATE TABLE `item_log` (
 --
 
 INSERT INTO `item_log` (`item_log_id`, `log_timestamp`, `log_action`, `log_description`, `employee_id`, `item_id`) VALUES
-(13, '2019-03-11 20:17:47', 'Create', 'Item was Created', 1, 16),
-(14, '2019-03-11 20:22:16', 'Create', 'Item was Created', 1, 17),
-(15, '2019-03-11 20:22:31', 'Delete', 'Item was deleted', 1, 16);
+(17, '2019-03-17 13:26:54', 'Create', 'Item was Created', 1, 18);
 
 -- --------------------------------------------------------
 
@@ -396,7 +381,7 @@ ALTER TABLE `branch`
 -- AUTO_INCREMENT for table `branch_item`
 --
 ALTER TABLE `branch_item`
-  MODIFY `branch_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `branch_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT for table `employee`
@@ -426,19 +411,19 @@ ALTER TABLE `fisherman_expense`
 -- AUTO_INCREMENT for table `item`
 --
 ALTER TABLE `item`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `item_line`
 --
 ALTER TABLE `item_line`
-  MODIFY `item_line_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `item_line_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `item_log`
 --
 ALTER TABLE `item_log`
-  MODIFY `item_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `item_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `money_bill`
@@ -456,7 +441,7 @@ ALTER TABLE `money_denomination`
 -- AUTO_INCREMENT for table `stock_transaction`
 --
 ALTER TABLE `stock_transaction`
-  MODIFY `stock_transaction_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `stock_transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `void_transaction`
