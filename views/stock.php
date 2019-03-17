@@ -7,10 +7,6 @@ require ("../panelheader.php");
         <div class="content mt-3" style="width:40%;">
           Select Branch
           <select id="branch" class="form-control">
-            <option value="100">Warehouse</option>
-            <option value="1">Sugbo Mercado</option>
-            <option value="2">The Market</option>
-            <option value="3">Yellowcube</option>
           </select>
         </div>
         <div class="content mt-3">
@@ -233,9 +229,18 @@ $(document).ready(function(){
     PopulateItemsTable();
   });
 });
-function PopulateItemsTable() {
-    let id = $("#branch").val();
 
+function PopulateItemsTable() {
+  $.ajax({
+    method: "POST",
+    url: "../queries/get/getBranches.php"
+  }).done(function( data ) {
+    var jsonObject = JSON.parse(data);
+    var result = jsonObject.map(function (item) {
+      $('#branch').append('<option value="'+item.branch_id+'">'+item.name+'</option>');
+    });
+
+    let id = $("#branch").val();
     $.ajax({
       method: "POST",
       url: "../queries/get/getItems.php",
@@ -247,7 +252,7 @@ function PopulateItemsTable() {
         result.push(item.name);
         result.push(item.price);
         result.push(item.qty);
-        if (item.branch_id != 100) {
+        if (item.branch_id != 1) {
           result.push('<button type="button" class="btn btn-warning btn-sm editBtn" data-toggle="modal" data-target="#editModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-price="'+item.price+'" data-qty="'+item.qty+'"><i class="fa fa-edit"></i></button>'
             +'<button type="button" class="btn btn-danger btn-sm delBtn" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" ><i class="fa fa-trash"></i></button>'
             +'<button type="button" class="btn btn-primary btn-sm stockBtn" data-toggle="modal" data-target="#stockModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-qty="'+item.qty+'" data-branch_item="'+item.branch_item_id+'"><i class="fa fa-archive"></i></button>'
@@ -264,7 +269,9 @@ function PopulateItemsTable() {
       myTable.rows.add(result);
       myTable.draw();
     });
+  });
 }
+
 $("#addBtn").on('click', function(){ 
             var name  = $("#name").val();
   
