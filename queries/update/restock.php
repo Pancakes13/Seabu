@@ -14,7 +14,7 @@ if(!$item_id || !$qty || !$type){
     $sql    = "UPDATE `branch_item` 
     SET `qty` = `qty`+ ?
     WHERE `item_id` = ?
-    AND `branch_id` = 100";
+    AND `branch_id` = 1";
 
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('ss', $qty, $item_id);

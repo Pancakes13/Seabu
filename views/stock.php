@@ -103,14 +103,12 @@ require ("../panelheader.php");
                     <label>Current Stock</label>
                     <input id="transferModelStock" type="number" class="form-control" readonly>
                   </div>
-                  <div class="form-group">
-                    <label>Quantity</label>
-                    <input id="transferModelQty" type="number" class="form-control">
+                  <div id="branches">
                   </div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                  <button type="button" class="btn btn-primary" type="submit" id="submitStock" data-dismiss="modal">Transfer Stock</button>
+                  <button type="button" class="btn btn-primary" type="submit" id="submitTransfer" data-dismiss="modal">Transfer Stock</button>
                 </div>
               </div>
             </div>
@@ -222,7 +220,7 @@ require ("../panelheader.php");
 var myTable = "";
 $(document).ready(function(){
   myTable = $('#bootstrap-data-table').DataTable();
-  PopulateItemsTable();
+  initBranches();
 
   $("#branch").change(function(){
     myTable.clear();
@@ -230,7 +228,7 @@ $(document).ready(function(){
   });
 });
 
-function PopulateItemsTable() {
+function initBranches() {
   $.ajax({
     method: "POST",
     url: "../queries/get/getBranches.php"
@@ -238,37 +236,45 @@ function PopulateItemsTable() {
     var jsonObject = JSON.parse(data);
     var result = jsonObject.map(function (item) {
       $('#branch').append('<option value="'+item.branch_id+'">'+item.name+'</option>');
+      if(item.branch_id != 1) {
+        $('#branches').append('<label for="branchId" class="control-label mb-1">'+item.name+' Quantity</label>');
+        $('#branches').append('<input id="transferModelBranch" value="'+item.branch_id+'" name="branch_id[]" hidden>');
+        $('#branches').append('<input id="transferModelQty" type="number" class="form-control" name="qty[]" value="0" min="0">');
+      }
     });
+    PopulateItemsTable();
+  });
+}
 
-    let id = $("#branch").val();
-    $.ajax({
-      method: "POST",
-      url: "../queries/get/getItems.php",
-      data: {"branch_id": id},
-    }).done(function( data ) {
-      var jsonObject = JSON.parse(data);
-      var result = jsonObject.map(function (item) {
-        var result = [];
-        result.push(item.name);
-        result.push(item.price);
-        result.push(item.qty);
-        if (item.branch_id != 1) {
-          result.push('<button type="button" class="btn btn-warning btn-sm editBtn" data-toggle="modal" data-target="#editModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-price="'+item.price+'" data-qty="'+item.qty+'"><i class="fa fa-edit"></i></button>'
-            +'<button type="button" class="btn btn-danger btn-sm delBtn" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" ><i class="fa fa-trash"></i></button>'
-            +'<button type="button" class="btn btn-primary btn-sm stockBtn" data-toggle="modal" data-target="#stockModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-qty="'+item.qty+'" data-branch_item="'+item.branch_item_id+'"><i class="fa fa-archive"></i></button>'
-            +'<a href="item_logs.php?item_id='+item.item_id+'&item_name='+item.name+'"><button type="button" class="btn btn-secondary btn-sm"><i class="fa fa-eye"></i></button></a>');
-        } else {
-          result.push('<button type="button" class="btn btn-warning btn-sm editBtn" data-toggle="modal" data-target="#editModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-price="'+item.price+'" data-qty="'+item.qty+'"><i class="fa fa-edit"></i></button>'
-            +'<button type="button" class="btn btn-danger btn-sm delBtn" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" ><i class="fa fa-trash"></i></button>'
-            +'<button type="button" class="btn btn-primary btn-sm stockBtn" data-toggle="modal" data-target="#stockModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-qty="'+item.qty+'" data-branch_item="'+item.branch_item_id+'"><i class="fa fa-archive"></i></button>'
-            +'<button type="button" class="btn btn-dark btn-sm transferBtn" data-toggle="modal" data-target="#transferModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-qty="'+item.qty+'"><i class="fa fa-truck"></i></button>'
-            +'<a href="item_logs.php?item_id='+item.item_id+'&item_name='+item.name+'"><button type="button" class="btn btn-secondary btn-sm"><i class="fa fa-eye"></i></button></a>');
-        }
-        return result;
-      });
-      myTable.rows.add(result);
-      myTable.draw();
+function PopulateItemsTable() {
+  let id = $("#branch").val();
+  $.ajax({
+    method: "POST",
+    url: "../queries/get/getItems.php",
+    data: {"branch_id": id},
+  }).done(function( data ) {
+    var jsonObject = JSON.parse(data);
+    var result = jsonObject.map(function (item) {
+      var result = [];
+      result.push(item.name);
+      result.push(item.price);
+      result.push(item.qty);
+      if (item.branch_id != 1) {
+        result.push('<button type="button" class="btn btn-warning btn-sm editBtn" data-toggle="modal" data-target="#editModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-price="'+item.price+'" data-qty="'+item.qty+'"><i class="fa fa-edit"></i></button>'
+          +'<button type="button" class="btn btn-danger btn-sm delBtn" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" ><i class="fa fa-trash"></i></button>'
+          +'<button type="button" class="btn btn-primary btn-sm stockBtn" data-toggle="modal" data-target="#stockModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-qty="'+item.qty+'" data-branch_item="'+item.branch_item_id+'"><i class="fa fa-archive"></i></button>'
+          +'<a href="item_logs.php?item_id='+item.item_id+'&item_name='+item.name+'"><button type="button" class="btn btn-secondary btn-sm"><i class="fa fa-eye"></i></button></a>');
+      } else {
+        result.push('<button type="button" class="btn btn-warning btn-sm editBtn" data-toggle="modal" data-target="#editModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-price="'+item.price+'" data-qty="'+item.qty+'"><i class="fa fa-edit"></i></button>'
+          +'<button type="button" class="btn btn-danger btn-sm delBtn" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" ><i class="fa fa-trash"></i></button>'
+          +'<button type="button" class="btn btn-primary btn-sm stockBtn" data-toggle="modal" data-target="#stockModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-qty="'+item.qty+'" data-branch_item="'+item.branch_item_id+'"><i class="fa fa-archive"></i></button>'
+          +'<button type="button" class="btn btn-dark btn-sm transferBtn" data-toggle="modal" data-target="#transferModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-qty="'+item.qty+'"><i class="fa fa-truck"></i></button>'
+          +'<a href="item_logs.php?item_id='+item.item_id+'&item_name='+item.name+'"><button type="button" class="btn btn-secondary btn-sm"><i class="fa fa-eye"></i></button></a>');
+      }
+      return result;
     });
+    myTable.rows.add(result);
+    myTable.draw();
   });
 }
 
@@ -417,37 +423,47 @@ $("#addBtn").on('click', function(){
           $("#transferModelStock").val(qty);
         });
 
-        $(document).on('click', '#submitStock', function(){
-          var id = $("#modelId").val();
-          var type  = $("#modelType").val();
-          var stock = $("#modelStock").val();
-          var qty = $("#modelQty").val();
-          var branch_item = $("#modelBranchItem").val();
-
-          if (type === 'Damaged') {
-            qty *= -1;
+        $(document).on('click', '#submitTransfer', function(){
+          var item = $("#transferModelId").val();
+          var currentStock = $("#transferModelStock").val();
+          var branch = $("input[name='branch_id[]']")
+              .map(function(){return $(this).val();}).get();
+          var qty = $("input[name='qty[]']")
+              .map(function(){return $(this).val();}).get();
+          var transferQty = 0;
+          for(var x = 0; x < qty.length; x++) {
+            transferQty += parseInt(qty[x]);
           }
-          $.ajax({ 
-            method: "POST",
-            url: "../queries/update/restock.php",
-            data: {
-              "item_id": id,
-              "current_stock": stock,
-              "type": type, "qty": qty,
-              "branch_item": branch_item
-            },
-          }).done(function( data ) { 
-            var result = $.parseJSON(data); 
 
-            myTable.clear();
-            PopulateItemsTable();
-            $("#modelQty").val('');
+          if(transferQty > currentStock) {
             swal(
-                'Success!',
-                'You have restocked an item!',
-                'success'
-              )
-          });
+              'Not enough stock!',
+              'Transferred quantity cannot be more than current stock!',
+              'error'
+            )
+          } else {
+            $.ajax({
+              method: "POST",
+              url: "../queries/update/transferStock.php",
+              data: {
+                "item": item,
+                "branch": branch,
+                "qty": qty,
+                "transferQty": transferQty
+              },
+            }).done(function( data ) { 
+              var result = $.parseJSON(data); 
+
+              myTable.clear();
+              PopulateItemsTable();
+              $("#modelQty").val('');
+              swal(
+                  'Success!',
+                  'You have transfered stock!',
+                  'success'
+                )
+            });
+          }
         });
 
         $(document).on('click', '#itemTable .editBtn', function(){ 

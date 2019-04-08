@@ -6,9 +6,6 @@ require ("../panelheader.php");
     <div style="width:40%; margin-left:1%; margin-top:3%;">
         Select Branch
         <select id="branch" class="form-control">
-            <option value="1">Sugbo Mercado</option>
-            <option value="2">The Market</option>
-            <option value="3">Yellowcube</option>
         </select>
     </div>
     <div style="margin-top:2%;">
@@ -73,7 +70,7 @@ require ("../panelheader.php");
 var myTable = "";
 $(document).ready(function(){
   myTable = $('#stockUsage-table');
-  PopulateStockUsageTable();
+  initBranches();
   $('#searchStockUsage').submit(function(e) {
     e.preventDefault();
     PopulateStockUsageTable();
@@ -89,6 +86,20 @@ $(document).ready(function(){
     PopulateStockUsageTable();
   });
 });
+
+function initBranches() {
+  $.ajax({
+    method: "POST",
+    url: "../queries/get/getBranchesStores.php"
+  }).done(function( data ) {
+    var jsonObject = JSON.parse(data);
+    var result = jsonObject.map(function (item) {
+      $('#branch').append('<option value="'+item.branch_id+'">'+item.name+'</option>');
+    });
+    $("#branch_id").val($("#branch").val());
+    PopulateStockUsageTable();
+  });
+}
 
 function PopulateStockUsageTable() {
     $('#stockUsage-table tr').remove();
