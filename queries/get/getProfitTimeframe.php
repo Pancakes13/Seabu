@@ -8,10 +8,12 @@ FROM `expense`
 WHERE DATE(`expense_timestamp`) >= 	'$date1' AND DATE(`expense_timestamp`) <= '$date2'
 AND `isDeleted` = 0");
 
-$result2 = $conn->query("SELECT SUM(`i`.`price`*`i`.`qty`) AS `total`
+$result2 = $conn->query("SELECT SUM(`i`.`price`*`bi`.`qty`) AS `total`
 FROM `item_line` `i`
 INNER JOIN `stock_transaction` `s`
 ON `i`.`stock_transaction_id` = `s`.`stock_transaction_id`
+INNER JOIN `branch_item` `bi`
+ON `i`.`branch_item_id` = `bi`.`branch_item_id`
 AND `s`.`isVoid` = 0
 WHERE DATE(`transaction_timestamp`) >= '$date1' AND DATE(`transaction_timestamp`) <= '$date2'");
 

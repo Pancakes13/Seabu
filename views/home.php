@@ -330,7 +330,7 @@ function getBirthdayTable() {
       url: "../queries/get/getEmployeeBirthday.php"
     }).done(function( data ) {
       var jsonObject = JSON.parse(data);
-      getItemSales(jsonObject[0].item_id);
+      // getItemSales(jsonObject[0].item_id);
       var result = jsonObject.map(function (item) {
         var result = [];
         result.push(item.last_name + ', ' + item.first_name);
