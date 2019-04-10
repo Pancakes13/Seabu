@@ -2,6 +2,23 @@
 require ("../panelsidebar.php");
 require ("../panelheader.php");
 ?>
+ <div class="col-md-6">
+   <div class="card">
+     <div class="card-header" style="background-color: #FCC0C0;">
+       <h4 style="color:red;"></style>Birthday Celebrants!</h4>
+        </div>
+          <div id="#" class="card-body" style="background-color: #FFF0F0;">
+            <table id="upcomingBirthdayTable" class="table table-striped table-bordered"><thead>
+              <tr>
+                <th>Name</th>
+                <th>Birthdate</th>
+                <th>Contact #</th>
+                <th>Branch</th>
+                </tr>
+            </table>
+          </div>
+       </div>
+    </div>
 <div style="width:40%; margin-left:1%;">
   Select Branch
   <select id="branch" class="form-control">
@@ -95,23 +112,6 @@ require ("../panelheader.php");
                           <th>Price (Php)</th>
                           <th width="20%">Stock <span class="fa fa-question-circle-o" title="Current Stock (pc/Kg)"></span></th>
                           <th style="width:5%;">Action</th>
-                        </tr>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="card">
-                    <div class="card-header">
-                      <h4>Upcoming Birthdays</h4>
-                    </div>
-                    <div id="#" class="card-body">
-                      <table id="upcomingBirthdayTable" class="table table-striped table-bordered"><thead>
-                        <tr>
-                          <th>Name</th>
-                          <th>Birthdate</th>
-                          <th>Contact #</th>
-                          <th>Branch</th>
                         </tr>
                       </table>
                     </div>
