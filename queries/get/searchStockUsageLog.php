@@ -25,6 +25,7 @@ $result = $conn->query("SELECT `il`.`item_line_id`, `i`.`item_id`,
                 AND `s`.`isVoid` = 0
                 AND `bi`.`branch_id` = $id
                 AND `bi`.`branch_id` != 1
+                AND `s`.`type` != 'Transfer'
                 ORDER BY `s`.`transaction_timestamp` DESC");
 
 $result_array = array();

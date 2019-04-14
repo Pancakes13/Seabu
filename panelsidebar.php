@@ -42,9 +42,6 @@ if (!$_SESSION['user_id']) {
                         <a href="dailytally.php"> <i class="menu-icon fa fa-calendar-plus-o"></i>Daily Tally</a>
                     </li>
                     <li>
-                        <a href="house.php"> <i class="menu-icon fa fa-truck"></i>Warehouse Stock</a>
-                    </li>
-                    <li>
                         <a href="stock.php"> <i class="menu-icon fa fa-cutlery"></i>Stock</a>
                     </li>
                     <!--
@@ -52,6 +49,9 @@ if (!$_SESSION['user_id']) {
                         <a href="yearlytotals.php"> <i class="menu-icon fa fa-area-chart"></i>Yearly Totals</a>
                     </li>
                     -->
+                    <li>
+                        <a href="stockTransfer.php"> <i class="menu-icon fa fa-truck"></i>Stock Transfer Log</a>
+                    </li>
                     <li>
                         <a href="stockUsage.php"> <i class="menu-icon fa fa-cart-arrow-down"></i>Stock Usage</a>
                     </li>

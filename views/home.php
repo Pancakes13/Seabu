@@ -352,13 +352,13 @@ function getProfit() {
   $.ajax({
     method: "POST",
     url: "../queries/get/getProfitTimeframe.php",
-    data: {"date1": '2018-12-01', "date2": '2018-12-31'},
+    data: {"date1": '2018-12-01', "date2": '2019-12-31'},
   }).done(function( data ) {
     var jsonObject = JSON.parse(data);
     var result = jsonObject.map(function (item) {
       $('#grossProfit').html(item.total);
-      $('#totalExpenses').html(item.totalExpenses);
-      $('#netProfit').html(item.netProfit);
+      $('#totalExpenses').html((parseFloat(item.totalExpenses) + parseFloat(item.fishExpenses)).toFixed(2));
+      $('#netProfit').html(item.netProfit.toFixed(2));
     });
   });
 }
