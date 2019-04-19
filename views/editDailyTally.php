@@ -6,9 +6,6 @@ require ("../panelheader.php");
 <div style="width:40%; margin-left:1%;">
   Select Branch
   <select id="branch" class="form-control">
-    <option value="1">Sugbo Mercado</option>
-    <option value="2">The Market</option>
-    <option value="3">Yellowcube</option>
   </select>
 </div>
 <div class="content mt-3">
@@ -64,7 +61,7 @@ require ("../panelheader.php");
 var myTable = "";
 $(document).ready(function(){
   myTable = $('#tallyTable');
-  PopulateTallyTable();
+  initBranches();
 
   $('#smartwizard').smartWizard({
     selected: 0,
@@ -119,6 +116,20 @@ $(document).ready(function(){
   });
 });
 
+function initBranches() {
+  $.ajax({
+    method: "POST",
+    url: "../queries/get/getBranchesStores.php"
+  }).done(function( data ) {
+    var jsonObject = JSON.parse(data);
+    var result = jsonObject.map(function (item) {
+      $('#branch').append('<option value="'+item.branch_id+'">'+item.name+'</option>');
+    });
+    $("#branch_id").val($("#branch").val());
+    PopulateTallyTable();
+  });
+}
+
 function PopulateTallyTable() {
   var date = $("#searchDate").val();
   let id = $("#branch").val();
@@ -140,18 +151,16 @@ function PopulateTallyTable() {
       +'<th>Old Stock (Pcs/Kg)</th>'
       +'<th hidden>Current Stock (Pcs/Kg)</th>'
       +'<th>Qty</th>'
-      +'<th>Type</th>'
       +'<th style="text-align:right;">Subtotal</th></tr>');
       myTable.append('<tr class="item"><td>'+item.name+' <input name="item[]" value="'+item.item_id+'" hidden> <input name="item_line_id[]" value="'+item.item_line_id+'" hidden> <input name="stock_transaction_id" value="'+item.stock_transaction_id+'" hidden></td>'
           +'<td><input name="price[]" class="editPrice form-control" type="number" value="'+item.price+'" readonly="true"></td>'
           +'<td><input name="oldStock[]" class="qty form-control" value="'+item.old_stock+'" readonly></td>'
           +'<td><input name="currentStock[]" class="qty form-control" value="'+item.stock_qty+'" readonly></td>'
           +'<td><input name="qty[]" class="editQty form-control" type="number" value="'+item.qty+'" readonly></td>'
-          +'<td><input name="type[]" class="qty form-control" type="text" value="'+item.item_line_type+'" readonly></td>'
           +'<td class="editSubTotal" style="text-align:right;">'+item.price*item.qty+'</td></tr>');
       });
-      myTable.append('<tr><td></td><td></td><td></td><td></td><td></td><td id="total" style="text-align:right;"><strong>TOTAL</strong><td id="editTotalValue" style="text-align:right;">0</td></tr>');
-      myTable.append('<tr><td></td><td></td><td></td><td></td><td></td><td></td><td style="text-align:right;"><button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#voidModal">Void Tally <i class="fa fa-trash"></i></button></td></tr>');
+      myTable.append('<tr><td></td><td></td><td></td><td></td><td id="total" style="text-align:right;"><strong>TOTAL</strong><td id="editTotalValue" style="text-align:right;">0</td></tr>');
+      myTable.append('<tr><td></td><td></td><td></td><td></td><td></td><td style="text-align:right;"><button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#voidModal">Void Tally <i class="fa fa-trash"></i></button></td></tr>');
       
       $("#next-btn").on("click", function() {
         $('#smartwizard').smartWizard("next");

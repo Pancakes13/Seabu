@@ -101,11 +101,11 @@ $(document).ready(function(){
   var url = new URL(window.location.href);
   var c = url.searchParams.get("branch_id");
   var date = url.searchParams.get("date");
-  if (c == 1) {
+  if (c == 2) {
     $("#branch").val("Sugbo Mercado");
-  } else if (c == 2) {
-    $("#branch").val("The Market");
   } else if (c == 3) {
+    $("#branch").val("The Market");
+  } else if (c == 4) {
     $("#branch").val("Yellowcube");
   }
   myTable = $('#tallyTable');
@@ -199,25 +199,20 @@ function PopulateTallyTable() {
     var jsonObject = JSON.parse(data);
     myTable.append('<tr><th>Item Name</th>'
       +'<th>Price (Php)</th>'
-      +'<th hidden>Current Stock (Pcs/Kg)</th>'
+      +'<th>Current Stock (Pcs/Kg)</th>'
       +'<th>Qty</th>'
-      +'<th>Type</th>'
       +'<th style="text-align:right;">Subtotal</th>'
       +'</tr>');
     var result = jsonObject.map(function (item) {
       var result = [];
-      myTable.append('<tr class="item"><td style="width:25%;">'+item.name+' <input name="item[]" value="'+item.item_id+'" hidden> <input name="stock_transaction_id" value="'+item.stock_transaction_id+'" hidden></td>'
+      myTable.append('<tr class="item"><td style="width:25%;">'+item.name+' <input name="item[]" value="'+item.branch_item_id+'" hidden></td>'
         +'<td style="width:15%;"><input name="price[]" class="price form-control" type="number" value="'+item.price+'" readonly="true"></td>'
         +'<td><input name="current_stock[]" class="qty form-control" value="'+item.qty+'" readonly></td>'
         +'<td style="width:10%;"><input name="qty[]" class="qty form-control" type="number" value="0" min="0" max="'+item.qty+'"></td>'
-        +'<td style="width:15%;"> <select name="type[]" class="form-control">'
-        +'<option value="local">Local</option>'
-        +'<option value="honestbee">Honestbee</option>'
-        +'</select></td>'
         +'<td class="subTotal" style="text-align:right; font-weight:bold;">0</td></tr>');
     });
-    myTable.append('<tr><td></td><td></td><td></td><td></td><td id="total"><strong>TOTAL</strong></td><td id="totalValue" style="text-align:right;">0</td></tr>');
-    myTable.append('<tr><td></td><td></td><td></td><td></td><td><button id="next-btn" class="btn btn-primary" type="button">Enter Money Denomination</button></td><td></td></tr>');
+    myTable.append('<tr><td></td><td></td><td></td><td id="total"><strong>TOTAL</strong></td><td id="totalValue" style="text-align:right;">0</td></tr>');
+    myTable.append('<tr><td></td><td></td><td></td><td><button id="next-btn" class="btn btn-primary" type="button">Enter Money Denomination</button></td><td></td></tr>');
       
     $("#next-btn").on("click", function() {
       $('#expectedEarnings').html($("#totalValue").html());
@@ -250,8 +245,8 @@ function PopulateMoneyDenominationTable() {
 $(document).on('input', ".qty",function () {
   var test1 = $(this).closest(".qty").val();
   var qty = parseInt($(this).closest("td").parent()[0].cells[1].children[0].value);
-  var price = (isNaN(parseInt($(this).closest("td").parent()[0].cells[3].children[0].value))) ? 0 : parseInt($(this).closest("td").parent()[0].cells[3].children[0].value);
-  $(this).closest("td").parent()[0].cells[5].innerHTML = qty*price;
+  var price = (isNaN(parseInt($(this).closest("td").parent()[0].cells[2].children[0].value))) ? 0 : parseInt($(this).closest("td").parent()[0].cells[3].children[0].value);
+  $(this).closest("td").parent()[0].cells[4].innerHTML = qty*price;
   
   var total = 0;
   $("tr.item").each(function() {

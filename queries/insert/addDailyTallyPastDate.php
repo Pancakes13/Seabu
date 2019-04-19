@@ -10,24 +10,25 @@ $item  = $_POST['item'];
 $price = $_POST['price'];
 $stock = $_POST['current_stock'];
 $qty = $_POST['qty'];
-$type = $_POST['type'];
 $moneyId = $_POST['moneyId'];
 $moneyQty = $_POST['moneyQty'];
 
 if(!$stock_type || !$emp_id || !$item || max($qty) == 0){
   $result = "Missing Parameters";
 } else {
-  $tallyExists = $conn->query("SELECT `i`.`item_id`, `i`.`name`, `i`.`qty` AS 'item_qty', `il`.`price`, `il`.`qty`, `il`.`item_line_type`,
+  $tallyExists = $conn->query("SELECT `i`.`item_id`, `i`.`name`, `bi`.`qty` AS 'item_qty', `il`.`price`, `il`.`qty`,
   `s`.`transaction_timestamp`, `s`.`type`
-  FROM `stock_transaction` `s` 
+  FROM `stock_transaction` `s`
   INNER JOIN `item_line` `il`
   ON  `s`.`stock_transaction_id` = `il`.`stock_transaction_id`
+  INNER JOIN `branch_item` `bi`
+  ON `il`.`branch_item_id` = `bi`.`branch_item_id`
   INNER JOIN `item` `i`
-  ON `il`.`item_id` = `i`.`item_id`
+  ON `bi`.`item_id` = `i`.`item_id`
   INNER JOIN `branch` `b`
-  ON `i`.`branch_id` = `b`.`branch_id`
+  ON `bi`.`branch_id` = `b`.`branch_id`
   AND `b`.`branch_id` = $id
-  AND DATE(`s`.`transaction_timestamp`) = '$date'
+  AND DATE(`s`.`transaction_timestamp`) = $date
   AND `s`.`type` = 'Sold'
   AND `s`.`isVoid` = 0");
   
@@ -54,16 +55,16 @@ if(!$stock_type || !$emp_id || !$item || max($qty) == 0){
             throw new Exception("one of the variables were not valid: " . $_error);
           }
 
-          $sql2    = "INSERT into `item_line` (`price`, `old_stock`, `qty`, `item_line_type`, `stock_transaction_id`, `item_id`) values (?, ?, ?, ?, ?, ?)  ";
+          $sql2    = "INSERT into `item_line` (`price`, `old_stock`, `qty`, `stock_transaction_id`, `branch_item_id`) values (?, ?, ?, ?, ?)  ";
       
           $stmt2   = $conn->prepare($sql2);
       
-          $stmt2->bind_param('ssssss', $price[$x], $stock[$x], $qty[$x], $type[$x], $id, $item[$x]);
+          $stmt2->bind_param('sssss', $price[$x], $stock[$x], $qty[$x], $id, $item[$x]);
           $stmt2->execute();
           
-          $sql3 = "UPDATE `item` 
+          $sql3 = "UPDATE `branch_item` 
           SET `qty` = (`qty` - ?)
-          WHERE `item_id` = ?";
+          WHERE `branch_item_id` = ?";
           
           $stmt3 = $conn->prepare($sql3);
           $stmt3->bind_param('ss', $qty[$x], $item[$x]);
