@@ -28,20 +28,27 @@ if(!$item || !$qty || !$branch){
         $stmtHouse->bind_param('sss', $transferQty, $item, $house);
         if($stmtHouse->execute()){
             for($x=0; $x<count($branch); $x++){
+                $b = $branch[$x];
+
+                $branch_item = $conn->query("SELECT `branch_item_id`
+                FROM `branch_item`
+                WHERE `item_id` = $item
+                AND `branch_id` = $b");
+                $bi = $branch_item->fetch_assoc();
+                
                 $sql2 = "UPDATE `branch_item` 
                     SET `qty` = `qty`+ ?
-                    WHERE `item_id` = ?
-                    AND `branch_id` = ?";
+                    WHERE `branch_item_id` = ?";
                 $stmt2 = $conn->prepare($sql2);
-                $stmt2->bind_param('sss', $qty[$x], $item, $branch[$x]);
+                $stmt2->bind_param('ss', $qty[$x], $bi['branch_item_id']);
+
                 if($stmt2->execute()){
                     $price = 0;
                     $old = 0;
-                    $branch_item = 57 + $x;
                     $sql3    = "INSERT into `item_line` (`price`, `old_stock`, `qty`, `stock_transaction_id`, `branch_item_id`) values (?, ?, ?, ?, ?)";
         
                     $stmt3   = $conn->prepare($sql3);
-                    $stmt3->bind_param('sssss', $price, $old, $qty[$x], $id, $branch_item);
+                    $stmt3->bind_param('sssss', $price, $old, $qty[$x], $id, $bi['branch_item_id']);
                     if($stmt3->execute()){
                         $result = 1;
                     }

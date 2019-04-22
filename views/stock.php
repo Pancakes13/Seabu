@@ -116,6 +116,42 @@ require ("../panelheader.php");
         </div>
         <!--END OF Transfer Modal-->
 
+        <!--Transfer House Modal-->
+        <div class="modal fade" id="transferHouseModal" aria-hidden="true">
+          <form>
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="mediumModalLabel">Transfer Stock</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <input id="transferHouseModelId" type="text" class="form-control" hidden>
+                  <div class="form-group">
+                    <label>Item Name</label>
+                    <input id="transferHouseModelName" type="text" class="form-control" readonly>
+                  </div>
+                  <div class="form-group">
+                    <label>Current Stock</label>
+                    <input id="transferHouseModelStock" type="number" class="form-control" readonly>
+                  </div>
+                  <div class="form-group">
+                    <label>Transfer to Warehouse Quantity</label>
+                    <input id="transferHouseModelQty" type="number" class="form-control">
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-primary" type="submit" id="submitHouseTransfer" data-dismiss="modal">Transfer Stock</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!--END OF Transfer House Modal-->
+
         <!--Add Modal-->
         <div class="modal fade" id="addModal" aria-hidden="true">
           <form>
@@ -263,6 +299,7 @@ function PopulateItemsTable() {
         result.push('<button type="button" class="btn btn-warning btn-sm editBtn" data-toggle="modal" data-target="#editModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-price="'+item.price+'" data-qty="'+item.qty+'"><i class="fa fa-edit"></i></button>'
           +'<button type="button" class="btn btn-danger btn-sm delBtn" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" ><i class="fa fa-trash"></i></button>'
           +'<button type="button" class="btn btn-primary btn-sm stockBtn" data-toggle="modal" data-target="#stockModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-qty="'+item.qty+'" data-branch_item="'+item.branch_item_id+'"><i class="fa fa-archive"></i></button>'
+          +'<button type="button" class="btn btn-dark btn-sm transferHouseBtn" data-toggle="modal" data-target="#transferHouseModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-qty="'+item.qty+'"><i class="fa fa-truck"></i></button>'
           +'<a href="item_logs.php?item_id='+item.item_id+'&item_name='+item.name+'"><button type="button" class="btn btn-secondary btn-sm"><i class="fa fa-eye"></i></button></a>');
       } else {
         result.push('<button type="button" class="btn btn-warning btn-sm editBtn" data-toggle="modal" data-target="#editModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-price="'+item.price+'" data-qty="'+item.qty+'"><i class="fa fa-edit"></i></button>'
@@ -450,6 +487,52 @@ $("#addBtn").on('click', function(){
                 "branch": branch,
                 "qty": qty,
                 "transferQty": transferQty
+              },
+            }).done(function( data ) { 
+              var result = $.parseJSON(data); 
+
+              myTable.clear();
+              PopulateItemsTable();
+              $("#modelQty").val('');
+              swal(
+                  'Success!',
+                  'You have transfered stock!',
+                  'success'
+                )
+            });
+          }
+        });
+
+        $(document).on('click', '#itemTable .transferHouseBtn', function(){ 
+          var id  = $(this).data("itemid");
+          var name = $(this).data("itemname");
+          var qty = $(this).data("qty");
+          
+          $("#transferHouseModelId").val(id);
+          $("#transferHouseModelName").val(name);
+          $("#transferHouseModelStock").val(qty);
+        });
+
+        $(document).on('click', '#submitHouseTransfer', function(){
+          var item = $("#transferHouseModelId").val();
+          var currentStock = $("#transferHouseModelStock").val();
+          var branch = $("#branch").val();
+          var qty = $("#transferHouseModelQty").val();
+
+          if(qty > currentStock) {
+            swal(
+              'Not enough stock!',
+              'Transferred quantity cannot be more than current stock!',
+              'error'
+            )
+          } else {
+            $.ajax({
+              method: "POST",
+              url: "../queries/update/transferStockHouse.php",
+              data: {
+                "item": item,
+                "branch": branch,
+                "qty": qty
               },
             }).done(function( data ) { 
               var result = $.parseJSON(data); 
