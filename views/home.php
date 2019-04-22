@@ -5,9 +5,6 @@ require ("../panelheader.php");
 <div style="width:40%; margin-left:1%;">
   Select Branch
   <select id="branch" class="form-control">
-    <option value="1">Sugbo Mercado</option>
-    <option value="2">The Market</option>
-    <option value="3">Yellowcube</option>
   </select>
 </div>
 
@@ -130,12 +127,10 @@ require ("../panelheader.php");
 var myTable = "";
 var bdayTable = "";
 $(document).ready(function(){
-  getInformation();
+  initBranches();
   myTable = $('#homeItemTable').DataTable();
-  PopulateItemsTable();
   bdayTable = $('#upcomingBirthdayTable').DataTable();
   getBirthdayTable();
-  getProfit();
 
   $("#branch").change(function(){
     myTable.clear();
@@ -148,6 +143,22 @@ $(document).ready(function(){
     PopulateItemsTable();
   });
 });
+
+function initBranches() {
+  $.ajax({
+    method: "POST",
+    url: "../queries/get/getBranchesStores.php"
+  }).done(function( data ) {
+    var jsonObject = JSON.parse(data);
+    var result = jsonObject.map(function (item) {
+      $('#branch').append('<option value="'+item.branch_id+'">'+item.name+'</option>');
+    });
+    $("#branch_id").val($("#branch").val());
+    getInformation();
+    PopulateItemsTable();
+    getProfit();
+  });
+}
 
 function getInformation() {
   var exists = false;
