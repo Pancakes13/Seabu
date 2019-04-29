@@ -50,6 +50,9 @@ if (!$_SESSION['user_id']) {
                     </li>
                     -->
                     <li>
+                        <a href="stockTransfer.php"> <i class="menu-icon fa fa-truck"></i>Stock Transfer Log</a>
+                    </li>
+                    <li>
                         <a href="stockUsage.php"> <i class="menu-icon fa fa-cart-arrow-down"></i>Stock Usage</a>
                     </li>
 

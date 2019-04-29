@@ -109,7 +109,7 @@ function PopulateStockUsageTable() {
 
     $.ajax({
         method: "POST",
-        url: "../queries/get/searchStockUsageLog.php",
+        url: "../queries/get/searchStockUsageLogTransfer.php",
         data: {"date1": date1, "date2": date2, "branch_id": id},
     }).done(function( data ) {
         var jsonObject = JSON.parse(data);

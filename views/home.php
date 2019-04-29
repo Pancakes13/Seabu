@@ -22,9 +22,6 @@ require ("../panelheader.php");
 <div style="width:40%; margin-left:1%;">
   Select Branch
   <select id="branch" class="form-control">
-    <option value="1">Sugbo Mercado</option>
-    <option value="2">The Market</option>
-    <option value="3">Yellowcube</option>
   </select>
 </div>
 
@@ -130,12 +127,10 @@ require ("../panelheader.php");
 var myTable = "";
 var bdayTable = "";
 $(document).ready(function(){
-  getInformation();
+  initBranches();
   myTable = $('#homeItemTable').DataTable();
-  PopulateItemsTable();
   bdayTable = $('#upcomingBirthdayTable').DataTable();
   getBirthdayTable();
-  getProfit();
 
   $("#branch").change(function(){
     myTable.clear();
@@ -148,6 +143,22 @@ $(document).ready(function(){
     PopulateItemsTable();
   });
 });
+
+function initBranches() {
+  $.ajax({
+    method: "POST",
+    url: "../queries/get/getBranchesStores.php"
+  }).done(function( data ) {
+    var jsonObject = JSON.parse(data);
+    var result = jsonObject.map(function (item) {
+      $('#branch').append('<option value="'+item.branch_id+'">'+item.name+'</option>');
+    });
+    $("#branch_id").val($("#branch").val());
+    getInformation();
+    PopulateItemsTable();
+    getProfit();
+  });
+}
 
 function getInformation() {
   var exists = false;
@@ -330,7 +341,7 @@ function getBirthdayTable() {
       url: "../queries/get/getEmployeeBirthday.php"
     }).done(function( data ) {
       var jsonObject = JSON.parse(data);
-      getItemSales(jsonObject[0].item_id);
+      // getItemSales(jsonObject[0].item_id);
       var result = jsonObject.map(function (item) {
         var result = [];
         result.push(item.last_name + ', ' + item.first_name);
@@ -352,13 +363,13 @@ function getProfit() {
   $.ajax({
     method: "POST",
     url: "../queries/get/getProfitTimeframe.php",
-    data: {"date1": '2018-12-01', "date2": '2018-12-31'},
+    data: {"date1": '2018-12-01', "date2": '2019-12-31'},
   }).done(function( data ) {
     var jsonObject = JSON.parse(data);
     var result = jsonObject.map(function (item) {
       $('#grossProfit').html(item.total);
-      $('#totalExpenses').html(item.totalExpenses);
-      $('#netProfit').html(item.netProfit);
+      $('#totalExpenses').html((parseFloat(item.totalExpenses) + parseFloat(item.fishExpenses)).toFixed(2));
+      $('#netProfit').html(item.netProfit.toFixed(2));
     });
   });
 }

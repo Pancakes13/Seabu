@@ -7,10 +7,6 @@ require ("../panelheader.php");
         <div class="content mt-3" style="width:40%;">
           Select Branch
           <select id="branch" class="form-control">
-            <option value="1">Sugbo Mercado</option>
-            <option value="2">The Market</option>
-            <option value="3">Yellowcube</option>
-            <option value="10">House</option>
           </select>
         </div>
         <div class="content mt-3">
@@ -55,6 +51,7 @@ require ("../panelheader.php");
                 </div>
                 <div class="modal-body">
                   <input id="modelId" type="text" class="form-control" hidden>
+                  <input id="modelBranchItem" type="text" class="form-control" hidden>
                   <div class="form-group">
                     <label>Item Name</label>
                     <input id="stockModelName" type="text" class="form-control" readonly>
@@ -84,6 +81,76 @@ require ("../panelheader.php");
           </form>
         </div>
         <!--END OF Stock Modal-->
+
+        <!--Transfer Modal-->
+        <div class="modal fade" id="transferModal" aria-hidden="true">
+          <form>
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="mediumModalLabel">Transfer Stock</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <input id="transferModelId" type="text" class="form-control" hidden>
+                  <div class="form-group">
+                    <label>Item Name</label>
+                    <input id="transferModelName" type="text" class="form-control" readonly>
+                  </div>
+                  <div class="form-group">
+                    <label>Current Stock</label>
+                    <input id="transferModelStock" type="number" class="form-control" readonly>
+                  </div>
+                  <div id="branches">
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-primary" type="submit" id="submitTransfer" data-dismiss="modal">Transfer Stock</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!--END OF Transfer Modal-->
+
+        <!--Transfer House Modal-->
+        <div class="modal fade" id="transferHouseModal" aria-hidden="true">
+          <form>
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="mediumModalLabel">Transfer Stock</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <input id="transferHouseModelId" type="text" class="form-control" hidden>
+                  <div class="form-group">
+                    <label>Item Name</label>
+                    <input id="transferHouseModelName" type="text" class="form-control" readonly>
+                  </div>
+                  <div class="form-group">
+                    <label>Current Stock</label>
+                    <input id="transferHouseModelStock" type="number" class="form-control" readonly>
+                  </div>
+                  <div class="form-group">
+                    <label>Transfer to Warehouse Quantity</label>
+                    <input id="transferHouseModelQty" type="number" class="form-control">
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-primary" type="submit" id="submitHouseTransfer" data-dismiss="modal">Transfer Stock</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!--END OF Transfer House Modal-->
 
         <!--Add Modal-->
         <div class="modal fade" id="addModal" aria-hidden="true">
@@ -143,7 +210,7 @@ require ("../panelheader.php");
                     <div class="col-6">
                       <div class="form-group">
                         <label for="stock" class="control-label mb-1">Current Stock</label>
-                        <input id="modelQty" class="form-control stock" type="number">
+                        <input id="modelQty" class="form-control stock" type="number" disabled>
                       </div>
                     </div>
                   </div>
@@ -189,44 +256,65 @@ require ("../panelheader.php");
 var myTable = "";
 $(document).ready(function(){
   myTable = $('#bootstrap-data-table').DataTable();
-  PopulateItemsTable();
+  initBranches();
 
   $("#branch").change(function(){
     myTable.clear();
     PopulateItemsTable();
   });
 });
-function PopulateItemsTable() {
-    let id = $("#branch").val();
 
-    $.ajax({
-      method: "POST",
-      url: "../queries/get/getItems.php",
-      data: {"branch_id": id},
-    }).done(function( data ) {
-      var jsonObject = JSON.parse(data);
-      var result = jsonObject.map(function (item) {
-        var result = [];
-        result.push(item.name);
-        result.push(item.price);
-        result.push(item.qty);
-        if (item.branch_id != 10) {
-          result.push('<button type="button" class="btn btn-warning btn-sm editBtn" data-toggle="modal" data-target="#editModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-price="'+item.price+'" data-qty="'+item.qty+'"><i class="fa fa-edit"></i></button>'
-            +'<button type="button" class="btn btn-danger btn-sm delBtn" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" ><i class="fa fa-trash"></i></button>'
-            +'<button type="button" class="btn btn-primary btn-sm stockBtn" data-toggle="modal" data-target="#stockModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-qty="'+item.qty+'"><i class="fa fa-archive"></i></button>'
-            +'<a href="item_logs.php?item_id='+item.item_id+'&item_name='+item.name+'"><button type="button" class="btn btn-secondary btn-sm"><i class="fa fa-eye"></i></button></a>');
-        } else {
-          result.push('<button type="button" class="btn btn-warning btn-sm editBtn" data-toggle="modal" data-target="#editModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-price="'+item.price+'" data-qty="'+item.qty+'"><i class="fa fa-edit"></i></button>'
-            +'<button type="button" class="btn btn-danger btn-sm delBtn" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" ><i class="fa fa-trash"></i></button>'
-            +'<button type="button" class="btn btn-primary btn-sm stockBtn" data-toggle="modal" data-target="#stockModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-qty="'+item.qty+'"><i class="fa fa-truck"></i></button>'
-            +'<a href="item_logs.php?item_id='+item.item_id+'&item_name='+item.name+'"><button type="button" class="btn btn-secondary btn-sm"><i class="fa fa-eye"></i></button></a>');
-        }
-        return result;
-      });
-      myTable.rows.add(result);
-      myTable.draw();
+function initBranches() {
+  $.ajax({
+    method: "POST",
+    url: "../queries/get/getBranches.php"
+  }).done(function( data ) {
+    var jsonObject = JSON.parse(data);
+    var result = jsonObject.map(function (item) {
+      $('#branch').append('<option value="'+item.branch_id+'">'+item.name+'</option>');
+      if(item.branch_id != 1) {
+        $('#branches').append('<label for="branchId" class="control-label mb-1">'+item.name+' Quantity</label>');
+        $('#branches').append('<input id="transferModelBranch" value="'+item.branch_id+'" name="branch_id[]" hidden>');
+        $('#branches').append('<input id="transferModelQty" type="number" class="form-control" name="qty[]" value="0" min="0">');
+      }
     });
+    PopulateItemsTable();
+  });
 }
+
+function PopulateItemsTable() {
+  let id = $("#branch").val();
+  $.ajax({
+    method: "POST",
+    url: "../queries/get/getItems.php",
+    data: {"branch_id": id},
+  }).done(function( data ) {
+    var jsonObject = JSON.parse(data);
+    var result = jsonObject.map(function (item) {
+      var result = [];
+      result.push(item.name);
+      result.push(item.price);
+      result.push(item.qty);
+      if (item.branch_id != 1) {
+        result.push('<button type="button" class="btn btn-warning btn-sm editBtn" data-toggle="modal" data-target="#editModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-price="'+item.price+'" data-qty="'+item.qty+'"><i class="fa fa-edit"></i></button>'
+          +'<button type="button" class="btn btn-danger btn-sm delBtn" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" ><i class="fa fa-trash"></i></button>'
+          +'<button type="button" class="btn btn-primary btn-sm stockBtn" data-toggle="modal" data-target="#stockModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-qty="'+item.qty+'" data-branch_item="'+item.branch_item_id+'"><i class="fa fa-archive"></i></button>'
+          +'<button type="button" class="btn btn-dark btn-sm transferHouseBtn" data-toggle="modal" data-target="#transferHouseModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-qty="'+item.qty+'"><i class="fa fa-truck"></i></button>'
+          +'<a href="item_logs.php?item_id='+item.item_id+'&item_name='+item.name+'"><button type="button" class="btn btn-secondary btn-sm"><i class="fa fa-eye"></i></button></a>');
+      } else {
+        result.push('<button type="button" class="btn btn-warning btn-sm editBtn" data-toggle="modal" data-target="#editModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-price="'+item.price+'" data-qty="'+item.qty+'"><i class="fa fa-edit"></i></button>'
+          +'<button type="button" class="btn btn-danger btn-sm delBtn" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" ><i class="fa fa-trash"></i></button>'
+          +'<button type="button" class="btn btn-primary btn-sm stockBtn" data-toggle="modal" data-target="#stockModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-qty="'+item.qty+'" data-branch_item="'+item.branch_item_id+'"><i class="fa fa-archive"></i></button>'
+          +'<button type="button" class="btn btn-dark btn-sm transferBtn" data-toggle="modal" data-target="#transferModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-qty="'+item.qty+'"><i class="fa fa-truck"></i></button>'
+          +'<a href="item_logs.php?item_id='+item.item_id+'&item_name='+item.name+'"><button type="button" class="btn btn-secondary btn-sm"><i class="fa fa-eye"></i></button></a>');
+      }
+      return result;
+    });
+    myTable.rows.add(result);
+    myTable.draw();
+  });
+}
+
 $("#addBtn").on('click', function(){ 
             var name  = $("#name").val();
   
@@ -319,12 +407,14 @@ $("#addBtn").on('click', function(){
 
         $(document).on('click', '#itemTable .stockBtn', function(){ 
           var id  = $(this).data("itemid");
-          var name = $(this).data("itemname")
-          var qty  = $(this).data("qty");
-          
+          var name = $(this).data("itemname");
+          var qty = $(this).data("qty");
+          var branch_item = $(this).data("branch_item");
+
           $("#modelId").val(id);
           $("#stockModelName").val(name);
           $("#modelStock").val(qty);
+          $("#modelBranchItem").val(branch_item);
         });
 
         $(document).on('click', '#submitStock', function(){
@@ -332,14 +422,20 @@ $("#addBtn").on('click', function(){
           var type  = $("#modelType").val();
           var stock = $("#modelStock").val();
           var qty = $("#modelQty").val();
-          
+          var branch_item = $("#modelBranchItem").val();
+
           if (type === 'Damaged') {
             qty *= -1;
           }
           $.ajax({ 
             method: "POST",
             url: "../queries/update/restock.php",
-            data: {"item_id": id, "current_stock": stock, "type": type, "qty": qty},
+            data: {
+              "item_id": id,
+              "current_stock": stock,
+              "type": type, "qty": qty,
+              "branch_item": branch_item
+            },
           }).done(function( data ) { 
             var result = $.parseJSON(data); 
 
@@ -352,6 +448,105 @@ $("#addBtn").on('click', function(){
                 'success'
               )
           });
+        });
+
+        $(document).on('click', '#itemTable .transferBtn', function(){ 
+          var id  = $(this).data("itemid");
+          var name = $(this).data("itemname");
+          var qty = $(this).data("qty");
+          
+          $("#transferModelId").val(id);
+          $("#transferModelName").val(name);
+          $("#transferModelStock").val(qty);
+        });
+
+        $(document).on('click', '#submitTransfer', function(){
+          var item = $("#transferModelId").val();
+          var currentStock = $("#transferModelStock").val();
+          var branch = $("input[name='branch_id[]']")
+              .map(function(){return $(this).val();}).get();
+          var qty = $("input[name='qty[]']")
+              .map(function(){return $(this).val();}).get();
+          var transferQty = 0;
+          for(var x = 0; x < qty.length; x++) {
+            transferQty += parseInt(qty[x]);
+          }
+
+          if(transferQty > currentStock) {
+            swal(
+              'Not enough stock!',
+              'Transferred quantity cannot be more than current stock!',
+              'error'
+            )
+          } else {
+            $.ajax({
+              method: "POST",
+              url: "../queries/update/transferStock.php",
+              data: {
+                "item": item,
+                "branch": branch,
+                "qty": qty,
+                "transferQty": transferQty
+              },
+            }).done(function( data ) { 
+              var result = $.parseJSON(data); 
+
+              myTable.clear();
+              PopulateItemsTable();
+              $("#modelQty").val('');
+              swal(
+                  'Success!',
+                  'You have transfered stock!',
+                  'success'
+                )
+            });
+          }
+        });
+
+        $(document).on('click', '#itemTable .transferHouseBtn', function(){ 
+          var id  = $(this).data("itemid");
+          var name = $(this).data("itemname");
+          var qty = $(this).data("qty");
+          
+          $("#transferHouseModelId").val(id);
+          $("#transferHouseModelName").val(name);
+          $("#transferHouseModelStock").val(qty);
+        });
+
+        $(document).on('click', '#submitHouseTransfer', function(){
+          var item = $("#transferHouseModelId").val();
+          var currentStock = $("#transferHouseModelStock").val();
+          var branch = $("#branch").val();
+          var qty = $("#transferHouseModelQty").val();
+
+          if(qty > currentStock) {
+            swal(
+              'Not enough stock!',
+              'Transferred quantity cannot be more than current stock!',
+              'error'
+            )
+          } else {
+            $.ajax({
+              method: "POST",
+              url: "../queries/update/transferStockHouse.php",
+              data: {
+                "item": item,
+                "branch": branch,
+                "qty": qty
+              },
+            }).done(function( data ) { 
+              var result = $.parseJSON(data); 
+
+              myTable.clear();
+              PopulateItemsTable();
+              $("#modelQty").val('');
+              swal(
+                  'Success!',
+                  'You have transfered stock!',
+                  'success'
+                )
+            });
+          }
         });
 
         $(document).on('click', '#itemTable .editBtn', function(){ 

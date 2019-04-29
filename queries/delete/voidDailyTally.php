@@ -19,24 +19,27 @@ if(!$id || !$emp_id){
         
         $stmt->execute();
 
-        $result = $conn->query("SELECT `il`.`item_line_id`, `il`.`old_stock`, `i`.`item_id`
+        $result = $conn->query("SELECT `il`.`item_line_id`, `il`.`old_stock`,
+            `i`.`item_id`, `bi`.`branch_item_id`
             FROM `stock_transaction` `s` 
             INNER JOIN `item_line` `il`
             ON  `s`.`stock_transaction_id` = `il`.`stock_transaction_id`
+            INNER JOIN `branch_item` `bi`
+            ON `il`.`branch_item_id` = `bi`.`branch_item_id`
             INNER JOIN `item` `i`
-            ON `il`.`item_id` = `i`.`item_id`
+            ON `bi`.`item_id` = `i`.`item_id`
             AND `s`.`type` = 'Sold'
             AND `s`.`stock_transaction_id` = $id");
 
         $result_array = array();
         while($rs = $result->fetch_assoc()) {
             if($stmt->execute()){
-              $sql2 = "UPDATE `item` 
+              $sql2 = "UPDATE `branch_item` 
               SET `qty` = ?
-              WHERE `item_id` = ?";
-              
+              WHERE `branch_item_id` = ?";
+
               $stmt2 = $conn->prepare($sql2);
-              $stmt2->bind_param('ss', $rs['old_stock'], $rs['item_id']);
+              $stmt2->bind_param('ss', $rs['old_stock'], $rs['branch_item_id']);
               $stmt2->execute();
             }
         }

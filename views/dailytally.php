@@ -5,9 +5,6 @@ require ("../panelheader.php");
 <div style="width:40%; margin-left:1%;">
   Select Branch
   <select id="branch" class="form-control">
-    <option value="1">Sugbo Mercado</option>
-    <option value="2">The Market</option>
-    <option value="3">Yellowcube</option>
   </select>
 </div>
 <div class="form-group" style="width:30%; margin-left:1%; margin-top:2%;">
@@ -106,7 +103,7 @@ var stock_transaction = 0;
 $(document).ready(function(){
   myTable = $('#tallyTable');
   moneyTable = $('#moneyTable');
-  PopulateTallyTable();
+  initBranches();
 
   $('#dailyTally').submit(function(e) {
     e.preventDefault();
@@ -123,6 +120,7 @@ $(document).ready(function(){
         'error'
       )
     } else {
+      console.log($(this).serialize());
         $.ajax({
         type: "POST",
         url: "../queries/insert/addDailyTally.php",
@@ -190,10 +188,24 @@ $(document).ready(function(){
   $("#branch_id").val($("#branch").val());
 });
 
+function initBranches() {
+  $.ajax({
+    method: "POST",
+    url: "../queries/get/getBranchesStores.php"
+  }).done(function( data ) {
+    var jsonObject = JSON.parse(data);
+    var result = jsonObject.map(function (item) {
+      $('#branch').append('<option value="'+item.branch_id+'">'+item.name+'</option>');
+    });
+    $("#branch_id").val($("#branch").val());
+    PopulateTallyTable();
+  });
+}
+
 function PopulateTallyTable() {
   var exists = false;
   let id = $("#branch").val();
-  
+
   $.ajax({
     method: "POST", url: "../queries/get/getDailyTally.php",
     data: {"branch_id": id},
@@ -204,8 +216,8 @@ function PopulateTallyTable() {
       myTable.append('<tr><th>Item Name</th>'
         +'<th>Price (Php)</th>'
         +'<th hidden>Current Stock (Pcs/Kg)</th>'
-        +'<th>Qty</th>'
-        +'<th>Type</th>'
+        +'<th>Current Stock</th>'
+        +'<th>Quantity</th>'
         +'<th style="text-align:right;">Subtotal</th>'
         +'</tr>');
       var result = jsonObject.map(function (item) {
@@ -215,13 +227,12 @@ function PopulateTallyTable() {
         +'<td style="width:20%;"><input name="price[]" class="price form-control" type="number" value="'+item.price+'" readonly="true"></td>'
         +'<td><input name="current_stock[]" class="qty form-control" value="'+item.item_qty+'" readonly></td>'
         +'<td style="width:10%;"><input class="qty form-control" type="number" value="'+item.qty+'" readonly></td>'
-        +'<td><input class="qty form-control" type="text" value="'+item.item_line_type+'" readonly></td>'
         +'<td class="subTotal" style="text-align:right;">'+item.price*item.qty+'</td></tr>');
     });
     var date  = new Date();
     var newDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
-    myTable.append('<tr><td></td><td></td><td></td><td></td><td id="total"><strong>TOTAL</strong><td id="totalValue" style="text-align:right;">0</td></tr>');
-    myTable.append('<tr><td></td><td></td><td></td><td></td><td></td><td style="text-align:right;"><button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#voidModal">Void Tally <i class="fa fa-trash"></i></button></td></tr>');
+    myTable.append('<tr><td></td><td></td><td></td><td id="total"><strong>TOTAL</strong><td id="totalValue" style="text-align:right;">0</td></tr>');
+    myTable.append('<tr><td></td><td></td><td></td><td></td><td style="text-align:right;"><button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#voidModal">Void Tally <i class="fa fa-trash"></i></button></td></tr>');
 
     var total = 0;
     $("tr.item").each(function() {
@@ -265,7 +276,7 @@ function PopulateTallyTable() {
         +'</tr>');
       var result = jsonObject.map(function (item) {
         var result = [];
-        myTable.append('<tr class="item"><td style="width:25%;">'+item.name+' <input name="item[]" value="'+item.item_id+'" hidden> <input name="stock_transaction_id" value="'+item.stock_transaction_id+'" hidden></td>'
+        myTable.append('<tr class="item"><td style="width:25%;">'+item.name+' <input name="item[]" value="'+item.branch_item_id+'" hidden></td>'
           +'<td style="width:15%;"><input name="price[]" class="price form-control" type="number" value="'+item.price+'" readonly="true"></td>'
           +'<td><input name="current_stock[]" class="qty form-control" value="'+item.qty+'" readonly></td>'
           +'<td style="width:10%;"><input name="qty[]" class="qty form-control" type="number" value="0" min="0" max="'+item.qty+'"></td>'

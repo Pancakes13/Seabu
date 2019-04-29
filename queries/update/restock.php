@@ -5,14 +5,16 @@ $item_id = $_POST['item_id'];
 $stock = $_POST['current_stock'];
 $qty  = $_POST['qty'];
 $type = $_POST['type'];
+$branch_item = $_POST['branch_item'];
 
 if(!$item_id || !$qty || !$type){
   $result = 2;
 }else{
     //Insert Item
-    $sql    = "UPDATE `item` 
+    $sql    = "UPDATE `branch_item` 
     SET `qty` = `qty`+ ?
-    WHERE `item_id` = ?";
+    WHERE `item_id` = ?
+    AND `branch_id` = 1";
 
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('ss', $qty, $item_id);
@@ -28,13 +30,13 @@ if(!$item_id || !$qty || !$type){
         if($stmt2->execute()){
             $id = $conn->insert_id;
             $price = 0;
-            $sql3    = "INSERT into `item_line` (`price`, `old_stock`, `qty`, `item_line_type`, `stock_transaction_id`, `item_id`) values (?, ?, ?, ?, ?, ?)  ";
+            $sql3    = "INSERT into `item_line` (`price`, `old_stock`, `qty`, `stock_transaction_id`, `branch_item_id`) values (?, ?, ?, ?, ?)  ";
   
             $stmt3   = $conn->prepare($sql3);
     
             $employee_id = $_SESSION["user_id"];
             $desc = 'Item was restocked';
-            $stmt3->bind_param('ssssss', $price, $stock, $qty, $type, $id, $item_id);
+            $stmt3->bind_param('sssss', $price, $stock, $qty, $id, $branch_item);
             if($stmt3->execute()){
                 $result = 1;
             }

@@ -5,9 +5,6 @@ require ("../panelheader.php");
     <div class="content mt-3" style="width:40%;">
         Select Branch
         <select id="branch" class="form-control">
-            <option value="1">Sugbo Mercado</option>
-            <option value="2">The Market</option>
-            <option value="3">Yellowcube</option>
         </select>
     </div>
     <div class="content mt-3">
@@ -32,13 +29,29 @@ require ("../panelheader.php");
 var myTable = "";
 $(document).ready(function(){
   myTable = $('#salesLogs-table');
-  PopulateItemLogTable();
+  initBranches();
 
   $("#branch").change(function(){
     $('#salesLogs-table tr').remove();
     PopulateItemLogTable();
   });
 });
+
+function initBranches() {
+  $.ajax({
+    method: "POST",
+    url: "../queries/get/getBranchesStores.php"
+  }).done(function( data ) {
+    var jsonObject = JSON.parse(data);
+    var result = jsonObject.map(function (item) {
+      $('#branch').append('<option value="'+item.branch_id+'">'+item.name+'</option>');
+    });
+    $("#branch_id").val($("#branch").val());
+    PopulateItemLogTable();
+  });
+}
+
+
 function PopulateItemLogTable() {
     $('#salesLogs-table tr').remove();
     let id = $("#branch").val();
