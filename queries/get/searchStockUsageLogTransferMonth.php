@@ -1,7 +1,6 @@
 <?php
 require("../../connection.php");
-$date1 = $_POST['date1'];
-$date2 = $_POST['date2'];
+$month = $_POST['month'];
 $id = $_POST['branch_id'];
 $house = "Warehouse";
 
@@ -25,7 +24,7 @@ $result = $conn->query("SELECT `il`.`item_line_id`, `i`.`item_id`,
                 ON `e`.`branch_id` = `b`.`branch_id`
                 INNER JOIN `branch` `b2`
                 ON `bi`.`branch_id` = `b2`.`branch_id`
-                AND DATE(`s`.`transaction_timestamp`) >= '$date1' AND DATE(`s`.`transaction_timestamp`) <= '$date2'
+                AND MONTH(DATE(`s`.`transaction_timestamp`)) = $month
                 AND `s`.`isVoid` = 0
                 AND `bi`.`branch_id` != 1
                 AND `b2`.`branch_id` = $id
