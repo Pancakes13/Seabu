@@ -1,5 +1,4 @@
 <?php
-session_start();
 if (!$_SESSION['user_id']) {
     header("Location: http://localhost/Seabu/views/login.php");
 }
@@ -48,7 +47,7 @@ if (!$_SESSION['user_id']) {
                     <li>
                         <a href="yearlytotals.php"> <i class="menu-icon fa fa-area-chart"></i>Yearly Totals</a>
                     </li>
-                    -->
+                    
                     <li>
                         <a href="stockTransfer.php"> <i class="menu-icon fa fa-truck"></i>Stock Transfer Log</a>
                     </li>
@@ -63,7 +62,7 @@ if (!$_SESSION['user_id']) {
                     <li>
                         <a href="voidTransactions.php"> <i class="menu-icon fa fa-trash"></i>Void Transactions</a>
                     </li>
-
+                    -->
                     <h3 class="menu-title" style="color: white;">Expenses</h3><!-- /.menu-title -->
                     <li>
                         <a href="utilityExpenses.php"> <i class="menu-icon fa fa-wrench"></i>Utility</a>
@@ -79,11 +78,6 @@ if (!$_SESSION['user_id']) {
                         <a href="fishermanExpenses.php"> <i class="menu-icon fa fa-ship"></i>Fisherman Expense</a>
                     </li>
 
-                    <h3 class="menu-title" style="color: white;">Maintenance</h3><!-- /.menu-title -->
-                    <li>
-                        <a href="employee.php"> <i class="menu-icon fa fa-group"></i>Employee</a>
-                    </li>
-                    
 
                     <!--
                     <li class="menu-item-has-children dropdown">

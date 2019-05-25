@@ -20,6 +20,7 @@ if(!$email || !$password){
             $_SESSION["user_mn"] = $employee['middle_name'];
             $_SESSION["user_ln"] = $employee['last_name'];
             $_SESSION["email"] = $employee['email'];
+            $_SESSION["isAdmin"] = $employee['isAdmin'];
         }else{
             $result = "password incorrect";
         }

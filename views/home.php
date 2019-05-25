@@ -1,24 +1,15 @@
 <?php
-require ("../panelsidebar.php");
+session_start();
+if($_SESSION['isAdmin'] == 1)
+{
+  require ("../panelsidebar-admin.php");
+}
+else
+{
+  require ("../panelsidebar-user.php");
+}
 require ("../panelheader.php");
 ?>
- <div class="col-md-6">
-   <div class="card">
-     <div class="card-header" style="background-color: #FCC0C0;">
-       <h4 style="color:red;"></style>Birthday Celebrants!</h4>
-        </div>
-          <div id="#" class="card-body" style="background-color: #FFF0F0;">
-            <table id="upcomingBirthdayTable" class="table table-striped table-bordered"><thead>
-              <tr>
-                <th>Name</th>
-                <th>Birthdate</th>
-                <th>Contact #</th>
-                <th>Branch</th>
-                </tr>
-            </table>
-          </div>
-       </div>
-    </div>
 <div style="width:40%; margin-left:1%;">
   Select Branch
   <select id="branch" class="form-control">
@@ -90,7 +81,7 @@ require ("../panelheader.php");
           <div class="content mt-3">
             <div class="animated fadeIn">
               <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-12">
                   <div class="card">
                     <div class="card-header">
                       <h4>Item Sales</h4>

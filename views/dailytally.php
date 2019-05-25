@@ -1,5 +1,13 @@
 <?php
-require ("../panelsidebar.php");
+session_start();
+if($_SESSION['isAdmin'] == 1)
+{
+  require ("../panelsidebar-admin.php");
+}
+else
+{
+  require ("../panelsidebar-user.php");
+}
 require ("../panelheader.php");
 ?>
 <div style="width:40%; margin-left:1%;">
