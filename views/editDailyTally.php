@@ -141,10 +141,6 @@ function PopulateTallyTable() {
   }).done(function( data ) {
     var jsonObject = JSON.parse(data);
     if (jsonObject[0]) {
-      $("#stockTransactionId").val(jsonObject[0].stock_transaction_id);
-      var result = jsonObject.map(function (item) {
-      var result = [];
-      stock_transaction = item.stock_transaction_id;
       myTable.append(
       '<tr><th>Item Name</th>'
       +'<th>Price (Php)</th>'
@@ -152,6 +148,10 @@ function PopulateTallyTable() {
       +'<th hidden>Current Stock (Pcs/Kg)</th>'
       +'<th>Qty</th>'
       +'<th style="text-align:right;">Subtotal</th></tr>');
+      $("#stockTransactionId").val(jsonObject[0].stock_transaction_id);
+      var result = jsonObject.map(function (item) {
+      var result = [];
+      stock_transaction = item.stock_transaction_id;
       myTable.append('<tr class="item"><td>'+item.name+' <input name="item[]" value="'+item.item_id+'" hidden> <input name="item_line_id[]" value="'+item.item_line_id+'" hidden> <input name="stock_transaction_id" value="'+item.stock_transaction_id+'" hidden></td>'
           +'<td><input name="price[]" class="editPrice form-control" type="number" value="'+item.price+'" readonly="true"></td>'
           +'<td><input name="oldStock[]" class="qty form-control" value="'+item.old_stock+'" readonly></td>'

@@ -277,9 +277,9 @@ function PopulateTallyTable() {
       var jsonObject = JSON.parse(data);
       myTable.append('<tr><th>Item Name</th>'
         +'<th>Price (Php)</th>'
-        +'<th hidden>Current Stock (Pcs/Kg)</th>'
+        +'<th>Current Stock (Pcs/Kg)</th>'
         +'<th>Qty</th>'
-        +'<th>Type</th>'
+        +'<th hidden>Type</th>'
         +'<th style="text-align:right;">Subtotal</th>'
         +'</tr>');
       var result = jsonObject.map(function (item) {
@@ -331,15 +331,21 @@ $(document).on('input', ".qty",function () {
   var test1 = $(this).closest(".qty").val();
   var qty = parseInt($(this).closest("td").parent()[0].cells[1].children[0].value);
   var price = (isNaN(parseInt($(this).closest("td").parent()[0].cells[3].children[0].value))) ? 0 : parseInt($(this).closest("td").parent()[0].cells[3].children[0].value);
+  var curStock = (isNaN(parseInt($(this).closest("td").parent()[0].cells[2].children[0].value))) ? 0 : parseInt($(this).closest("td").parent()[0].cells[2].children[0].value);
 
-  $(this).closest("td").parent()[0].cells[5].innerHTML = qty*price;
+  if(price > curStock) {
+    $(this).closest("td").parent()[0].cells[3].children[0].value = 0;
+    $(this).closest("td").parent()[0].cells[5].innerHTML = 0;
+  } else {
+    $(this).closest("td").parent()[0].cells[5].innerHTML = qty*price;
   
-  var total = 0;
-  $("tr.item").each(function() {
-    $this = $(this);
-    total += parseInt($this.find(".subTotal").html());
-  });
-  $("#totalValue").html(total);
+    var total = 0;
+    $("tr.item").each(function() {
+      $this = $(this);
+      total += parseInt($this.find(".subTotal").html());
+    });
+    $("#totalValue").html(total);
+  }
 });
 
 $(document).on('input', ".moneyQty",function () {

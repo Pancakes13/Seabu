@@ -143,16 +143,14 @@ function PopulateStockUsageTable() {
                 month[11] = "December";
                 
                 myTable.append('<tr style="background-color:#f2f2f2"><td><strong>'+month[f.getMonth()]+" "+f.getDate()+", "+f.getFullYear()+'</strong></td>'
-                +'<td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>'
-                +'<tr style="font-weight:bold"><td>Item</td><td>PCS (New)</td><td>PCS (Old)</td><td>Sold</td><td>Damaged</td><td>Stock</td><td>Performed By</td><td>Branch Name</td></tr>');
+                +'<td></td><td></td><td></td><td></td><td></td></tr>'
+                +'<tr style="font-weight:bold"><td>Item</td><td>Transferring Branch</td><td>Transferred Amount</td><td>Receiving Branch</td><td>Performed By</td><td>Branch Name</td></tr>');
             }
             myTable.append('<tr class="item">'
             +'<td>'+item.name+'</td>'
-            +'<td>'+item.new+'</td>'
-            +'<td>'+item.old_stock+'</td>'
-            +'<td>'+item.sold+'</td>'
-            +'<td>'+item.damaged+'</td>'
-            +'<td>'+item.stock+'</td>'
+            +'<td>'+item.transferBranch+'</td>'
+            +'<td>'+item.qty+'</td>'
+            +'<td>'+item.receiveBranch+'</td>'
             +'<td>'+item.first_name+" "+item.last_name+'</td>'
             +'<td>'+item.branch_name+'</td></tr>');
         });
@@ -166,7 +164,7 @@ function PopulateStockUsageTableMonth() {
     
     $.ajax({
         method: "POST",
-        url: "../queries/get/searchStockUsageLogMonth.php",
+        url: "../queries/get/searchStockUsageLogTransferMonth.php",
         data: {"month": month, "branch_id": id},
     }).done(function( data ) {
         var jsonObject = JSON.parse(data);
@@ -193,15 +191,13 @@ function PopulateStockUsageTableMonth() {
                 
                 myTable.append('<tr style="background-color:#f2f2f2"><td><strong>'+month[f.getMonth()]+" "+f.getDate()+", "+f.getFullYear()+'</strong></td>'
                 +'<td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>'
-                +'<tr style="font-weight:bold"><td>Item</td><td>PCS (New)</td><td>PCS (Old)</td><td>Sold</td><td>Damaged</td><td>Stock</td><td>Performed By</td><td>Branch Name</td></tr>');
+                +'<tr style="font-weight:bold"><td>Item</td><td>Transferring Branch</td><td>Transferred Amount</td><td>Receiving Branch</td><td>Performed By</td><td>Branch Name</td></tr>');
             }
             myTable.append('<tr class="item">'
             +'<td>'+item.name+'</td>'
-            +'<td>'+item.new+'</td>'
-            +'<td>'+item.old_stock+'</td>'
-            +'<td>'+item.sold+'</td>'
-            +'<td>'+item.damaged+'</td>'
-            +'<td>'+item.stock+'</td>'
+            +'<td>'+item.transferBranch+'</td>'
+            +'<td>'+item.qty+'</td>'
+            +'<td>'+item.receiveBranch+'</td>'
             +'<td>'+item.first_name+" "+item.last_name+'</td>'
             +'<td>'+item.branch_name+'</td></tr>');
         });

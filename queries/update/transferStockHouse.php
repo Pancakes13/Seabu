@@ -4,7 +4,7 @@ session_start();
 $item = $_POST['item'];
 $branch  = $_POST['branch'];
 $qty = $_POST['qty'];
-$type = "Transfer";
+$type = "TransferHouse";
 $house = 1;
 
 if(!$item || !$qty || !$branch){
