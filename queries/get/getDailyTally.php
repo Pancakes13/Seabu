@@ -18,7 +18,8 @@ $result = $conn->query("SELECT `i`.`item_id`, `i`.`name`, `bi`.`qty` AS 'item_qt
                     AND `s`.`type` = 'Sold'
                     AND `s`.`isVoid` = 0
                     AND `b`.`branch_id` = $id
-                    AND `b`.`branch_id` != 1"); //convert timestamp to date
+                    AND `b`.`branch_id` != 1
+                    ORDER BY `i`.`name`"); //convert timestamp to date
 $outp = "";
 $result_array = array();
 while($rs = $result->fetch_assoc()) {

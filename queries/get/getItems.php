@@ -7,7 +7,8 @@ $result = $conn->query("SELECT `i`.`item_id`, `i`.`name`, `i`.`price`, `bi`.`bra
                           INNER JOIN `branch_item` `bi`
                           ON `i`.`item_id` = `bi`.`item_id`
                           WHERE `bi`.`branch_id` = $id
-                          AND `isDeleted` = 0");
+                          AND `isDeleted` = 0
+                          ORDER BY `i`.`name`");
 $outp = "";
 $result_array = array();
 while($rs = $result->fetch_assoc()) {
