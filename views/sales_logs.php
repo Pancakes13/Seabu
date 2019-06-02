@@ -1,5 +1,6 @@
 <?php
 session_start();
+require ("../panelheader.php");
 if($_SESSION['isAdmin'] == 1)
 {
   require ("../panelsidebar-admin.php");
@@ -8,7 +9,6 @@ else
 {
   require ("../panelsidebar-user.php");
 }
-require ("../panelheader.php");
 ?>
     <div class="content mt-3" style="width:40%;">
         Select Branch
