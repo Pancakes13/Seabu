@@ -58,7 +58,7 @@ require ("../panelheader.php");
 
         <!--Add Modal-->
         <div class="modal fade" id="addModal" aria-hidden="true">
-          <form>
+          <form id="addForm">
             <div class="modal-dialog modal-lg" role="document">
               <div class="modal-content">
                 <div class="modal-header">
@@ -156,6 +156,7 @@ require ("../panelheader.php");
     <!-- Right Panel -->
 <script>
 var myTable = "";
+var form = document.getElementById("addForm");
 $(document).ready(function(){
   myTable = $('#expense-table').DataTable({
     "order": [[ 0, "desc" ]]
@@ -275,6 +276,7 @@ $("#addBtn").on('click', function(){
               myTable.clear();
               PopulateExpenseTable();
               getTotalExpenses();
+              form.reset();
               swal(
                   'Success!',
                   'You have added an expense!',

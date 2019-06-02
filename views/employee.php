@@ -219,6 +219,7 @@ $(document).ready(function(){
           $("#message").css('color', 'red').html(str);
           myTable.clear();
           PopulateItemsTable();
+          $('#addEmployee').reset();
           swal(
             'Success!',
             'You have added an Employee!',

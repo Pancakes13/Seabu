@@ -162,7 +162,7 @@ require ("../panelheader.php");
 
         <!--Add Modal-->
         <div class="modal fade" id="addModal" aria-hidden="true">
-          <form>
+          <form id="addForm">
             <div class="modal-dialog modal-lg" role="document">
               <div class="modal-content">
                 <div class="modal-header">
@@ -262,6 +262,7 @@ require ("../panelheader.php");
     <!-- Right Panel -->
 <script>
 var myTable = "";
+var form = document.getElementById("addForm");
 $(document).ready(function(){
   myTable = $('#bootstrap-data-table').DataTable();
   initBranches();
@@ -350,6 +351,7 @@ $("#addBtn").on('click', function(){
                   $("#message").css('color', 'red').html(str);
                   myTable.clear();
                   PopulateItemsTable();
+                  form.reset();
                   swal(
                     'Success!',
                     'You have created an item!',
