@@ -276,6 +276,7 @@ $("#addBtn").on('click', function(){
 
               myTable.clear();
               PopulateExpenseTable();
+              getTotalExpenses();
               swal(
                   'Success!',
                   'You have added an expense!',
@@ -315,9 +316,10 @@ $("#addBtn").on('click', function(){
                 var str = '';
                 myTable.clear();
                 PopulateExpenseTable();
+                getTotalExpenses();
                 swalWithBootstrapButtons(
                   'Deleted!',
-                  'Item has been deleted.',
+                  'Expense has been deleted.',
                   'success'
                 )
               });
@@ -325,7 +327,7 @@ $("#addBtn").on('click', function(){
             } else if (result.dismiss === swal.DismissReason.cancel) {
               swalWithBootstrapButtons(
                 'Cancelled',
-                'Item was not deleted',
+                'Expense was not deleted',
                 'error'
               )
             }
@@ -359,9 +361,10 @@ $("#addBtn").on('click', function(){
             var result = $.parseJSON(data); 
             myTable.clear();
             PopulateExpenseTable();
+            getTotalExpenses();
             swal(
                 'Success!',
-                'You have updated an item!',
+                'You have added an expense!',
                 'success'
               )
           });     

@@ -242,7 +242,7 @@ function PopulateItemsTable() {
       var jsonObject = JSON.parse(data);
       var result = jsonObject.map(function (item) {
         var result = [];
-        result.push(item.last_name + ', ' + item.first_name + item.middle_name[1]);
+        result.push(item.last_name + ', ' + item.first_name + ' '+ (item.middle_name ? item.middle_name[0]: ''));
         result.push(item.name);
         result.push(item.email);
         result.push(item.contact_no);
