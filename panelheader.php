@@ -1,16 +1,3 @@
-<?php
-if ($_SESSION['isAdmin'] == 0) {
-  $adminURLs =  array("stockTransfer.php", "stockUsage.php", "sales_logs.php",
-                    "voidTransactions.php");
-  $url = $_SERVER['REQUEST_URI'];
-  $pos = strrpos($url, '/');
-  $page = $pos === false ? $url : substr($url, $pos + 1);
-  
-  if(in_array($page, $adminURLs)) {
-    header("Location: http://localhost/Seabu/views/home.php");
-  }
-}
-?>
 <!-- Right Panel -->
 
     <div id="right-panel" class="right-panel">

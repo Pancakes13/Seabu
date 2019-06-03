@@ -1,5 +1,13 @@
 <?php
-require ("../panelsidebar.php");
+session_start();
+if($_SESSION['isAdmin'] == 1)
+{
+  require ("../panelsidebar-admin.php");
+}
+else
+{
+  require ("../panelsidebar-user.php");
+}
 require ("../panelheader.php");
 ?>
     
@@ -13,7 +21,7 @@ require ("../panelheader.php");
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <strong class="card-title" id="title"><?php echo $_GET['employee_username'];?> Log</strong>
+                                <strong class="card-title" id="title">Employee Logs</strong>
                             </div>
                             <div class="card-body">
                                 <table id="bootstrap-data-table" class="table table-striped table-bordered"><thead>
