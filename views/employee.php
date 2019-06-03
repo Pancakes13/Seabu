@@ -70,9 +70,6 @@ require ("../panelheader.php");
                   <div class="form-group">
                     <label>Branch</label>
                     <select class="form-control" id="branch" name="branchName">
-                      <option value="1">Sugbo Mercado</option>
-                      <option value="2">The Market</option>
-                      <option value="3">Yellowcube</option>
                     </select>
                   </div>
                   <div class="form-group">
@@ -130,9 +127,6 @@ require ("../panelheader.php");
                     <div class="form-group">
                       <label>Branch Name</label>
                       <select type="text" class="form-control" id="model_branch">
-                        <option value="1">Sugbo Mercado</option>
-                        <option value="2">Option 2</option>
-                        <option value="3">Option 3</option>
                       </select>
                     </div>
                     <div class="form-group">
@@ -189,6 +183,7 @@ require ("../panelheader.php");
 var myTable = "";
 $(document).ready(function(){
   myTable = $('#bootstrap-data-table').DataTable();
+  initBranches();
   PopulateItemsTable();
 
   $('#addEmployee').submit(function(e) {
@@ -236,6 +231,20 @@ $(document).ready(function(){
     })
   });
 });
+
+function initBranches() {
+  $.ajax({
+    method: "POST",
+    url: "../queries/get/getBranchesStores.php"
+  }).done(function( data ) {
+    var jsonObject = JSON.parse(data);
+    var result = jsonObject.map(function (item) {
+      $('#branch').append('<option value="'+item.branch_id+'">'+item.name+'</option>');
+      $('#model_branch').append('<option value="'+item.branch_id+'">'+item.name+'</option>');
+    });
+  });
+}
+
 function PopulateItemsTable() {
     $.ajax({
       method: "GET", url: "../queries/get/getEmployees.php", 
