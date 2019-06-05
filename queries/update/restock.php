@@ -6,6 +6,7 @@ $stock = $_POST['current_stock'];
 $qty  = $_POST['qty'];
 $type = $_POST['type'];
 $branch_item = $_POST['branch_item'];
+$branch = $_POST['branch'];
 
 if(!$item_id || !$qty || !$type){
   $result = 2;
@@ -14,10 +15,10 @@ if(!$item_id || !$qty || !$type){
     $sql    = "UPDATE `branch_item` 
     SET `qty` = `qty`+ ?
     WHERE `item_id` = ?
-    AND `branch_id` = 1";
+    AND `branch_id` = ?";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('ss', $qty, $item_id);
+    $stmt->bind_param('sss', $qty, $item_id, $branch);
     
     if($stmt->execute()){
         
@@ -35,7 +36,11 @@ if(!$item_id || !$qty || !$type){
             $stmt3   = $conn->prepare($sql3);
     
             $employee_id = $_SESSION["user_id"];
-            $desc = 'Item was restocked';
+            if ($qty >= 0) {
+                $desc = 'Item was restocked';
+            } else {
+                $desc = 'Damaged item was removed';
+            }
             $stmt3->bind_param('sssss', $price, $stock, $qty, $id, $branch_item);
             if($stmt3->execute()){
                 $result = 1;

@@ -305,9 +305,7 @@ function PopulateItemsTable() {
       result.push(item.price);
       result.push(item.qty);
       if (item.branch_id != 1) {
-        result.push('<button type="button" class="btn btn-warning btn-sm editBtn" data-toggle="modal" data-target="#editModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-price="'+item.price+'" data-qty="'+item.qty+'"><i class="fa fa-edit"></i></button>'
-          +'<button type="button" class="btn btn-danger btn-sm delBtn" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" ><i class="fa fa-trash"></i></button>'
-          +'<button type="button" class="btn btn-primary btn-sm stockBtn" data-toggle="modal" data-target="#stockModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-qty="'+item.qty+'" data-branch_item="'+item.branch_item_id+'"><i class="fa fa-archive"></i></button>'
+        result.push('<button type="button" class="btn btn-primary btn-sm stockBtn" data-toggle="modal" data-target="#stockModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-qty="'+item.qty+'" data-branch_item="'+item.branch_item_id+'"><i class="fa fa-archive"></i></button>'
           +'<button type="button" class="btn btn-dark btn-sm transferHouseBtn" data-toggle="modal" data-target="#transferHouseModal" data-itemid="'+item.item_id+'" data-itemname="'+item.name+'" data-qty="'+item.qty+'"><i class="fa fa-truck"></i></button>'
           +'<a href="item_logs.php?item_id='+item.item_id+'&item_name='+item.name+'"><button type="button" class="btn btn-secondary btn-sm"><i class="fa fa-eye"></i></button></a>');
       } else {
@@ -433,6 +431,7 @@ $("#addBtn").on('click', function(){
           var stock = $("#modelStock").val();
           var qty = $("#modelQty").val();
           var branch_item = $("#modelBranchItem").val();
+          var branch = $("#branch").val();
 
           if (type === 'Damaged') {
             qty *= -1;
@@ -444,7 +443,8 @@ $("#addBtn").on('click', function(){
               "item_id": id,
               "current_stock": stock,
               "type": type, "qty": qty,
-              "branch_item": branch_item
+              "branch_item": branch_item,
+              "branch": branch
             },
           }).done(function( data ) { 
             var result = $.parseJSON(data); 
@@ -452,11 +452,19 @@ $("#addBtn").on('click', function(){
             myTable.clear();
             PopulateItemsTable();
             $("#modelQty").val('');
-            swal(
+            if (qty >= 0) {
+              swal(
                 'Success!',
                 'You have restocked an item!',
                 'success'
               )
+            } else {
+              swal(
+                'Success!',
+                'You have removed a damaged item!',
+                'success'
+              )
+            }
           });
         });
 
