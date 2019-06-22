@@ -38,9 +38,10 @@ require ("../panelheader.php");
               <div>
                 <div id="step-1" class="">
                   <div class="card">
-                    <div class="card-header">
+                    <div class="card-header" id="tallyHeader">
                       <strong class="card-title"><?php echo date("F d, Y (l)");?></strong>
                       <input id="branch_id" name="branch_id" hidden>
+                      <a href="#" id="export"><button style="float:right;" type="button" id="printButton" class="btn btn-info">Export to CSV <i class="fa fa-print"></i></button></a>
                     </div>
                     <div class="card-body">
                       <table id="tallyTable" class="table">
@@ -109,6 +110,7 @@ var myTable = "";
 var moneyTable = "";
 var stock_transaction = 0;
 $(document).ready(function(){
+  $("#printButton").hide();
   myTable = $('#tallyTable');
   moneyTable = $('#moneyTable');
   initBranches();
@@ -187,6 +189,7 @@ $(document).ready(function(){
   });
 
   $("#branch").change(function(){
+    $("#printButton").hide();
     $('#tallyTable tr').remove();
     $('#moneyTable tr').remove();
     PopulateTallyTable();
@@ -241,7 +244,6 @@ function PopulateTallyTable() {
     var newDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
     myTable.append('<tr><td></td><td></td><td></td><td id="total"><strong>TOTAL</strong><td id="totalValue" style="text-align:right;">0</td></tr>');
     myTable.append('<tr><td></td><td></td><td></td><td></td><td style="text-align:right;"><button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#voidModal">Void Tally <i class="fa fa-trash"></i></button></td></tr>');
-
     var total = 0;
     $("tr.item").each(function() {
       $this = $(this);
@@ -266,6 +268,7 @@ function PopulateTallyTable() {
       },
       keyNavigation: false
     });
+    $("#printButton").show();
     } else {
       let id = $("#branch").val();
       
@@ -366,6 +369,16 @@ $("#searchBtn").on('click', function(){
   var date  = $("#searchDate").val();
   window.location = "editDailyTally.php?date="+date;
 });
+
+$("#export").on('click', function(){
+  var $row = $('#tallyTable tr:first').find("th:visible");
+  var $headers = "";
+  for (var $x = 0; $x < $row.length; $x++) {
+    $headers += $row[$x].innerHTML +'","';
+  }
+  exportTableToCSV.apply(this, [$headers, $('#tallyTable'), 'export.csv']);
+});
+
 </script>
 <?php
 require ("../footer.php");

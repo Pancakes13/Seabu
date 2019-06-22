@@ -17,7 +17,7 @@
     <script src="../assets/js/lib/data-table/datatables-init.js"></script>
     <script src="../assets/js/chartjs.min.js"></script>
     <script src="../assets/js/jquery.smartWizard.min.js"></script>
-
+    <script src="../assets/js/exportCSV.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
           $('#bootstrap-data-table-export').DataTable();
