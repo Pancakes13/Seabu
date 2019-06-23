@@ -62,6 +62,7 @@ require ("../panelheader.php");
                         <div class="card">
                             <div class="card-header">
                                 <strong class="card-title" id="title">Stock Transaction Log</strong>
+                                <a href="#" id="export"><button style="float:right;" type="button" id="printButton" class="btn btn-info">Export to CSV <i class="fa fa-print"></i></button></a>
                             </div>
                             <div class="card-body">
                                 <table id="stockUsage-table" class="table table-bordered"><thead>
@@ -207,6 +208,11 @@ function PopulateStockUsageTableMonth() {
         });
     });
 }
+
+$("#export").on('click', function(){
+  var $row = $('#tallyTable tr:first').find("th:visible");
+  exportStockUsage.apply(this, [$('#stockUsage-table'), 'Stock Usage.csv']);
+});
 
 </script>
 <?php

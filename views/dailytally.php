@@ -376,7 +376,7 @@ $("#export").on('click', function(){
   for (var $x = 0; $x < $row.length; $x++) {
     $headers += $row[$x].innerHTML +'","';
   }
-  exportTableToCSV.apply(this, [$headers, $('#tallyTable'), 'export.csv']);
+  exportDailyTally.apply(this, [$headers, $('#tallyTable'), 'Daily Tally.csv']);
 });
 
 </script>
