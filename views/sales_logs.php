@@ -22,6 +22,7 @@ require ("../panelheader.php");
                     <div class="card">
                         <div class="card-header">
                             <strong class="card-title" id="title">Stock Transaction Log</strong>
+                            <a href="#" id="export"><button style="float:right;" type="button" id="printButton" class="btn btn-info">Export to CSV <i class="fa fa-print"></i></button></a>
                         </div>
                         <div class="card-body">
                             <table id="salesLogs-table" class="table table-bordered"><thead>
@@ -104,6 +105,12 @@ function PopulateItemLogTable() {
         });
     });
 }
+
+$("#export").on('click', function(){
+  var $row = $('#tallyTable tr:first').find("th:visible");
+  $fileName = 'Sales.csv';
+  exportStockUsage.apply(this, [$('#salesLogs-table'), $fileName]);
+});
 
 </script>
 <?php

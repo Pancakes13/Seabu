@@ -211,7 +211,8 @@ function PopulateStockUsageTableMonth() {
 
 $("#export").on('click', function(){
   var $row = $('#tallyTable tr:first').find("th:visible");
-  exportStockUsage.apply(this, [$('#stockUsage-table'), 'Stock Usage.csv']);
+  $fileName = 'Stock Usage.csv';
+  exportStockUsage.apply(this, [$('#stockUsage-table'), $fileName]);
 });
 
 </script>
