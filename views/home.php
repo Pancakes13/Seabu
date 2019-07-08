@@ -10,6 +10,8 @@ else
 }
 require ("../panelheader.php");
 ?>
+<div><h3><center>Inventory Management System</center></h3></div>
+<br>
 <div style="width:40%; margin-left:1%;">
   Select Branch
   <select id="branch" class="form-control">

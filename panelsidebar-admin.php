@@ -23,10 +23,10 @@ if (!$_SESSION['user_id']) {
 <body>
         <!-- Left Panel -->
 
-    <aside id="left-panel" class="left-panel" style="background-color: #008080;">
-        <nav class="navbar navbar-expand-sm navbar-default"style="background-color: #008080;">
+    <aside id="left-panel" class="left-panel" style="background-color: #074C4C;">
+        <nav class="navbar navbar-expand-sm navbar-default"style="background-color: #074C4C;">
 
-            <div class="navbar-header" style="background-color: #008080;">
+            <div class="navbar-header" style="background-color: #074C4C;">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="fa fa-bars"></i>
                 </button>

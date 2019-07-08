@@ -7,11 +7,13 @@
             <div class="container">
                 <div class="login-content">
                     <div class="login-logo">
-                        <a href="index.html">
-                            <img class="align-content" src="../images/seabu-logo.png" alt="">
+                        <a>
+                            <img class="align-content" src="../images/seabu-logo.png" alt=""><br><br>
+                            <h1>Seabu Food Corp.</h1>
+                            <h4>Inventory Management System</h4>
                         </a>
                     </div>
-                    <div class="login-form bg-dark" >
+                    <div class="login-form" style="background-color: #0B1F1F;border-radius: 25px" >
                         <div id="loginError" class="alert alert-danger" role="alert"></div>
                         <form id="login">
                             <div class="form-group">
@@ -22,7 +24,7 @@
                                 <label style="color:white;">Password</label>
                                 <input name="password" type="password" class="form-control" placeholder="Password">
                             </div>
-                            <button type="submit" class="btn btn-success btn-flat m-b-30 m-t-30">Sign in</button>
+                            <button type="submit" class="btn btn-success btn-flat m-b-30 m-t-30" style="background-color: #EC8400">Sign in</button>
                             <div class="register-link m-t-15 text-center">
                             </div>
                         </form>
